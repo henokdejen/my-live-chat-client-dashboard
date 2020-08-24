@@ -1,0 +1,27 @@
+.side-bar{
+    background-image: linear-gradient(180deg,#262f3c 0,#262f3c);
+    width: 100px;
+    height: 100vh;
+    color: #999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 5px;
+    list-style: none;
+    gap: 20px;
+    cursor: pointer;
+
+    li{
+        width: 100%;
+        text-align:center;
+        padding: 10px 0;
+        &:hover{
+            color: #fff;
+        }
+    }
+
+    .active {
+        color: #ffffff;
+        border-bottom: 1px solid #fff;
+    }
+}

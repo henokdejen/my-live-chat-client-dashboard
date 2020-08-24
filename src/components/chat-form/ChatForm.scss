@@ -1,0 +1,52 @@
+@import '../../styles/_colors';
+
+$input-border-color: darken($accent-color, 6.5%);
+$input-text-color: darken(adjust-hue($primary-color, -155), 23.33);
+$chat-form-top-border: darken($accent-color, 12.16);
+
+#chat-form {
+  display: flex;
+  align-items: center;
+  grid-area: chat-form;
+  background: $accent-color;
+  border-top: 1px solid $chat-form-top-border;
+  padding-left: 42px;
+  padding-right: 22px;
+  position: relative;
+
+  .inputText {
+    flex: 1 0 0;
+    outline: none;
+    padding: 15px;
+    color: $input-text-color;
+    font-size: 0.8rem;
+    margin-left: 15px;
+  }
+
+  .toggle-emoji-picker{
+    border: none;
+    padding: 15px !important;
+    width: fit-content;
+    flex: 0 0 50px;
+    margin: 0 5px;
+    border-radius: 100%;
+    font-size: 1.8em;
+    cursor: pointer;
+
+    &:hover{
+      background-color: #ccc;
+    }
+  }
+
+  .primary-button {
+    height: 51px;
+    flex: 0 0 90px;
+    font-size: 0.8em;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .emoji-mart-preview{
+    display: none;
+  }
+
+}

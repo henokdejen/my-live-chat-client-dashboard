@@ -1,0 +1,25 @@
+@import '../../styles/_colors';
+
+$chat-title-shadow: darken($accent-color, 75.29);
+
+#chat-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $accent-color;
+    padding: 15px 20px;
+    z-index: 1;
+    font-size: 1.3em;
+
+    .delete-icon{
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border-radius: 100%;
+        &:hover{
+            background-color: #aaa;
+        }
+    }
+
+}
