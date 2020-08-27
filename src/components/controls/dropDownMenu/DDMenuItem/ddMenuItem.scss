@@ -1,0 +1,11 @@
+.dd-menu-item{
+    padding: 10px;
+    display: block;
+    min-width: 170px;
+    font-size: 0.8em;
+
+    &:hover{
+        background-color: #eee;
+        cursor: pointer;
+    }
+}

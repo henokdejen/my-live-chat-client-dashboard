@@ -1,11 +1,16 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import './NotificationMessage.scss'
 
-export const NotificationMessage = ({message}) => {
+export const NotificationMessage = ({isDate, message}) => {
     console.log(message)
+    const className = classNames({
+        'notification-msg': !isDate,
+        'date-msg': isDate
+    })
     return (
-        <div className="notification-msg">
+        <div className={className}>
             {message.messageText}
         </div>
     )

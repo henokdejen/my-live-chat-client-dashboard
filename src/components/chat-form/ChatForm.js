@@ -57,7 +57,7 @@ const ChatForm = ({ selectedConversation, onMessageSubmitted }) => {
                         showPreview={false}
                     />}
 
-                <div title="Add Attachment">
+                <div title="Add Attachment" className="attachment-icon">
                     <AttachmentIcon />
                 </div>
                 <input

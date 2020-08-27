@@ -28,7 +28,9 @@ const messagesReducer = (state = initialState, action) => {
             const newConversationMapEntry = { ...state.messageDetails[conversationId] };
             newConversationMapEntry.messages = newConversationMapEntry.messages.map(msg => {
                 if (msg.front_id == message.front_id) {
-                    msg.status = status
+                    // msg.status = status
+                    message.status = status
+                    return msg
                 }
                 return msg
             })

@@ -7,10 +7,15 @@ $chat-title-shadow: darken($accent-color, 75.29);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: $accent-color;
-    padding: 15px 20px;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 0px 20px;
     z-index: 1;
-    font-size: 1.3em;
+    height: 50px;
+
+    .conv-title{
+        font-size: 1.3em;
+    }
 
     .delete-icon{
         width: 30px;

@@ -177,9 +177,11 @@ export const conversationsSaga = function*() {
     //     const conversations = yield response
     //     console.log('Conversations Loaded', response)
 
-        // yield put(messagesLoaded(conversations[0].id, conversations[0].messages, false, null));
+        yield delay(1000)
+
+        yield put(messagesLoaded(conversations[0].id, conversations[0].messages, false, null));
     
-        yield put(conversationLoaded(convs));
+        yield put(conversationLoaded(conversations));
     
         yield put({type: 'connect'})
     // } else {

@@ -24,7 +24,7 @@ const conversationsReducer = (state = initialState, action) => {
             if (selectedConversationIndex >= 0) {
                 newState.conversations[selectedConversationIndex] = payload
             } else {
-                newState.conversations.push(action.payload)
+                newState.conversations.unshift(action.payload)
             }
             if (newState.conversations.length === 1) {
                 newState.selectedConversation = action.payload
@@ -76,6 +76,17 @@ const conversationsReducer = (state = initialState, action) => {
             // newState.selectedConversation.latestMessageText = message.messageText
             return newState
         }
+        case ConversationEvents.ONLINE_STATUS_CHANGE: {
+            const { conversationID, status } = action.payload
+            const newState = { ...state };
+
+            let selectedConversationIndex =
+                newState.conversations.findIndex(c => c.id === conversationID);
+
+            newState.conversations[selectedConversationIndex].isOnline = status
+            return newState
+        }
+
         default:
             return state;
     }

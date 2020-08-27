@@ -2,19 +2,17 @@ import { take, put, call, fork, race, delay } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import io from 'socket.io-client';
 
-import { showNewMessage, messasgeSent, newConversationAdded } from '../actions';
+import { showNewMessage, messasgeSent, newConversationAdded, onlineStatusChange } from '../actions';
 import { MessageStatus, MessageEvents, SocketEvents } from '../../constants';
 import { notify } from '../../services/notification';
-import {SOCKET_SERVER} from '../../API/API_URL'
+import { SOCKET_SERVER } from '../../API/API_URL'
 
 const query = { usertype: 'agent', agency: 'telegram', username: localStorage.getItem('username') }
-console.log('qer', query)
 let socket;
+
 const connect = () => {
     const query = { usertype: 'agent', agency: 'telegram', username: localStorage.getItem('username') }
-
     socket = io(SOCKET_SERVER, { query });
-    return socket
     return new Promise((resolve) => {
         socket.on('connect', () => {
             resolve(socket);
@@ -23,36 +21,26 @@ const connect = () => {
 };
 
 const disconnect = () => {
-    socket = io(SOCKET_SERVER, {query});
-    return new Promise((resolve) => {
-        socket.on('disconnect', () => {
-            resolve(socket);
+    if (socket) {
+        return new Promise((resolve) => {
+            socket.on('disconnect', () => {
+                resolve(socket);
+            });
         });
-    });
+    }
 };
 
 const reconnect = () => {
-    socket = io(SOCKET_SERVER, {query});
-    return new Promise((resolve) => {
-        socket.on('reconnect', () => {
-            resolve(socket);
+    if (socket) {
+
+        return new Promise((resolve) => {
+            socket.on('reconnect', () => {
+                resolve(socket);
+            });
         });
-    });
+
+    }
 };
-
-
-// function connect() {
-//     // this.socket = io('http://localhost:5000', { query: { ...this.visitorQuery, token }, forceNew: true }); // remov forcenew on production!!
-
-//     const socket = io('http://localhost:5000', { query: { usertype: 'agent', agency: 'telegram', username: 'Henok Dejen' } });
-//     return socket
-//     return new Promise(resolve => {
-//         socket.on('connect', () => {
-//             resolve(socket);
-//             console.log("Socket connected");
-//         });
-//     });
-// }
 
 function* read(channel) {
     // const channel = yield call(subscribe, socket);
@@ -70,8 +58,9 @@ function* sendMsg(socket, conversationId, message) {
         conversationID: conversationId
     }
     yield put(showNewMessage(conversationId, message))
-    yield new Promise(resolve => {
+    const result = yield new Promise(resolve => {
         socket.emit('MESSAGE', msg, function (comfiramtion) {
+            console.log('Conf', comfiramtion)
             resolve()
         })
     })
@@ -90,7 +79,7 @@ function* write(socket) {
 export function* subscribe(socket) {
     return new eventChannel(emit => {
         socket.on(SocketEvents.NEWCHATASSIGNED, (data) => {
-            console.log('lela', data)
+            console.log('lela Assigned', data)
             emit(newConversationAdded(data))
         })
 
@@ -106,6 +95,11 @@ export function* subscribe(socket) {
             }
             // console.log('To')
             emit(showNewMessage(data.conversationID, message))
+        })
+
+        socket.on('ONLINE_STATUS', (data) => {
+            console.log('Received', data)
+            emit(onlineStatusChange(data.conversationID, data.status))
         })
 
         return () => { }
@@ -134,7 +128,7 @@ export function* setupSocket() {
     try {
         // yield put({type: CHANNEL_ON});
 
-        const {socket, timeout } = yield race({
+        const { socket, timeout } = yield race({
             socket: call(connect),
             timeout: delay(2000),
         });
@@ -144,7 +138,7 @@ export function* setupSocket() {
             console.log('ServerSocket is down')
             socket = yield call(connect)
 
-        } 
+        }
         // const socket = yield call(connect)
         const channel = yield call(subscribe, socket);
 
@@ -162,7 +156,7 @@ export function* setupSocket() {
 
 export function* socketListener() {
     while (true) {
-        yield take('connect')
+        yield take('connsect')
 
         yield race({
             task: call(setupSocket),

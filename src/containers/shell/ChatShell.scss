@@ -9,7 +9,7 @@ $chat-shell-background: lighten($accent-color, 65%);
   overflow: hidden;
 
   .conversations-wrapper{
-    max-width: 300px;
+    max-width: 320px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -22,12 +22,18 @@ $chat-shell-background: lighten($accent-color, 65%);
     height: 100%;
     width: 100%;
     flex: 1;
+    border-right: 1px solid #ddd;
 
     .conversationContent{
       flex: 3;
+      // background-color: #edeeef;
       overflow: scroll;
     }
 
+  }
+
+  .client-information-wrapper{
+    width: 320px;
   }
 
 }

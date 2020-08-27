@@ -34,11 +34,19 @@ export const newConversationAdded = (data) => {
         title: data.visitor.id,
         createdAt: '30 mins ago',
         latestMessageText: '',
+        isOnline: true,
         messages: []
     }
     return {
         type: ConversationEvents.NEW_CONVERSATION,
         payload: conv
+    }
+}
+
+export const onlineStatusChange = (conversationID, status) => {
+    return {
+        type:ConversationEvents.ONLINE_STATUS_CHANGE,
+        payload: {conversationID, status}
     }
 }
 

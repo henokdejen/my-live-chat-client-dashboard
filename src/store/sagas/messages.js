@@ -5,7 +5,7 @@ import { MessageStatus } from '../../constants';
 import { loadMessages, loadConversations } from '../../API';
 
 const messageDetails = {
-    '1': [
+    '2': [
         {
             id: '1',
             imageUrl: null,
@@ -99,7 +99,8 @@ const messageDetails = {
             messageText: 'Hi',
             createdAt: '1 week ago',
             isMyMessage: true
-        }
+        },
+
     ],
     '4': [
         {
@@ -168,12 +169,13 @@ const delay = (ms) => new Promise(res => setTimeout(res, ms));
 const messagesSaga = function* (action) {
     const { conversationId, numberOfMessages, lastMessageId } = action.payload;
 
-    console.log('I am her')
-    const {response, error} = yield call(loadMessages, conversationId)
+    console.log('I am her', conversationId)
+    // const {response, error} = yield call(loadMessages, conversationId)
 
-    if (response){
-        console.log('response', response)
-        const messages = yield response;
+    // if (response){
+        // console.log('response', response)
+        // const messages = yield response;
+        const messages = messageDetails[conversationId];
         const startIndex = lastMessageId ? messages.findIndex(message => message.id === lastMessageId) + 1 : 0;
         const endIndex = startIndex + numberOfMessages;
         const pageGroup = messages.slice(startIndex, endIndex);
@@ -186,9 +188,9 @@ const messagesSaga = function* (action) {
             hasMoreMessages,
             newLastMessageId
         ));
-    } else {
-        console.log('error', error)
-    }
+    // } else {
+    //     console.log('error', error)
+    // }
 }
 
 const sendMsgSaga = function* (action) {

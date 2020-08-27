@@ -1,19 +1,26 @@
 import React from 'react'
 import './sidebar.scss'
+import { NavLink } from 'react-router-dom'
 
-const menus = ['Chat', 'Agents', 'Bla', 'Bla']
+const menus = [
+    {
+        title: 'Chat', path: '/conversations'
+    }, { title: 'Visitors', path: '/visitors' }]
 
 export default function SideBar() {
     return (
-        <ul className="side-bar">
+        <div className="side-bar">
             {
                 menus.map((menu, index) => (
-                    <li
-                        className={index === 0 ? 'active' : ''}
+
+                    <NavLink
+                        to={menu.path}
                         key={index}
-                    >{menu}</li>
+                        activeClassName = "active">
+                        {menu.title}
+                    </NavLink>
                 ))
             }
-        </ul>
+        </div>
     )
 }
