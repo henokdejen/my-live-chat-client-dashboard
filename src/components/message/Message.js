@@ -31,7 +31,6 @@ const Message = ({ isMyMessage, message }) => {
 
     const imageThumbnail = isMyMessage ? null : <img src={message.imageUrl} alt={message.imageAlt} />;
 
-    console.log('msssg', message)
     return (
         <div className={messageClass}>
             <div className="message-content">
@@ -42,7 +41,7 @@ const Message = ({ isMyMessage, message }) => {
                 <div className="message-time">{
                     message.status === MessageStatus.PENDING ?
                         'sending...' :
-                        message.time}</div>
+                        message.createdAt}</div>
             </div>
         </div>
     );

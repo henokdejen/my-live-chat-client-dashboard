@@ -1,0 +1,11 @@
+@import '../../../styles/colors';
+@import '../../../styles/dimensions';
+
+.inner-nav-header{
+    padding: $inner-nav-padding;
+    line-height: $inner-nav-height;
+    border-bottom: 1px solid #ddd;
+    background-color: $inner-nav-bg-color;
+    font-size: 1.3em;
+    font-weight: 600;
+}

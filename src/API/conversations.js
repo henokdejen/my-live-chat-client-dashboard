@@ -1,7 +1,7 @@
 import { baseURL, LOAD_CONVERSATIONS } from "./API_URL"
 
 const conversations = [
-    { 
+    {
         id: '1',
         imageUrl: require('../images/profiles/daryl.png'),
         imageAlt: 'Daryl Duckmanton',
@@ -88,7 +88,7 @@ const conversations = [
         ]
     },
     {
-        id: '2', 
+        id: '2',
         imageUrl: require('../images/profiles/kim.jpeg'),
         imageAlt: 'Kim O\'Neil',
         title: 'Kim O\'Neil',
@@ -97,7 +97,7 @@ const conversations = [
         messages: []
     },
     {
-        id: '3', 
+        id: '3',
         imageUrl: require('../images/profiles/john.jpeg'),
         imageAlt: 'John Anderson',
         title: 'John Anderson',
@@ -105,7 +105,7 @@ const conversations = [
         latestMessageText: 'Yes I love how Python does that',
         messages: []
     },
-    { 
+    {
         id: '4',
         imageUrl: require('../images/profiles/ben.png'),
         imageAlt: 'Ben Smith',
@@ -114,7 +114,7 @@ const conversations = [
         latestMessageText: 'Yeah Miami Heat are done',
         messages: []
     },
-    { 
+    {
         id: '5',
         imageUrl: require('../images/profiles/douglas.png'),
         imageAlt: 'Douglas Johannasen',
@@ -123,7 +123,7 @@ const conversations = [
         latestMessageText: 'No it does not',
         messages: []
     },
-    { 
+    {
         id: '6',
         imageUrl: require('../images/profiles/jacob.png'),
         imageAlt: 'Jacob Manly',
@@ -132,7 +132,7 @@ const conversations = [
         latestMessageText: 'Just be very careful doing that',
         messages: []
     },
-    { 
+    {
         id: '7',
         imageUrl: require('../images/profiles/stacey.jpeg'),
         imageAlt: 'Stacey Wilson',
@@ -141,7 +141,7 @@ const conversations = [
         latestMessageText: 'Awesome!!! Congratulations!!!!',
         messages: []
     },
-    { 
+    {
         id: '8',
         imageUrl: require('../images/profiles/stan.jpeg'),
         imageAlt: 'Stan George',
@@ -150,7 +150,7 @@ const conversations = [
         latestMessageText: 'Good job',
         messages: []
     },
-    { 
+    {
         id: '9',
         imageUrl: require('../images/profiles/sarah.jpeg'),
         imageAlt: 'Sarah Momes',
@@ -161,8 +161,22 @@ const conversations = [
     }
 ];
 
-export const loadConversations = () => {
-    return fetch(`${baseURL}/${LOAD_CONVERSATIONS}`)
-        .then(response => ({ response: conversations }))
-        .catch(error => ({ error }))
+
+export const loadConversations = async () => {
+    let response = await fetch(`${baseURL}/${LOAD_CONVERSATIONS}?agency=telegram`)
+    if (response.ok) {
+        return await response.json()
+    } else {
+        throw new Error("Unexpected error!!!");
+    }
+}
+
+
+export const loadMessages = async (conversationId) => {
+    let response = await fetch(`${baseURL}/conversations/${conversationId}/history?fetchedHistoryCount=0`)
+    if (response.ok) {
+        return await response.json()
+    } else {
+        throw new Error("Unexpected error!!!");
+    }
 }

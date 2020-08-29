@@ -1,8 +1,8 @@
 import { put, takeLatest, takeEvery, call } from 'redux-saga/effects';
 
-import { messagesLoaded, messasgeSent, showNewMessage } from '../actions';
-import { MessageStatus } from '../../constants';
-import { loadMessages, loadConversations } from '../../API';
+import { messagesLoaded, messasgeSent, newMessageAdded } from '../actions';
+import { MessageStatus, FETCH_ALL_MESSAGES_REQUEST } from '../../constants';
+import * as API from '../../API'
 
 const messageDetails = {
     '2': [
@@ -166,8 +166,33 @@ const messageDetails = {
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-const messagesSaga = function* (action) {
+const fetchMessagesSaga = function* (action) {
     const { conversationId, numberOfMessages, lastMessageId } = action.payload;
+
+
+    try {
+        const response = yield call(API.loadConversations)
+        if (response.success) {
+            let messages = response.data
+            console.log('RECEIVED messages', messages)
+            if (!messages) messages = []
+            const startIndex = lastMessageId ? messages.findIndex(message => message.id === lastMessageId) + 1 : 0;
+            const endIndex = startIndex + numberOfMessages;
+            const pageGroup = messages.slice(startIndex, endIndex);
+            const newLastMessageId = pageGroup.length > 0 ? pageGroup[pageGroup.length - 1].id : null;
+            const hasMoreMessages = newLastMessageId && endIndex < (messages.length - 1);
+            
+            yield put(messagesLoaded(
+                conversationId,
+                pageGroup,
+                hasMoreMessages,
+                newLastMessageId
+            ));
+        }
+
+    } catch (error) {
+        console.log('Connection Error ezih ga', error)
+    }
 
     console.log('I am her', conversationId)
     // const {response, error} = yield call(loadMessages, conversationId)
@@ -175,19 +200,20 @@ const messagesSaga = function* (action) {
     // if (response){
         // console.log('response', response)
         // const messages = yield response;
-        const messages = messageDetails[conversationId];
-        const startIndex = lastMessageId ? messages.findIndex(message => message.id === lastMessageId) + 1 : 0;
-        const endIndex = startIndex + numberOfMessages;
-        const pageGroup = messages.slice(startIndex, endIndex);
-        const newLastMessageId = pageGroup.length > 0 ? pageGroup[pageGroup.length - 1].id : null;
-        const hasMoreMessages = newLastMessageId && endIndex < (messages.length - 1);
+        // let messages = messageDetails[conversationId];
+        // if (!messages) messages = []
+        // const startIndex = lastMessageId ? messages.findIndex(message => message.id === lastMessageId) + 1 : 0;
+        // const endIndex = startIndex + numberOfMessages;
+        // const pageGroup = messages.slice(startIndex, endIndex);
+        // const newLastMessageId = pageGroup.length > 0 ? pageGroup[pageGroup.length - 1].id : null;
+        // const hasMoreMessages = newLastMessageId && endIndex < (messages.length - 1);
         
-        yield put(messagesLoaded(
-            conversationId,
-            pageGroup,
-            hasMoreMessages,
-            newLastMessageId
-        ));
+        // yield put(messagesLoaded(
+        //     conversationId,
+        //     pageGroup,
+        //     hasMoreMessages,
+        //     newLastMessageId
+        // ));
     // } else {
     //     console.log('error', error)
     // }
@@ -195,15 +221,15 @@ const messagesSaga = function* (action) {
 
 const sendMsgSaga = function* (action) {
     const { conversationId, message } = action.payload
-    console.log('I am hrer fine', showNewMessage(conversationId, message))
-    yield put(showNewMessage(conversationId, message))
+    console.log('I am hrer fine', newMessageAdded(conversationId, message))
+    yield put(newMessageAdded(conversationId, message))
     yield put({ type: 'SEND_MESSAGE_SOCKET', data: { conversationId, message } })
     yield delay(700);
     yield put(messasgeSent(MessageStatus.SUCCESS, conversationId, message))
 }
 
 export const watchGetMessagesAsync = function* () {
-    yield takeLatest('MESSAGES_REQUESTED', messagesSaga);
+    yield takeLatest(FETCH_ALL_MESSAGES_REQUEST, fetchMessagesSaga);
 }
 
 export const watchSendMsgAsync = function* () {

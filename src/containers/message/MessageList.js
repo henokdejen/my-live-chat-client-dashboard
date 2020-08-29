@@ -8,6 +8,7 @@ import { NotificationMessage } from '../../components/notification-message-item/
 
 const MessageList = ({ conversationId, getMessagesForConversation, loadMessages }) => {
     const messageDetails = getMessagesForConversation(conversationId);
+
     const messages = messageDetails ? messageDetails.messages : null;
     const initialMsgLoaded = messageDetails ? messageDetails.initiallyLoaded : false
     let messageItems = null;

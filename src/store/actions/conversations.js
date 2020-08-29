@@ -1,25 +1,25 @@
-import { ConversationEvents } from "../../constants";
+import * as types from "../../constants";
 
 export const conversationChanged = conversationId => ({
-    type: ConversationEvents.SELECTED_CONVERSATION_CHANGED,
+    type: types.SELECTED_CONVERSATION_CHANGED,
     conversationId
 });
 
 export const conversationsRequested = () => ({
-    type: ConversationEvents.CONVERSATIONS_REQUESTED
+    type: types.FETCH_ALL_CONVERSATIONS_REQUEST
 });
 
 export const conversationDeleted = () => ({
-    type: ConversationEvents.DELETE_CONVERSATION
+    type: types.DELETE_CONVERSATION_REQUEST
 });
 
 export const conversationsLoading = () => ({
-    type: ConversationEvents.CONVERSATIONS_LOADING
+    type: "ConversationEvents.CONVERSATIONS_LOADING"
 })
 
 
 export const conversationLoaded = (conversations) =>({
-    type: ConversationEvents.CONVERSATIONS_LOADED,
+    type: types.FETCH_ALL_CONVERSATIONS_SUCCESS,
     payload: {
         conversations,
         selectedConversation: conversations[0]
@@ -27,26 +27,23 @@ export const conversationLoaded = (conversations) =>({
 })
 
 export const newConversationAdded = (data) => {
-    const conv =     { 
-        id: data.conversationID,
-        imageUrl: require('../../images/profiles/stacey.jpeg'),
-        imageAlt: 'Stacey Wilson',
-        title: data.visitor.id,
-        createdAt: '30 mins ago',
-        latestMessageText: '',
-        isOnline: true,
-        messages: []
-    }
     return {
-        type: ConversationEvents.NEW_CONVERSATION,
-        payload: conv
+        type: types.NEW_CONVERSATION_ADDED,
+        payload: data
     }
 }
 
 export const onlineStatusChange = (conversationID, status) => {
     return {
-        type:ConversationEvents.ONLINE_STATUS_CHANGE,
+        type: types.ONLINE_STATUS_CHANGE,
         payload: {conversationID, status}
     }
 }
 
+
+export const visitorLeftChat = (conversationId) => {
+    return {
+        type: types.VISITOR_LEFT_CHAT,
+        conversationId
+    }
+}

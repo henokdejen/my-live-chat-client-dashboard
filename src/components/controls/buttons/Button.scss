@@ -5,13 +5,11 @@ $button-disabled-background: lighten(desaturate(adjust-hue($primary-color, 1), 7
 $button-disabled-border: lighten(desaturate(adjust-hue($primary-color, 5), 89.24), 17.45);
 
 .primary-button {
-    flex: 0 0 auto;
     background: $primary-color;
     border: 1px solid $primary-dark;
     color: $button-text;
-    padding: 12px;
-    border-radius: 5px;
-    font-size: 1.4rem;
+    padding: 5px 12px;
+    border-radius: 2px;
     cursor: pointer;
     outline: none;
 

@@ -9,6 +9,7 @@ $chat-shell-background: lighten($accent-color, 65%);
   overflow: hidden;
 
   .conversations-wrapper{
+    width: 100%;
     max-width: 320px;
     display: flex;
     flex-direction: column;

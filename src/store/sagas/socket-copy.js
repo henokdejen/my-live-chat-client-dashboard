@@ -5,7 +5,6 @@ import { fork, take, call, put, cancel } from 'redux-saga/effects';
 
 function connect() {
     const socket = io('http://localhost:5000');
-    console.log('I am here brrrrr')
     return new Promise(resolve => {
         socket.on('connect', () => {
             resolve(socket);

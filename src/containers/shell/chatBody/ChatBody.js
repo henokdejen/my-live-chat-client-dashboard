@@ -9,8 +9,6 @@ import { sendMessage } from '../../../store/actions';
 
 const ChatBody = ({ selectedConversation, onMessageSubmitted }) => {
 
-    console.log('Rendered', selectedConversation)
-
     let conversationContent = (
         <>
             <NoConversations></NoConversations>

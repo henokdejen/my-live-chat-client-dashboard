@@ -1,0 +1,8 @@
+@import '../../../styles/colors';
+@import '../../../styles/dimensions';
+
+.inner-nav{
+    overflow-y: auto;
+    background-color: $inner-nav-bg-color;
+    border-right: $basic-border;
+}

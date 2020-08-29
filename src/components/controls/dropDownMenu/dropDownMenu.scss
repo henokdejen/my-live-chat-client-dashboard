@@ -4,6 +4,12 @@
     .dd-triger{
         display: inline-block;
         cursor: pointer;
+        padding: 2px 5px;
+        box-sizing: content-box;
+        border-radius: 100%;
+        &:hover{
+            background-color: #f1f1f1;
+        }
     }
 
     .menu{

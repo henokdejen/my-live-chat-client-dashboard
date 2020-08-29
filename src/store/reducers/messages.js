@@ -1,4 +1,4 @@
-import { MessageStatus, MessageEvents } from "../../constants";
+import * as types from "../../constants";
 
 const initialState = {
     messageDetails: {}
@@ -6,7 +6,8 @@ const initialState = {
 
 const messagesReducer = (state = initialState, action) => {
     switch (action.type) {
-        case MessageEvents.MESSAGES_LOADED:
+        case types.FETCH_ALL_MESSAGES_SUCCESS:
+            console.log('messages fetched!')
             const { conversationId, messages, hasMoreMessages, lastMessageId } = action.payload;
             const currentConversationMapEntry = state.messageDetails[conversationId];
             const newConversationMapEntry = { hasMoreMessages, lastMessageId, messages: [] };
@@ -23,7 +24,7 @@ const messagesReducer = (state = initialState, action) => {
 
             return { messageDetails: newMessageDetails };
 
-        case MessageEvents.MESSAGE_SENT_RESULT: {
+        case types.MESSAGE_SENT_RESULT: {
             const { status, conversationId, message } = action.payload;
             const newConversationMapEntry = { ...state.messageDetails[conversationId] };
             newConversationMapEntry.messages = newConversationMapEntry.messages.map(msg => {
@@ -40,7 +41,7 @@ const messagesReducer = (state = initialState, action) => {
             return { messageDetails: newMessageDetails };
         }
 
-        case MessageEvents.NEW_MESSAGE: {
+        case types.NEW_MESSAGE_ADDED: {
             const { conversationId, message } = action.payload;
             let newConversationMapEntry;
             if (state.messageDetails[conversationId]){
@@ -55,6 +56,12 @@ const messagesReducer = (state = initialState, action) => {
             newMessageDetails[conversationId] = newConversationMapEntry
 
             return { messageDetails: newMessageDetails };
+        }
+
+        case types.MESSAGE_SEEN: {
+            const {conversationId, messageId} = action.payload
+            // to be handled
+            return state
         }
 
         default:

@@ -1,12 +1,7 @@
-import { MessageEvents } from "../../constants";
-
-export const newMessageAdded = textMessage => ({
-    type: 'NEW_MESSAGE_ADDED',
-    textMessage
-});
+import * as types from "../../constants";
 
 export const messagesRequested = (conversationId, numberOfMessages, lastMessageId) => ({
-    type: 'MESSAGES_REQUESTED',
+    type: types.FETCH_ALL_MESSAGES_REQUEST,
     payload: {
         conversationId,
         numberOfMessages,
@@ -15,7 +10,7 @@ export const messagesRequested = (conversationId, numberOfMessages, lastMessageI
 });
 
 export const messagesLoaded = (conversationId, messages, hasMoreMessages, lastMessageId) => ({
-    type: 'MESSAGES_LOADED',
+    type: types.FETCH_ALL_MESSAGES_SUCCESS,
     payload: {
         conversationId,
         messages,
@@ -25,16 +20,21 @@ export const messagesLoaded = (conversationId, messages, hasMoreMessages, lastMe
 });
 
 export const sendMessage = (conversationId, message) => ({
-    type: 'SEND_MESSAGE',
+    type: types.SEND_MESSAGE,
     payload: { conversationId, message }
 })
 
-export const showNewMessage = (conversationId, message) => ({
-    type: MessageEvents.NEW_MESSAGE,
+export const newMessageAdded = (conversationId, message) => ({
+    type: types.NEW_MESSAGE_ADDED,
     payload: { conversationId, message }
 })
 
 export const messasgeSent = (status, conversationId, message) => ({
-    type: 'MESSAGE_SENT_RESULT',
+    type: types.MESSAGE_SENT_RESULT,
     payload: { status, conversationId, message }
+})
+
+export const messageSeen = (conversationId, messageId) =>({
+    type: types.MESSAGE_SEEN,
+    payload: {conversationId, messageId}
 })

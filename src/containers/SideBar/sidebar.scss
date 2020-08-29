@@ -7,22 +7,27 @@
     align-items: center;
     padding: 10px 5px;
     list-style: none;
-    gap: 20px;
     cursor: pointer;
 
     a{
         width: 100%;
         text-align:center;
-        padding: 10px 0;
+        padding: 15px 0;
         color: #999;
         text-decoration: none;
         &:hover{
             color: #fff;
         }
+
+        &.nav-item{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
     }
 
     .active {
         color: #ffffff;
-        border-bottom: 1px solid #fff;
     }
 }

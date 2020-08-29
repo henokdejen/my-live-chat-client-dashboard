@@ -1,4 +1,7 @@
-import { ConversationEvents, MessageEvents } from "../../constants";
+// import { ConversationEvents, MessageEvents, FETCH_ALL_CONVERSATIONS_REQUEST } from "../../constants";
+import * as types from '../../constants';
+
+
 
 const initialState = {
     conversations: [],
@@ -9,13 +12,13 @@ initialState.selectedConversation = initialState.conversations[1];
 
 const conversationsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ConversationEvents.CONVERSATIONS_LOADED: {
+        case types.FETCH_ALL_CONVERSATIONS_SUCCESS:{
             const newState = { ...state };
             newState.conversations = action.payload.conversations ? action.payload.conversations : [];
             newState.selectedConversation = action.payload.selectedConversation;
             return newState;
         }
-        case ConversationEvents.NEW_CONVERSATION: {
+        case types.NEW_CONVERSATION_ADDED: {
             const { payload } = action
             const newState = { ...state };
             let selectedConversationIndex =
@@ -31,7 +34,7 @@ const conversationsReducer = (state = initialState, action) => {
             }
             return newState
         }
-        case ConversationEvents.SELECTED_CONVERSATION_CHANGED: {
+        case types.SELECTED_CONVERSATION_CHANGED: {
             const newState = { ...state };
             newState.selectedConversation =
                 newState.conversations.find(
@@ -40,7 +43,7 @@ const conversationsReducer = (state = initialState, action) => {
 
             return newState;
         }
-        case ConversationEvents.DELETE_CONVERSATION: {
+        case types.DELETE_CONVERSATION_REQUEST: {
             if (state.selectedConversation) {
                 const newState = { ...state };
 
@@ -63,20 +66,18 @@ const conversationsReducer = (state = initialState, action) => {
 
             return state;
         }
-        case MessageEvents.NEW_MESSAGE: {
-            console.log('re', action.payload)
+        case types.NEW_MESSAGE_ADDED: {
             const { conversationId, message } = action.payload;
             const newState = { ...state };
 
             let selectedConversationIndex =
                 newState.conversations.findIndex(c => c.id === conversationId);
 
-            console.log('old', newState.conversations, selectedConversationIndex, conversationId)
             newState.conversations[selectedConversationIndex].latestMessageText = message.messageText
             // newState.selectedConversation.latestMessageText = message.messageText
             return newState
         }
-        case ConversationEvents.ONLINE_STATUS_CHANGE: {
+        case types.ONLINE_STATUS_CHANGE: {
             const { conversationID, status } = action.payload
             const newState = { ...state };
 
@@ -85,6 +86,11 @@ const conversationsReducer = (state = initialState, action) => {
 
             newState.conversations[selectedConversationIndex].isOnline = status
             return newState
+        }
+
+        case types.VISITOR_LEFT_CHAT: {
+            // visitor left chat to be handled
+            return state
         }
 
         default:

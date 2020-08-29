@@ -8,7 +8,7 @@ const ConversationItem = ({ conversation }) => {
     let { url } = useRouteMatch();
 
     const onlineStatusCN = classNames('online-status-indicator', {
-        'online': !conversation.isOnline
+        'online': conversation.isOnline
     })
 
     return (
@@ -27,7 +27,7 @@ const ConversationItem = ({ conversation }) => {
                 {conversation.latestMessageText}
             </div>
 
-            <div className="unseen-msgs-count">2</div>
+            {/* <div className="unseen-msgs-count">2</div> */}
         </NavLink>
     );
 }

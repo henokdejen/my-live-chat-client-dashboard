@@ -11,7 +11,7 @@
     gap: 16px;
 
     h4{
-        margin-bottom: 16px;
+        margin-bottom: 24px;
     }
 
     .card-header-middle{
@@ -21,7 +21,7 @@
     .basic-detail{
         display: grid;
         grid-template-columns: 80px 1fr;
-        column-gap: 10px;
+        column-gap: 20px;
         row-gap: 10px;
 
         img{
@@ -47,7 +47,8 @@
         .techonoloy-item{
             font-size: 0.93em;
             padding: 5px 0;
-            line-height: 20px;
+            line-height: 25px;
+            margin-bottom: 5px;
 
             .attribute{
                 color: #999;

@@ -66,7 +66,7 @@ $speech-bubble-border-color: darken($accent-color, 13.18);
             grid-column-gap: 10px;
 
             > .message-text {
-                background: $accent-color;
+                background: #fff;
                 color: $contrasted-accent-text;
                 border-radius: 14px 14px 14px 0;
             }
