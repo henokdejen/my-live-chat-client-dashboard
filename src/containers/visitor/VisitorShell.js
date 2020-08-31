@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import { NavLink, useRouteMatch } from 'react-router-dom'
 import { InnerHeader } from '../../components/controls/innerHeader/InnerHeader'
 import { InnerNavHeader } from '../../components/controls/innerHeader/InnerNavHeader'
@@ -15,11 +16,11 @@ const VisitorNavItem = ({ to, children }) => {
     )
 }
 
-const VisitorItem = (props) => {
+const VisitorItem = ({visitor}) => {
     return (
         <div className="visitor-item">
-            <div className="visitor-id">#4213a74fa981723</div>
-            <div className="visiting-site"><a href="#">https://dashboard.revechat.com/#chatwindow_0-tab</a></div>
+            <div className="visitor-id">#{visitor.browserID}</div>
+            <div className="visiting-site"><a href="#">https://dummy.url.fornow/#chatwindow_0-tab</a></div>
             <div className="actions"><Button>Start Chat</Button></div>
         </div>
     )
@@ -40,9 +41,11 @@ const menus = [
     },
 ]
 
-
-export const VisitorShell = () => {
+const VisitorShell = ({getOnlineVisitors}) => {
     let { path } = useRouteMatch();
+
+    let onlineVisitors = getOnlineVisitors()
+    console.log('RECEIVED visitors', onlineVisitors)
 
     return (
         <div className="visitors-wrapper">
@@ -62,11 +65,11 @@ export const VisitorShell = () => {
             </InnerNav>
 
             <div className="visitors-list-wrapper">
-                <InnerHeader><h4>Un Assigned Visitors</h4></InnerHeader>
+                <InnerHeader><h4>All Visitors</h4></InnerHeader>
                 <Card>
                     {
-                        [1, 2, 3, 4].map(v => (
-                            <VisitorItem key={v}/>
+                        onlineVisitors.map(v => (
+                            <VisitorItem key={v.browserID} visitor={v}/>
                         ))
                     }
                 </Card>
@@ -74,3 +77,14 @@ export const VisitorShell = () => {
         </div>
     )
 }
+
+
+const mapStateToProps = (state) => {
+    let props = {
+        getOnlineVisitors: () => (state.visitorsState.onlineVisitors)
+    };
+    return props
+};
+
+
+export default connect(mapStateToProps)(VisitorShell);

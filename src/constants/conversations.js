@@ -32,3 +32,5 @@ export const DELETE_CONVERSATION_FAILURE = Symbol('conversations/DELETE_CONVERSA
 export const NEW_CONVERSATION_ADDED = Symbol('conversations/RECEIVE_NEW_CONVERSATION');
 export const SELECTED_CONVERSATION_CHANGED = Symbol('conversations/SELECTED_CONVERSATION_CHANGED');
 export const ONLINE_STATUS_CHANGE = Symbol('conversations/ONLINE_STATUS_CHANGE')
+
+export const MARK_ALL_MESSAGES_SEEN = Symbol('conversations/MARK_ALL_MESSAGES_SEEN')

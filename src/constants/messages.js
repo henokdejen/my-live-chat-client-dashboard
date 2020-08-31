@@ -4,3 +4,5 @@ export const FETCH_ALL_MESSAGES_FAILURE = Symbol('messages/FETCH_ALL_MESSAGES_FA
 
 export const NEW_MESSAGE_ADDED = Symbol('message/NEW_MESSAGE_ADDED')
 export const MESSAGE_SENT_RESULT = Symbol('message/MESSAGE_SENT_RESULT')
+
+export const REPORT_MESSAGE_SEEN = Symbol('message/REPORT_MESSAGE_SEEN')

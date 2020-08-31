@@ -44,3 +44,4 @@ export * from './messages'
 export * from './sockets';
 export * from './services';
 export * from './users';
+export * from './visitors'

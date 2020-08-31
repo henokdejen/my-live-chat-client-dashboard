@@ -7,15 +7,15 @@ const initialState = {
 const messagesReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_ALL_MESSAGES_SUCCESS:
-            console.log('messages fetched!')
             const { conversationId, messages, hasMoreMessages, lastMessageId } = action.payload;
             const currentConversationMapEntry = state.messageDetails[conversationId];
             const newConversationMapEntry = { hasMoreMessages, lastMessageId, messages: [] };
 
-            if (currentConversationMapEntry) {
-                newConversationMapEntry.messages = [...currentConversationMapEntry.messages];
-            }
+            // if (currentConversationMapEntry) {
+            //     newConversationMapEntry.messages = [...currentConversationMapEntry.messages];
+            // }
 
+            // newConversationMapEntry.messages = [...newConversationMapEntry.messages, ...messages];
             newConversationMapEntry.messages = [...newConversationMapEntry.messages, ...messages];
             newConversationMapEntry.initiallyLoaded = true
             
@@ -54,14 +54,23 @@ const messagesReducer = (state = initialState, action) => {
             }
             const newMessageDetails = { ...state.messageDetails };
             newMessageDetails[conversationId] = newConversationMapEntry
-
             return { messageDetails: newMessageDetails };
         }
 
         case types.MESSAGE_SEEN: {
             const {conversationId, messageId} = action.payload
             // to be handled
-            return state
+            const newConversationMapEntry = { ...state.messageDetails[conversationId] };
+            newConversationMapEntry.messages = newConversationMapEntry.messages.map(msg => {
+                if (msg.id == messageId) {
+                    msg.seen = true
+                }
+                return msg
+            })
+
+            const newMessageDetails = { ...state.messageDetails };
+            newMessageDetails[conversationId] = newConversationMapEntry
+            return { messageDetails: newMessageDetails };
         }
 
         default:

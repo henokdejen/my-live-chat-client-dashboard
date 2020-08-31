@@ -2,6 +2,7 @@ import { put, takeEvery, call } from 'redux-saga/effects';
 import { FETCH_ALL_CONVERSATIONS_REQUEST } from '../../constants';
 import { conversationLoaded, conversationsLoading, messagesLoaded } from '../actions';
 import * as API from '../../API'
+import { getConversation, getSortedConversations } from './helper';
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
@@ -129,22 +130,11 @@ export const loadConversationsSaga = function* () {
 
         const response = yield call(API.loadConversations)
         if (response.success) {
-            console.log('RECEIVED', response.data)
+            console.log('RECEIVED Conversations', response.data)
 
-            const conversations = response.data.map(conv => {
-                let createdAt = new Date(conv.created_at)
-                createdAt = createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
-                return {
-                    id: conv._id,
-                    imageUrl: require('../../images/profiles/daryl.png'),
-                    imageAlt: 'Daryl Duckmanton',
-                    title: conv.email ? conv.email : conv._id,
-                    created_at: conv.created_at,
-                    createdAt,
-                    latestMessageText: conv.messages.length ? conv.messages[0].text : '',
-                }
-            })
-
+            let conversations = response.data.map(conv => (getConversation(conv)))
+            conversations = getSortedConversations(conversations)
+            
             yield put(conversationLoaded(conversations));
 
             // yield put({type: 'connect'})

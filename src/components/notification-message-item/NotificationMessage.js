@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import './NotificationMessage.scss'
 
 export const NotificationMessage = ({isDate, message}) => {
-    console.log(message)
     const className = classNames({
         'notification-msg': !isDate,
         'date-msg': isDate

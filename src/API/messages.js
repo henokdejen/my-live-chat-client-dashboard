@@ -159,8 +159,8 @@ const messageDetails = {
     ]
 };
 
-export const loadMessages = (conversationId) => {
-    return fetch(`${baseURL}/${LOAD_MESSAGES}`)
-        .then(response => ({ response: messageDetails[conversationId] }))
-        .catch(error => ({ error }))
-}
+// export const loadMessages = (conversationId) => {
+//     return fetch(`${baseURL}/${LOAD_MESSAGES}`)
+//         .then(response => ({ response: messageDetails[conversationId] }))
+//         .catch(error => ({ error }))
+// }

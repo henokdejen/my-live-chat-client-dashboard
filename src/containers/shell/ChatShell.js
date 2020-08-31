@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import {conversationsRequested } from '../../store/actions';
+import {conversationsRequested, allOnlineVisitorsRequested } from '../../store/actions';
 import ConversationSearch from '../../components/conversation/conversation-search/ConversationSearch';
 import ConversationList from '../../components/conversation/conversation-list/ConversationList';
 import ChatBody from './chatBody/ChatBody';
@@ -9,13 +9,15 @@ import ChatBody from './chatBody/ChatBody';
 import './ChatShell.scss';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
-const ChatShell = ({ getConversations, loadConversations }) => {
+const ChatShell = ({ getConversations }) => {
     let { path } = useRouteMatch();
     let conversations = getConversations()
 
-    useEffect(() => {
-        loadConversations();
-    }, [loadConversations]);
+    // useEffect(() => {
+    //     if (!conversations.length) {
+    //         loadConversations();
+    //     }
+    // }, [loadConversations]);
 
     return (
         <div id="chat-container">
@@ -46,10 +48,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    loadConversations: () => { dispatch(conversationsRequested()) }
+    loadConversations: () => { 
+        dispatch(conversationsRequested()) 
+        dispatch(allOnlineVisitorsRequested())
+    }
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ChatShell);
+export default connect(mapStateToProps)(ChatShell);

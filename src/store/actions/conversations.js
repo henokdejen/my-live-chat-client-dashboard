@@ -18,7 +18,7 @@ export const conversationsLoading = () => ({
 })
 
 
-export const conversationLoaded = (conversations) =>({
+export const conversationLoaded = (conversations) => ({
     type: types.FETCH_ALL_CONVERSATIONS_SUCCESS,
     payload: {
         conversations,
@@ -36,7 +36,7 @@ export const newConversationAdded = (data) => {
 export const onlineStatusChange = (conversationID, status) => {
     return {
         type: types.ONLINE_STATUS_CHANGE,
-        payload: {conversationID, status}
+        payload: { conversationID, status }
     }
 }
 
@@ -46,4 +46,8 @@ export const visitorLeftChat = (conversationId) => {
         type: types.VISITOR_LEFT_CHAT,
         conversationId
     }
+}
+
+export const markAllMessageSeenRequested = (conversationId) => {
+    return { type: types.MARK_ALL_MESSAGES_SEEN, conversationId }
 }

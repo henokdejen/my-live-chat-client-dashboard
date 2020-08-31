@@ -1,9 +1,9 @@
 import React from 'react'
-import './dashboard.scss'
-import SideBar from '../SideBar/SideBar'
+import { Route, Switch } from 'react-router-dom'
 import ChatShell from '../shell/ChatShell'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { VisitorShell } from '../visitor/VisitorShell'
+import SideBar from '../SideBar/SideBar'
+import VisitorShell from '../visitor/VisitorShell'
+import './dashboard.scss'
 
 export const Dashboard = () => {
     return (

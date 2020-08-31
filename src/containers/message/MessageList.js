@@ -1,37 +1,59 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { messagesRequested } from '../../store/actions';
+import { messagesRequested, reportMessageSeenRequested, markAllMessageSeenRequested } from '../../store/actions';
 import Message from '../../components/message/Message';
 import './MessageList.scss';
 import { NotificationMessage } from '../../components/notification-message-item/NotificationMessage';
 
-const MessageList = ({ conversationId, getMessagesForConversation, loadMessages }) => {
+const MessageList = ({
+    conversationId,
+    getMessagesForConversation,
+    loadMessages,
+    reportMessageSeen,
+    markAllMessagesSeen
+}) => {
     const messageDetails = getMessagesForConversation(conversationId);
 
     const messages = messageDetails ? messageDetails.messages : null;
     const initialMsgLoaded = messageDetails ? messageDetails.initiallyLoaded : false
     let messageItems = null;
 
+    let wrapperRef
+
     useEffect(() => {
         if (!messageDetails || !initialMsgLoaded) {
             loadMessages(conversationId, null);
+        } else {
+            wrapperRef.scrollTop = wrapperRef.scrollHeight
+            markAllMessagesSeen(conversationId) 
         }
     }, [messageDetails, loadMessages, conversationId])
+
+    // useEffect(() => {
+    //     if (messageDetails) {
+    //         wrapperRef.scrollTop = wrapperRef.scrollHeight
+    //         markAllMessagesSeen(conversationId)
+    //     }
+    // }, [messages])
 
     if (messages && messages.length > 0) {
         messageItems = messages.map((message, index) => {
             return (message.isNotification) ?
-                <NotificationMessage message={message} /> :
+                <NotificationMessage
+                    reportMessageSeen={reportMessageSeen}
+                    message={message}
+                    key={index} /> :
                 <Message
                     key={index}
+                    reportMessageSeen={reportMessageSeen}
                     isMyMessage={message.isMyMessage}
                     message={message} />;
         });
     }
 
     return (
-        <div id="chat-message-list">
+        <div id="chat-message-list" ref={(el) => wrapperRef = el}>
             {messageItems}
         </div>
     );
@@ -52,7 +74,15 @@ const mapDispatchToProps = dispatch => {
         dispatch(messagesRequested(conversationId, 5, lastMessageId));
     }
 
-    return { loadMessages };
+    const reportMessageSeen = (conversationID, messageID) => {
+        dispatch(reportMessageSeenRequested(conversationID, messageID))
+    }
+
+    const markAllMessagesSeen = (conversationID) => {
+        dispatch(markAllMessageSeenRequested(conversationID))
+    }
+
+    return { loadMessages, reportMessageSeen, markAllMessagesSeen };
 }
 
 export default connect(

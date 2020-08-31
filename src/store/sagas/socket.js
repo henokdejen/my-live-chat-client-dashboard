@@ -1,13 +1,14 @@
-import { take, put, call, fork, race, delay } from 'redux-saga/effects'
+import { take, put, call, fork, race, delay, takeEvery } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import io from 'socket.io-client';
 
-import { newMessageAdded, messasgeSent, newConversationAdded, onlineStatusChange, messageSeen, visitorLeftChat } from '../actions';
+import { newMessageAdded, messasgeSent, newConversationAdded, onlineStatusChange, messageSeen, visitorLeftChat, visitorGetOnline, visitorGetOffline } from '../actions';
 import * as types from '../../constants';
 import { notify } from '../../services/notification';
 import { SOCKET_SERVER } from '../../API/API_URL'
 import { NEW_MESSAGE_ADDED } from '../../constants';
 import { getTimeInMyTimeZone } from '../../Utils';
+import { getConversation, getAssignedConversation, getMessage } from './helper';
 
 const MessageStatus = types.MessageStatus
 
@@ -86,33 +87,16 @@ export function* subscribe(socket) {
     return new eventChannel(emit => {
         socket.on(types.NEW_CHAT_ASSIGNED, (data) => {
             console.log('Chat Assigned', data)
-            const conv = {
-                id: data.conversationID,
-                imageUrl: require('../../images/profiles/stacey.jpeg'),
-                imageAlt: 'Stacey Wilson',
-                title: data.visitor.id,
-                createdAt: '30 mins ago',
-                latestMessageText: '',
-                isOnline: true,
-                messages: []
-            }
+            const conv = getConversation(data)
+            conv.joined = true
             emit(newConversationAdded(conv))
         })
 
         socket.on(types.MESSAGE, (data) => {
             console.log('new message received', data)
-            const msgTime = new Date(data.createdAt.time).toLocaleTimeString() //getTimeInMyTimeZone(data.createdAt.time, data.createdAt.serverTimeZone).toLocaleTimeString()
-            console.log('Time', msgTime)
-            const message = {
-                id: data.messageID,
-                imageUrl: null,
-                imageAlt: null,
-                messageText: data.text,
-                sender: data.sender,
-                createdAt: msgTime,
-                browserID: data.browserID,
-                isMyMessage: false
-            }
+            // const msgTime = new Date(data.createdAt.time).toLocaleTimeString() //getTimeInMyTimeZone(data.createdAt.time, data.createdAt.serverTimeZone).toLocaleTimeString()
+            let message = getMessage(data)
+            message.seen = false
             emit(newMessageAdded(data.conversationID, message))
         })
 
@@ -124,11 +108,14 @@ export function* subscribe(socket) {
 
         socket.on(types.VISITOR_CONNECTED, (data) => {
             console.log('visitor connected', data)
+            emit(visitorGetOnline(data))
             // emit(onlineStatusChange(data.conversationID, true))
         })
 
         socket.on(types.VISITOR_DISCONNECTED, (data) => {
             console.log('visitor disconnected', data)
+            emit(visitorGetOffline(data))
+
             // emit(onlineStatusChange(data.conversationID, false))
         })
 
@@ -201,4 +188,23 @@ export function* socketListener() {
     // const socket = connect()
     // yield fork(read, socket)
     // yield fork(write, socket)
+}
+
+export function* reportMessageSeenSaga(action) {
+    const { conversationId, messageId } = action.payload;
+    if (socket) {
+        yield socket.emit('MESSAGESEEN', {
+            messageID:messageId,
+            conversationID:conversationId
+        });
+
+        console.log('ayneshee ', action)
+
+
+        yield put({type: types.MESSAGE_SEEN, payload: {conversationId, messageId}})
+    }
+}
+
+export function* watchMessageSeenReport() {
+    yield takeEvery(types.REPORT_MESSAGE_SEEN, reportMessageSeenSaga);
 }

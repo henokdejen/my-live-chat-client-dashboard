@@ -38,3 +38,8 @@ export const messageSeen = (conversationId, messageId) =>({
     type: types.MESSAGE_SEEN,
     payload: {conversationId, messageId}
 })
+
+export const reportMessageSeenRequested = (conversationId, messageId) =>({
+    type: types.REPORT_MESSAGE_SEEN,
+    payload: {conversationId, messageId}
+})

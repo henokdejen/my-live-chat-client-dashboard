@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import './Message.scss';
@@ -18,7 +18,14 @@ const isOnlyEmoji = (str) => {
       return isOnlyEmojis(str)
 }
 
-const Message = ({ isMyMessage, message }) => {
+const Message = ({ isMyMessage, message, reportMessageSeen}) => {
+    useEffect(() => {
+        if (!message.seen) {
+            console.log('Reporting seen', message)
+            reportMessageSeen(message.conversationID, message.id)
+        }
+    }, [message])
+
     const messageClass = classNames('message-row', {
         'you-message': isMyMessage,
         'other-message': !isMyMessage

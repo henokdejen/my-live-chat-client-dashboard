@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import './ConversationItem.scss';
 import { NavLink, useRouteMatch } from 'react-router-dom';
+import { Badge } from '../../controls/badge/Badge';
 
 const ConversationItem = ({ conversation }) => {
     let { url } = useRouteMatch();
@@ -22,12 +23,12 @@ const ConversationItem = ({ conversation }) => {
                 <span className={onlineStatusCN}></span>
             </div>
             <div className="title-text">{conversation.title}</div>
-            <div className="created-date">{conversation.createdAt}</div>
+            <div className="created-date">{conversation.updatedAt}</div>
             <div className="conversation-message">
                 {conversation.latestMessageText}
             </div>
 
-            {/* <div className="unseen-msgs-count">2</div> */}
+            {conversation.unSeenCount ? <Badge> {conversation.unSeenCount}</Badge>: null}
         </NavLink>
     );
 }

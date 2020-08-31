@@ -9,7 +9,6 @@ export const JoinPage = ({ onJoin }) => {
         e.preventDefault()
         if (username) {
             localStorage.setItem('username', username)
-            console.log(username)
             onJoin(1)
         }
     }
