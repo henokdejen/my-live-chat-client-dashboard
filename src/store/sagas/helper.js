@@ -1,3 +1,5 @@
+import { MessageStatus } from '../../constants'
+
 const getFormattedLocalTime = (milliseconds) => {
     let date = new Date(milliseconds)
     let dateFormated = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -33,15 +35,16 @@ export const getSortedConversations = (conversations) => {
 export const getConversation = (dataFromServer) => {
     let latestMessage =
         dataFromServer.messages && dataFromServer.messages.length ? dataFromServer.messages[0].text : ''
+    let id = dataFromServer.conversationID ? dataFromServer.conversationID : dataFromServer._id
     return {
-        id: dataFromServer.conversationID,
+        id: id,
         agency: dataFromServer.agency,
         imageUrl: require('../../images/profiles/daryl.png'),
         imageAlt: 'Daryl Duckmanton',
         ip: dataFromServer.ip ? dataFromServer.ip : '',
         lastAssignedAgent: dataFromServer.lastAssignedAgent ? dataFromServer.lastAssignedAgent : '',
         numberOfMessages: dataFromServer.numberOfMessages ? dataFromServer.numberOfMessages : 0,
-        title: !dataFromServer.email ? dataFromServer.email : dataFromServer.conversationID,
+        title: dataFromServer.email ? dataFromServer.email : id,
         createdAtMs: dataFromServer.createdAt.time,
         updatedAtMs: dataFromServer.updatedAt.time,
         browserID: dataFromServer.browserID,
@@ -62,19 +65,31 @@ export const getMessage = (dataFromServer) => {
     let isNotification = !dataFromServer.sender
     console.log('return back', dataFromServer.messageID)
     return {
-        id: dataFromServer.messageID ? dataFromServer.messageID: dataFromServer._id,
+        id: dataFromServer.messageID ? dataFromServer.messageID : dataFromServer._id,
         imageUrl: require('../../images/profiles/daryl.png'),
         imageAlt: null,
         conversationID: dataFromServer.conversationID,
         seen: true,
         messageText: dataFromServer.text,
+        createdAtMs: dataFromServer.createdAt.time,
         createdAt: getFormattedLocalTime(dataFromServer.createdAt.time),
         isNotification,
         isMyMessage: !isNotification && (!dataFromServer.sender.visitor),
     }
 }
 
-// export const createMessageInput = (textMsg, conversationID) => {
 
-// }
+export const createMessageFromInput = (textMessage) => {
+    let now = Date.now()
+    return {
+        front_id: now,
+        imageUrl: null,
+        imageAlt: null,
+        messageText: textMessage,
+        createdAtMs: now,
+        createdAt: getFormattedLocalTime(now),
+        isMyMessage: true,
+        status: MessageStatus.PENDING
+    }
+}
 

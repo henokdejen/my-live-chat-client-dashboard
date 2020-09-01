@@ -51,3 +51,21 @@ export const visitorLeftChat = (conversationId) => {
 export const markAllMessageSeenRequested = (conversationId) => {
     return { type: types.MARK_ALL_MESSAGES_SEEN, conversationId }
 }
+
+export const createConversationRequested = (browserID,history) => {
+    return {
+        type: types.CREATE_CONVERSATION_REQUEST, 
+        payload: {browserID, history}
+    }
+}
+
+export const joinConversationRequested = (browserID, conversationID) => {
+    return {
+        type: types.JOIN_CONVERSATION_REQUEST,
+        payload: {browserID, conversationID}
+    }
+}
+
+export const conversationJoined = (conversationID) => {
+    return {type: types.JOIN_CONVERSATION_SUCCESS, conversationID}
+}

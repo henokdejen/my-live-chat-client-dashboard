@@ -5,9 +5,9 @@ import ChatTitle from '../../../components/chat-title/ChatTitle';
 import ChatForm from '../../../components/chat-form/ChatForm';
 import NoConversations from '../../../components/conversation/no-conversations/NoConversations';
 import { VisitorDetail } from '../../VisitorDetail/VisitorDetail';
-import { sendMessage } from '../../../store/actions';
+import { sendMessage, joinConversationRequested } from '../../../store/actions';
 
-const ChatBody = ({ selectedConversation, onMessageSubmitted }) => {
+const ChatBody = ({ selectedConversation, onMessageSubmitted, onJoinRequested }) => {
 
     let conversationContent = (
         <>
@@ -25,6 +25,7 @@ const ChatBody = ({ selectedConversation, onMessageSubmitted }) => {
 
     return (
         <>
+
             <div className="chat-body">
                 <ChatTitle
                     selectedConversation={selectedConversation} />
@@ -32,9 +33,14 @@ const ChatBody = ({ selectedConversation, onMessageSubmitted }) => {
                 <div className="conversationContent">
                     {conversationContent}
                 </div>
-                <ChatForm
-                    selectedConversation={selectedConversation}
-                    onMessageSubmitted={onMessageSubmitted} />
+                {
+                    selectedConversation && selectedConversation.isOnline &&
+                    <ChatForm
+                        selectedConversation={selectedConversation}
+                        onMessageSubmitted={onMessageSubmitted}
+                        onJoinRequested={onJoinRequested} />
+                }
+
             </div>
 
             <div className="client-information-wrapper">
@@ -56,6 +62,9 @@ const mapDispatchToProps = dispatch => ({
     onMessageSubmitted: (conversationId, message) => {
         dispatch(sendMessage(conversationId, message));
     },
+    onJoinRequested: (browserID, conversationID) => {
+        dispatch(joinConversationRequested(browserID, conversationID))
+    }
 })
 
 export default connect(

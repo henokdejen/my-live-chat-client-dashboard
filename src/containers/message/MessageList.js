@@ -46,6 +46,7 @@ const MessageList = ({
                     key={index} /> :
                 <Message
                     key={index}
+                    initialMsgLoaded={initialMsgLoaded}
                     reportMessageSeen={reportMessageSeen}
                     isMyMessage={message.isMyMessage}
                     message={message} />;

@@ -1,13 +1,17 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink, useRouteMatch } from 'react-router-dom'
-import { InnerHeader } from '../../components/controls/innerHeader/InnerHeader'
-import { InnerNavHeader } from '../../components/controls/innerHeader/InnerNavHeader'
-import { InnerNav } from '../../components/controls/innerNav/InnerNav'
+import { withRouter } from 'react-router';
+import { NavLink, useRouteMatch } from 'react-router-dom';
+import Button from '../../components/controls/buttons/Button';
+import { Card } from '../../components/controls/card/Card';
+import { InnerHeader } from '../../components/controls/innerHeader/InnerHeader';
+import { InnerNavHeader } from '../../components/controls/innerHeader/InnerNavHeader';
+import { InnerNav } from '../../components/controls/innerNav/InnerNav';
+import { createConversationRequested } from '../../store/actions';
+import './visitorsShell.scss';
 
-import './visitorsShell.scss'
-import { Card } from '../../components/controls/card/Card'
-import Button from '../../components/controls/buttons/Button'
+
+
 
 
 const VisitorNavItem = ({ to, children }) => {
@@ -16,15 +20,19 @@ const VisitorNavItem = ({ to, children }) => {
     )
 }
 
-const VisitorItem = ({visitor}) => {
+const VisitorItem = withRouter(({ visitor, createConversation, history }) => {
+    const onStartChat = (e) => {
+        // history.push('/conversations')
+        createConversation(visitor.browserID, history)
+    }
     return (
         <div className="visitor-item">
             <div className="visitor-id">#{visitor.browserID}</div>
-            <div className="visiting-site"><a href="#">https://dummy.url.fornow/#chatwindow_0-tab</a></div>
-            <div className="actions"><Button>Start Chat</Button></div>
+            <div className="visiting-site"><a href="#" >https://dummy.url.fornow/#chatwindow_0-tab</a></div>
+            <div className="actions"><Button onClick={onStartChat}>Start Chat</Button></div>
         </div>
     )
-}
+})
 
 const menus = [
     {
@@ -41,7 +49,7 @@ const menus = [
     },
 ]
 
-const VisitorShell = ({getOnlineVisitors}) => {
+const VisitorShell = ({ createConversation, getOnlineVisitors }) => {
     let { path } = useRouteMatch();
 
     let onlineVisitors = getOnlineVisitors()
@@ -69,7 +77,10 @@ const VisitorShell = ({getOnlineVisitors}) => {
                 <Card>
                     {
                         onlineVisitors.map(v => (
-                            <VisitorItem key={v.browserID} visitor={v}/>
+                            <VisitorItem
+                                key={v.browserID}
+                                visitor={v}
+                                createConversation={createConversation} />
                         ))
                     }
                 </Card>
@@ -86,5 +97,12 @@ const mapStateToProps = (state) => {
     return props
 };
 
+const mapDispatchToProps = dispatch => {
+    const createConversation = (browserID, history) => {
+        dispatch(createConversationRequested(browserID, history))
+    }
 
-export default connect(mapStateToProps)(VisitorShell);
+    return { createConversation }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VisitorShell);

@@ -18,9 +18,9 @@ const isOnlyEmoji = (str) => {
       return isOnlyEmojis(str)
 }
 
-const Message = ({ isMyMessage, message, reportMessageSeen}) => {
+const Message = ({ isMyMessage,initialMsgLoaded, message, reportMessageSeen}) => {
     useEffect(() => {
-        if (!message.seen) {
+        if (initialMsgLoaded && message.shouldReport && !message.seen) {
             console.log('Reporting seen', message)
             reportMessageSeen(message.conversationID, message.id)
         }

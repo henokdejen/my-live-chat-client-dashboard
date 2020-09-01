@@ -10,6 +10,7 @@ import { Picker } from 'emoji-mart'
 
 import { BsPaperclip } from 'react-icons/bs'
 import { FaRegSmileWink } from 'react-icons/fa'
+import { createMessageFromInput } from '../../store/sagas/helper';
 
 const isMessageEmpty = (textMessage) => {
     return adjustTextMessage(textMessage).length === 0;
@@ -19,19 +20,19 @@ const adjustTextMessage = (textMessage) => {
     return textMessage.trim();
 };
 
-const createTextMessage = (textMessage) => {
-    return {
-        front_id: Date.now(),
-        imageUrl: null,
-        imageAlt: null,
-        messageText: textMessage,
-        createdAt: '1 week ago',
-        isMyMessage: true,
-        status: MessageStatus.PENDING
-    }
-}
+// const createTextMessage = (textMessage) => {
+//     return {
+//         front_id: Date.now(),
+//         imageUrl: null,
+//         imageAlt: null,
+//         messageText: textMessage,
+//         createdAt: '1 week ago',
+//         isMyMessage: true,
+//         status: MessageStatus.PENDING
+//     }
+// }
 
-const ChatForm = ({ selectedConversation, onMessageSubmitted }) => {
+const ChatForm = ({ selectedConversation, onMessageSubmitted, onJoinRequested }) => {
     const [textMessage, setTextMessage] = useState('');
     const [msgType, setmsgType] = useState('message')
     const [showPicker, setShowPicker] = useState(false)
@@ -54,14 +55,15 @@ const ChatForm = ({ selectedConversation, onMessageSubmitted }) => {
 
     const handleJoinFormSubmit = (e) => {
         e.preventDefault()
-        console.log('request for join')
+        console.log('request for join', selectedConversation)
+        onJoinRequested(selectedConversation.browserID, selectedConversation.id)    
     }
 
     const handleMsgInputFormSubmit = (e) => {
         e.preventDefault();
         if (!isMessageEmpty(textMessage)) {
             setShowPicker(false)
-            onMessageSubmitted(conversationId, createTextMessage(textMessage));
+            onMessageSubmitted(conversationId, createMessageFromInput(textMessage));
             setTextMessage('');
         }
     };

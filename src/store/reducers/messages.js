@@ -16,7 +16,7 @@ const messagesReducer = (state = initialState, action) => {
             // }
 
             // newConversationMapEntry.messages = [...newConversationMapEntry.messages, ...messages];
-            newConversationMapEntry.messages = [...newConversationMapEntry.messages, ...messages];
+            newConversationMapEntry.messages = [...messages];
             newConversationMapEntry.initiallyLoaded = true
             
             const newMessageDetails = { ...state.messageDetails };

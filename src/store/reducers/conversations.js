@@ -108,6 +108,20 @@ const conversationsReducer = (state = initialState, action) => {
             return newState
         }
 
+        case types.JOIN_CONVERSATION_SUCCESS: {
+            const {conversationID} = action
+            const newState = { ...state };
+
+            let selectedConversationIndex =
+            newState.conversations.findIndex(c => c.id === conversationID);
+
+            if (selectedConversationIndex >= 0) {
+                newState.conversations[selectedConversationIndex].joined = true
+            }
+
+            return newState
+        }
+
         case types.VISITOR_LEFT_CHAT: {
             // visitor left chat to be handled
             return state

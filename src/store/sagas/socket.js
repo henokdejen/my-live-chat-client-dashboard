@@ -1,14 +1,15 @@
-import { take, put, call, fork, race, delay, takeEvery } from 'redux-saga/effects'
-import { eventChannel } from 'redux-saga'
+// import { push } from 'react-router-redux';
+import { eventChannel } from 'redux-saga';
+import { call, delay, fork, put, race, take, takeEvery } from 'redux-saga/effects';
 import io from 'socket.io-client';
-
-import { newMessageAdded, messasgeSent, newConversationAdded, onlineStatusChange, messageSeen, visitorLeftChat, visitorGetOnline, visitorGetOffline } from '../actions';
+import { SOCKET_SERVER } from '../../API/API_URL';
 import * as types from '../../constants';
-import { notify } from '../../services/notification';
-import { SOCKET_SERVER } from '../../API/API_URL'
 import { NEW_MESSAGE_ADDED } from '../../constants';
-import { getTimeInMyTimeZone } from '../../Utils';
-import { getConversation, getAssignedConversation, getMessage } from './helper';
+import { notify } from '../../services/notification';
+import { messageSeen, messasgeSent, newConversationAdded, newMessageAdded, visitorGetOffline, visitorGetOnline, visitorLeftChat, conversationJoined } from '../actions';
+import { getConversation, getMessage } from './helper';
+
+
 
 const MessageStatus = types.MessageStatus
 
@@ -64,6 +65,7 @@ function* sendMsg(socket, conversationId, message) {
         conversationID: conversationId
     }
     yield put(newMessageAdded(conversationId, message))
+    console.log('MSG TO BE SENT', msg)
     const result = yield new Promise(resolve => {
         socket.emit('MESSAGE', msg, function (comfiramtion) {
             console.log('Conf', comfiramtion)
@@ -97,6 +99,7 @@ export function* subscribe(socket) {
             // const msgTime = new Date(data.createdAt.time).toLocaleTimeString() //getTimeInMyTimeZone(data.createdAt.time, data.createdAt.serverTimeZone).toLocaleTimeString()
             let message = getMessage(data)
             message.seen = false
+            message.shouldReport = true
             emit(newMessageAdded(data.conversationID, message))
         })
 
@@ -194,17 +197,74 @@ export function* reportMessageSeenSaga(action) {
     const { conversationId, messageId } = action.payload;
     if (socket) {
         yield socket.emit('MESSAGESEEN', {
-            messageID:messageId,
-            conversationID:conversationId
+            messageID: messageId,
+            conversationID: conversationId
         });
 
-        console.log('ayneshee ', action)
+        console.log('ayneshee ', conversationId, messageId)
 
 
-        yield put({type: types.MESSAGE_SEEN, payload: {conversationId, messageId}})
+        yield put({ type: types.MESSAGE_SEEN, payload: { conversationId, messageId } })
     }
 }
 
 export function* watchMessageSeenReport() {
     yield takeEvery(types.REPORT_MESSAGE_SEEN, reportMessageSeenSaga);
+}
+
+
+export function* startNewConvSaga(action) {
+    console.log("I have iintereseerfasf")
+    const { browserID, history } = action.payload
+    history.push('/conversations')
+
+    if (socket) {
+        const result = yield new Promise(resolve => {
+            socket.emit('STARTCONVERSATION', { browserID }, (err, conversation) => {
+                if (err) {
+                    alert('error creating new conversation')
+                    resolve(false)
+                } else {
+                    console.log('Created Conversation', conversation)
+                    resolve(conversation)
+                }
+            })
+        })
+
+        if (result) {
+            const conv = getConversation(result)
+            conv.joined = true
+            yield put(newConversationAdded(conv))
+            history.push(`/conversations/${conv.id}`);
+            console.log('eje', conv)
+        }
+
+    }
+}
+
+export function* watchStartNewConversation() {
+    yield takeEvery(types.CREATE_CONVERSATION_REQUEST, startNewConvSaga)
+}
+
+
+function* joinConversationSaga(action) {
+    let { browserID, conversationID } = action.payload
+
+    if (socket) {
+        const result = yield new Promise(resolve => {
+            socket.emit('JOINCHAT', { browserID, conversationID }, (err) => {
+                resolve(err)
+            })
+        })
+
+        if (!result) { // not error
+            yield put(conversationJoined(conversationID))
+            console.log('Join Result', result)
+        }
+    }
+}
+
+
+export function* watchJoinConversation() {
+    yield takeEvery(types.JOIN_CONVERSATION_REQUEST, joinConversationSaga)
 }
