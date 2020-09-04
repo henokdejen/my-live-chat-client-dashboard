@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-function App() {
+import { Dashboard } from './containers/Dashboard/Dashboard';
+import { JoinPage } from './containers/JoinPage/JoinPage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import InitialLoader from './containers/InitialLoader/InitialLoader';
+
+
+
+const App = ({ loadingOver }) => {
+  const [pageIndex, setpageIndex] = useState(0)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {
+        !loadingOver ?
+          <InitialLoader setIndex={setpageIndex} /> : (
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/join" name="Join Page" render={props => <JoinPage {...props} />} />
+                <Route path="/" name="the app" render={props => <Dashboard {...props} />} />
+              </Switch>
+            </BrowserRouter>
+          )
+      }
+    </>
+
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  let props = {
+    loadingOver: (state.services.isInitialDataLoaded)
+  };
+  return props
+};
+
+
+export default connect(mapStateToProps)(App);

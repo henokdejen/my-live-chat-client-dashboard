@@ -1,0 +1,17 @@
+.dd-menu-item{
+    padding: 10px;
+    display: flex;
+    min-width: 170px;
+    font-size: 0.8em;
+    gap: 7px;
+    align-items: center;
+
+    svg{
+        display: block;
+    }
+
+    &:hover{
+        background-color: #eee;
+        cursor: pointer;
+    }
+}

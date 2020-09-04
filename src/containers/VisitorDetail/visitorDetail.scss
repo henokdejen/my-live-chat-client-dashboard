@@ -1,0 +1,76 @@
+@import '../../styles/_colors';
+
+.visitor-detail{
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    overflow-y: auto;
+    display: grid;
+    background-color: #f1f1f1;
+    grid-auto-rows: min-content;
+    gap: 16px;
+
+    h4{
+        margin-bottom: 24px;
+    }
+
+    .card-header-middle{
+        margin-bottom: 40px;
+    }
+
+    .basic-detail{
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        column-gap: 20px;
+        row-gap: 10px;
+
+        img{
+         width: 80px;
+         height: 80px;   
+         grid-row: span 2;
+         border-radius: 100%;
+        }
+
+        .visitor-name{
+            align-self: flex-end;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .visitor-id{
+            overflow: hidden;
+            font-size: 0.8em;
+        }
+    }
+
+    .technology{
+        .techonoloy-item{
+            font-size: 0.93em;
+            padding: 5px 0;
+            line-height: 25px;
+            margin-bottom: 5px;
+
+            .attribute{
+                color: #999;
+            }
+        }
+    }
+
+    .visited-site-item{
+        margin-bottom: 24px;
+
+
+        .v-s-n{
+            margin-bottom: 5px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .v-s-l{
+            color: $primary_color;
+            text-decoration: none;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

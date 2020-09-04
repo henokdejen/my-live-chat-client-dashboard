@@ -1,0 +1,74 @@
+@import '../../../styles/_colors';
+
+.conversation {
+    display: grid;
+    grid-template-columns: 40px 1fr max-content;
+    grid-gap: 10px;
+    color: $contrasted-primary-text; // $contrasting-primary-text-color;
+    border-bottom: 1px solid $primary-dark;
+    padding: 12px 15px;
+    font-size: 0.8em;
+    font-weight: 500;
+    text-decoration: none;
+
+  &.active,
+  &:hover {
+    background: $primary-dark;
+  }
+  
+  &:hover {
+    cursor: pointer;
+  }
+  
+  .avatar-wrapper {
+    grid-row: span 2;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    > img {
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+    }
+    
+    .online-status-indicator {
+      height: 12px;
+      width: 12px;
+      display: inline-block;
+      border-radius: 100%;
+      position: absolute;
+      border: 1px solid #000;
+      right: -2.5px;
+      bottom: -2.5px;
+      background-color: $offline-indicator;
+
+      &.online {
+        background-color: $online-indicator;
+      }
+    }
+  }
+
+  .title-text {
+    font-size: 1em;
+    padding-left: 5px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .created-date {
+    color: $light-grey-border;
+    white-space: nowrap;
+    font-size:0.7rem;
+  }
+
+  .conversation-message {
+    padding-left: 5px;
+    white-space: nowrap;
+    color: $subtitle_color;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+
+}

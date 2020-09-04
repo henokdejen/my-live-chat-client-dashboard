@@ -1,0 +1,99 @@
+@import '../../styles/_colors';
+
+$input-border-color: darken($accent-color, 6.5%);
+$input-text-color: darken(adjust-hue($primary-color, -155), 23.33);
+$chat-form-top-border: darken($accent-color, 12.16);
+
+#chat-form {
+  background: #fff;
+  border-top: 1px solid $chat-form-top-border;
+  position: relative;
+  padding: 5px 20px;
+  height: 90px;
+
+  .actual-input{
+    display: flex;
+    align-items: center;
+    line-height: 40px;
+    padding-bottom: 7px;
+  
+    .inputText {
+      flex: 1 0 0;
+      padding: 5px;
+      color: $input-text-color;
+      outline: none;
+      background: transparent;
+      border: none;
+    }
+
+    .input-icons{
+      font-size: 2.2em;
+    }
+  
+    .input-icons{
+      border: none;
+      padding: 0 7px !important;
+      border-radius: 50%;
+      color: #999;
+      cursor: pointer;
+  
+      &:hover{
+        background-color: #ccc;
+        color: #000;
+      }
+    }
+  
+    .primary-button {
+      flex: 0 0 60px;
+      font-size: 0.8em;
+      border-radius: 6px;
+      border: none  ;
+    }
+  }
+
+  .input-controls{
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    column-gap: 10px;
+    padding: 5px 0;
+    align-items: center;
+
+    .msg-type{
+      color: #999;
+      cursor: pointer;
+      padding-bottom: 8px;
+      font-size: 0.9em;
+
+      &:hover:not(.active){
+        color: #000;
+      }
+      &.active{
+        color: $primary-color;
+        border-bottom: 2px solid $primary-color;
+      }
+    }
+
+    > button{
+      justify-self: end;
+    }
+  }
+
+
+
+  .emoji-mart-preview{
+    display: none;
+  }
+
+
+  #join-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    height: 100%;
+  }
+
+
+
+}

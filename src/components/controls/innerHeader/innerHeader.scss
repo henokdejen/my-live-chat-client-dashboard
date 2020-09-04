@@ -1,0 +1,9 @@
+@import '../../../styles/colors';
+@import '../../../styles/dimensions';
+
+.inner-header {
+    line-height: $inner-nav-height;
+    padding: $inner-nav-padding;
+    background-color: $inner-nav-bg-color;
+    border-bottom: $basic-border;
+}
