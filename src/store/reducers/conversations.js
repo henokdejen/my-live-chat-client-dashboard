@@ -101,19 +101,21 @@ const conversationsReducer = (state = initialState, action) => {
             let selectedConversationIndex =
                 newState.conversations.findIndex(c => c.browserID === browserID);
 
-            if (selectedConversationIndex >= 0)
+            if (selectedConversationIndex >= 0) {
                 newState.conversations[selectedConversationIndex].isOnline =
                     action.type === types.VISITOR_GET_ONLINE
+                newState.conversations[selectedConversationIndex].joined = false
+            }
 
             return newState
         }
 
         case types.JOIN_CONVERSATION_SUCCESS: {
-            const {conversationID} = action
+            const { conversationID } = action
             const newState = { ...state };
 
             let selectedConversationIndex =
-            newState.conversations.findIndex(c => c.id === conversationID);
+                newState.conversations.findIndex(c => c.id === conversationID);
 
             if (selectedConversationIndex >= 0) {
                 newState.conversations[selectedConversationIndex].joined = true

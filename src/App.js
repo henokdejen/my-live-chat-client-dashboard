@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import ChatShell from './containers/shell/ChatShell';
 import { Dashboard } from './containers/Dashboard/Dashboard';
 import { JoinPage } from './containers/JoinPage/JoinPage';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -10,7 +9,6 @@ import InitialLoader from './containers/InitialLoader/InitialLoader';
 
 
 const App = ({ loadingOver }) => {
-  let index = localStorage.getItem('usernames') ? 1 : 0
   const [pageIndex, setpageIndex] = useState(0)
   return (
     <>
@@ -39,10 +37,3 @@ const mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps)(App);
-
-// export default App;
-
-
-// </BrowserRouter><BrowserRouter>/<div>
-// {pageIndex === 1 ? <JoinPage onJoin={i => setpageIndex(i)} /> : <Dashboard />}
-// </div>
