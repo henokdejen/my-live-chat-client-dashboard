@@ -1,27 +1,22 @@
 import React from "react";
-import './Rootform.scss';
+import './Panelform.scss';
 
 import { Step1 } from './Formsteps/Step1';
 import { Step2 } from './Formsteps/Step2';
 import { validURL } from '../../Utils/index';
 
-export const Rootform = props => {
+export const Panelform = props => {
 
     const [currentStep, setCurrentStep] = React.useState(1);
-    const [name, setName] = React.useState("");
-    const [country, setCountry] = React.useState('Ethiopia');
-    const [siteName, setSiteName] = React.useState("");
-    const [siteURL, setSiteURL] = React.useState("");
 
-    const goForward = () => {
+    const goForward = (e) => {
         if(currentStep == 1){
-            if(name) setCurrentStep(2);
+            if(props.name) setCurrentStep(2);
         }
         if(currentStep == 2){
-            const isurl = validURL(siteURL);
-            if(siteName && isurl) {
-                //goto main board
-            }
+            const isurl = validURL(props.siteURL);
+            if(props.siteName && isurl) props.goToHome();
+            if(!isurl) e.target.setCustomValidity("please enter a valid URL");
         }
       }
         
@@ -40,8 +35,8 @@ export const Rootform = props => {
             </div>
             <form>
             <div className="stepsContainer">
-                <Step1 currentStep={currentStep} name={name} setName={setName} country={country} setCountry={setCountry}/>
-                <Step2 currentStep={currentStep} siteName={siteName} setSiteName={setSiteName} siteURL={siteURL} setSiteURL={setSiteURL}/>
+                <Step1 currentStep={currentStep} name={props.name} setName={props.setName} country={props.country} setCountry={props.setCountry}/>
+                <Step2 currentStep={currentStep} siteName={props.siteName} setSiteName={props.setSiteName} siteURL={props.siteURL} setSiteURL={props.setSiteURL}/>
             </div>
             <div className="nav-buttons">
                {currentStep == 2 && <button className="gobk" onClick={goBack}> Go back </button>}

@@ -1,35 +1,44 @@
 import React from "react";
-import './Signup.scss';
+import { SignUpForm } from './SignUpForm';
+import { Panelform } from '../MultiformPanel/Panelform';
 
 export const Signup = props => {
 
-    return (
-      <div className="flexcontainer">
-        <div className="adcontainer">
-          <p> Amazing app, super well built at 
-              an incredibly fair price. Needed some
-              support in switching stores and the 
-              support was absolutely brilliant. 
-              Well done guys!
-              <br/><br/> someone 
-          </p>
-        </div>
-        <div className="formcontainer">
-          <form>
-            <div className="inputfield-container">
-              <h1 className="title">Create a Free Account</h1>
-              <input type="text" placeholder="Email" name="email" required />
-              <input type="password" placeholder="Password" name="psw" required />
-              <input type="text" placeholder="Website" name="url" required />
-              <label className="box-container">
-                <input type="checkbox" name="terms"/>
-                <p>I agree to These's <span className="termslink">Terms & Conditions</span> and <span className="termslink">Privacy Policy</span></p>
-              </label>
-              <button type="submit" className="signupbtn">Create a Free Account</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  };
+  const [visible,setVisible] = React.useState(true);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [country, setCountry] = React.useState('Ethiopia');
+  const [siteName, setSiteName] = React.useState("");
+  const [siteURL, setSiteURL] = React.useState("");
+
+  const Proceed = () => {
+    setVisible(false);
+  }
   
+  const goToHome = () => {
+    props.history.push('/');
+  }
+
+  return (
+     <>
+     {visible ? <SignUpForm 
+                  Proceed={Proceed}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+     /> : <Panelform 
+            goToHome={goToHome}
+            name={name}
+            setName={setName}
+            country={country}
+            setCountry={setCountry}
+            siteName={siteName}
+            setSiteName={setSiteName}
+            siteURL={siteURL}
+            setSiteURL={setSiteURL}
+     />}
+     </>
+     );
+  };
