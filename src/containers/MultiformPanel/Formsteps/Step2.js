@@ -1,5 +1,5 @@
 import React from "react";
-import './Step2.scss';
+import './Step1.scss';
 
 export const Step2 = props => {
 
@@ -7,11 +7,23 @@ export const Step2 = props => {
         return null
     }
 
+    const handleSiteName = (e) => {
+        props.setSiteName(e.target.value);
+    }
+
+    const handleSiteURL = (e) => {
+        props.setSiteURL(e.target.value);
+    }
+
     return (
-       <div> 
-           <p> Which website would you like to add a chat widget to? </p>
-           <p> wide site url </p>
-           <p> wide site name </p>
+        <div>
+        <p className="welcome"> Property Details </p>
+        <div className="innerform">
+            <p> Website name </p>
+            <input type="text" placeholder="example" value={props.siteName} onChange={handleSiteName} required/>
+            <p> Website address </p>
+            <input type="text" placeholder="www.example.com" value={props.siteURL} onChange={handleSiteURL} required/>
         </div>
+    </div>
     );
 }
