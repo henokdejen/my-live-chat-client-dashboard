@@ -1,20 +1,69 @@
-@import '../../../styles/_colors';
+@import "../../../styles/_colors";
 
 $button-text: lighten($accent-color, 65%);
-$button-disabled-background: lighten(desaturate(adjust-hue($primary-color, 1), 74.07), 24.31);
-$button-disabled-border: lighten(desaturate(adjust-hue($primary-color, 5), 89.24), 17.45);
+$button-disabled-background: lighten(
+  desaturate(adjust-hue($primary-color, 1), 74.07),
+  24.31
+);
+$button-disabled-border: lighten(
+  desaturate(adjust-hue($primary-color, 5), 89.24),
+  17.45
+);
 
-.primary-button {
+.button {
+  border: none;
+  color: $button-text;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+
+  //   variants
+  &.primary {
     background: $primary-color;
-    border: 1px solid $primary-dark;
-    color: $button-text;
-    padding: 5px 12px;
-    border-radius: 2px;
-    cursor: pointer;
-    outline: none;
 
-    &:disabled {
-        background: $button-disabled-background;
-        border: 1px solid $button-disabled-border;
+    .css-1rpz77w {
+      border-color: #fff;
+      border-bottom-color: transparent;
     }
+  }
+
+  &.outlined {
+    color: #000;
+    background-color: transparent;
+    border: 1px solid #ddd;
+  }
+
+  //   size
+  &.xl {
+    padding: 0px 24px;
+    font-size: 1.2em;
+    line-height: 40px;
+  }
+  &.l {
+    padding: 9px 16px;
+    font-size: 1.1em;
+
+    .css-1rpz77w {
+      width: 1.1em;
+      height: 1.1em;
+    }
+  }
+
+  &.sm {
+    padding: 8px 12px;
+  }
+
+  &.xsm {
+    padding: 4px 10px;
+  }
+
+  &:disabled {
+    background: $button-disabled-background;
+    border: 1px solid $button-disabled-border;
+  }
+}
+
+.big-button {
+  padding: 10px 16px;
+  font-size: 1.4em;
 }

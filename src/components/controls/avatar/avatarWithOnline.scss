@@ -1,0 +1,24 @@
+@import "../../../styles/_colors";
+
+.avatar-online-wrapper {
+  position: relative;
+  > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+  }
+
+  .online-status-indicator {
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: $offline-indicator;
+
+    &.online {
+      background-color: $online-indicator;
+    }
+  }
+}
