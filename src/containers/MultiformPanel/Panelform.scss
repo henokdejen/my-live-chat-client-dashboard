@@ -1,0 +1,68 @@
+.progressbar{
+    display: flex;
+    margin-top: 2.8%;
+    margin-left: 13%;
+}
+.progressbar > p > span{
+    font-weight: bolder;
+}
+.progressbar > p{
+    font-size: 15px;
+}
+.dotcontainer{
+    margin-left: 10px;
+}
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.dot-active {
+    height: 10px;
+    width: 10px;
+    background-color: #50627c;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.stepsContainer{
+    margin-left: 14%;
+    margin-top: 4%;
+    height: 400px;
+}
+
+.nav-buttons{
+    display: flex;
+    margin-top: 2%;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+.nav-buttons > button{
+    margin-left: 2%;
+    padding: 9px 45px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 43%;
+    height: 46px;
+    font-size: 18px;
+}
+.gobk{
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid;
+}
+.gofd{
+    background-color: #262f3c;
+    opacity: 0.9;
+    color: white;
+    border: none;
+}
+
+.gobk:hover, .gofd:hover{
+    opacity: 1;
+}

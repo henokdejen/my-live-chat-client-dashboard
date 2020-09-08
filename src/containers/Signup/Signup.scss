@@ -1,0 +1,99 @@
+.flexcontainer {
+    display: flex;
+    height: 100%;
+  }
+
+#formerror{
+  color: #ff0000;
+  font-size: 13px;
+}
+
+.formcontainer {
+    width: 50%;
+}
+
+.adcontainer{
+    width: 50%;
+    background-color: #f7f9fa;
+    height: 695px;
+}
+
+.adcontainer > p{
+    padding:30px;
+    width: 43%;
+    opacity: 0.9;
+    font-size: 18px;
+    border: 2px solid #262f3c;
+    border-radius: 16px 16px 0px 16px;
+    margin-top: 38%;
+    margin-left: 20%;
+}
+
+.box-container{
+    display: flex;
+}
+
+.box-container > p {
+    margin-left: 3%;
+    font-size: 14px;
+}
+
+.box-container > input {
+    width: 15px;
+    height: 15px;
+}
+
+.termslink{
+    color: #262f3c;
+    opacity: 0.9;
+}
+
+.inputfield-container{
+    width: 57%;
+    padding: 16px;
+    margin-top: 13%;
+    margin-left: 7%;
+}
+
+.title{
+    margin-left: 5%;
+    margin-bottom: 10%;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  height: 64px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #ddd;
+  font-size: 18px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.signupbtn:hover {
+  opacity:1;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.signupbtn {
+  background-color: #262f3c;
+  color: white;
+  padding: 14px 20px;
+  margin: 25px 0;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  float: left;
+  width: 100%;
+  height: 64px;
+  font-size: 18px;
+  margin-bottom: 8%;
+}
+
