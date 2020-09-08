@@ -1,50 +1,71 @@
-import { put, takeEvery, call, all, delay } from 'redux-saga/effects';
+import { put, takeEvery, call, all, delay } from "redux-saga/effects";
 
 import { FETCH_ONLINE_VISITORS_REQUESTED } from "../../constants";
-import * as API from '../../API'
-import { onlineVisitorsLoaded, conversationLoaded } from '../actions';
-import { getConversation, getSortedConversations } from './helper';
+import * as APIs from "../../API";
+import {
+  onlineVisitorsLoaded,
+  conversationLoaded,
+  initialDataLoaded,
+} from "../actions";
+import { getConversation, getSortedConversations } from "./helper";
+import * as API from "../../API/base";
 
 const loadInitialDataSaga = function* () {
-    console.log('Initial Data requested')
-    try {
-        const [conversationsResponse, visitorsResponse] = yield all([
-            call(API.loadConversations),
-            call(API.loadOnlineVisitors)
-        ])
+  console.log("Initial Data requested");
+  try {
+    let projectID = localStorage.getItem("pid");
+    if (projectID) {
+      let initialData = yield API.loadInitialData(projectID);
 
-        if (conversationsResponse.success && visitorsResponse.success) {
-            console.log('RECEIVED Conversations', conversationsResponse.data)
-            console.log('RECEIVED online visitors', visitorsResponse.data)
+      if (initialData.success) {
+        localStorage.setItem("pid", initialData.data.projectInfo._id);
+      }
+      yield put(initialDataLoaded(initialData.data));
 
-            let conversations = conversationsResponse.data.map(conv => (getConversation(conv)))
-            let onlineVisitors = visitorsResponse.data
+      const [conversationsResponse, visitorsResponse] = yield all([
+        call(API.loadInitialConversations, projectID),
+        call(API.loadInitialOnlineUsers, projectID),
+      ]);
 
-            // sync online visitors 
+      console.log("Convs", conversationsResponse);
 
-            for (let conv of conversations) {
-                for (let onVist of onlineVisitors) {
-                    if (conv.browserID === onVist.browserID) {
-                        conv.isOnline = true
-                    }
-                }
+      if (conversationsResponse.success && visitorsResponse.success) {
+        console.log("RECEIVED Conversations", conversationsResponse.data);
+        console.log("RECEIVED online visitors", visitorsResponse.data);
+
+        let conversations = conversationsResponse.data.map((conv) =>
+          getConversation(conv)
+        );
+        let onlineVisitors = visitorsResponse.data;
+
+        for (let conv of conversations) {
+          for (let onVist of onlineVisitors) {
+            if (conv.browserID === onVist.browserID) {
+              conv.isOnline = true;
             }
-
-
-            // conversations = getSortedConversations(conversations)
-
-            yield put(conversationLoaded(conversations));
-            yield put(onlineVisitorsLoaded(visitorsResponse.data))
-
-            // conversations and online userssynchronization should be done
-            yield put({type: 'connect'})
-            yield put({type: 'FETCH_INITIAL_DATA_SUCCES'})
+          }
         }
-    } catch (error) {
-        console.log('Loading Initial Data failed', error)
+
+        yield put(conversationLoaded(conversations));
+        yield put(onlineVisitorsLoaded(onlineVisitors));
+      }
     }
-}
+
+    // let conversations = [];
+    // let onlineVisitors = [];
+    // sync online visitors
+
+    // conversations = getSortedConversations(conversations)
+
+    // conversations and online userssynchronization should be done
+    // yield put({ type: "connect" });
+    yield put({ type: "FETCH_INITIAL_DATA_SUCCES" });
+    // }
+  } catch (error) {
+    console.log("Loading Initial Data failed", error);
+  }
+};
 
 export function* watchGetInitialDataAsync() {
-    yield takeEvery('LOAD_INITIAL_DATA_REQUESTED', loadInitialDataSaga);
+  yield takeEvery("LOAD_INITIAL_DATA_REQUESTED", loadInitialDataSaga);
 }

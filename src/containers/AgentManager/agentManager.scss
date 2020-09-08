@@ -1,0 +1,62 @@
+.agents-management {
+  margin: 10px;
+  margin-top: 0;
+  background-color: #fff;
+
+  .input-text {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .inner-header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 1.3em;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 0 20px;
+    display: block;
+  }
+
+  .agent-item {
+    td {
+      padding: 16px 32px 16px 0;
+      border-bottom: 1px solid #f1f1f1;
+      white-space: nowrap;
+      width: 30%;
+
+      &:last-child {
+        width: 100%;
+      }
+    }
+
+    .agent-name {
+      min-width: 70px;
+    }
+
+    .agent-email {
+      min-width: 90px;
+    }
+
+    .agent-role {
+      width: 100px;
+      span {
+        background-color: #f1f1f1;
+        color: #000;
+        padding: 7px 10px;
+        font-size: 0.8em;
+        border-radius: 80px;
+        height: 20px;
+      }
+    }
+  }
+}

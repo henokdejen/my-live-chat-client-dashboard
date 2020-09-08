@@ -1,8 +1,8 @@
 export const MessageStatus = {
-    FAILURE: 0,
-    PENDING: 1,
-    SUCCESS: 2,
-}
+  FAILURE: 0,
+  PENDING: 1,
+  SUCCESS: 2,
+};
 
 // export const MessageEvents = {
 //     NEW_MESSAGE: 'NEW_MESSAGE',
@@ -37,11 +37,11 @@ export const MessageStatus = {
 
 // }
 
-
-export * from './auth';
-export * from './conversations';
-export * from './messages'
-export * from './sockets';
-export * from './services';
-export * from './users';
-export * from './visitors'
+export * from "./auth";
+export * from "./conversations";
+export * from "./messages";
+export * from "./sockets";
+export * from "./services";
+export * from "./users";
+export * from "./visitors";
+export * from "./dashboard";
