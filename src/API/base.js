@@ -8,9 +8,18 @@ import {
   getInitialDataURL,
   getCheckAgentExists,
 } from "./API_URL";
+import { LS_TOKEN } from "../constants";
 
-const token =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElEIjoiNWY1NjY0NzljYTg0ZGUxZGE4M2E3YTZmIiwibmFtZSI6Ikhpc2tlbCBLZWxlbWV3b3JrIiwiZW1haWwiOiJ3dWhodUBnbWFpbC5jb20iLCJpc0FkbWluIjp0cnVlLCJhZ2VuY3lJRCI6IjVmNTY2NDc5Y2E4NGRlMWRhODNhN2E2ZSIsImlhdCI6MTU5OTQ5NzMzN30.gcz7rmnH1oDr99331y2g-nw_kJeyc3nHaBMB3KHFNyA";
+let token = "Bearer " + localStorage.getItem(LS_TOKEN);
+// if (token.length > 0) {
+//   token = "Bearer " + token[1];
+// } else {
+//   token = "Bearer " + token[0];
+// }
+
+console.log("My Token", token);
+
+// "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElEIjoiNWY1NjY0NzljYTg0ZGUxZGE4M2E3YTZmIiwibmFtZSI6Ikhpc2tlbCBLZWxlbWV3b3JrIiwiZW1haWwiOiJ3dWhodUBnbWFpbC5jb20iLCJpc0FkbWluIjp0cnVlLCJhZ2VuY3lJRCI6IjVmNTY2NDc5Y2E4NGRlMWRhODNhN2E2ZSIsImlhdCI6MTU5OTQ5NzMzN30.gcz7rmnH1oDr99331y2g-nw_kJeyc3nHaBMB3KHFNyA";
 const API = axios.create({
   baseURL: `${baseURL}/`,
 });
