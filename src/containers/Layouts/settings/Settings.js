@@ -6,7 +6,7 @@ import { OuterSectionWrapper } from "../../../components/section-wrapper/OuterSe
 
 import "./settings.scss";
 import { InnerNavBody } from "../../../components/innerNavBody/InnerNavBody";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { BsFillPeopleFill } from "react-icons/bs";
 // import { Outlet } from "react-router-dom";
 import AgentManager from "../../AgentManager/AgentManager";
@@ -21,8 +21,8 @@ const settings = [
         icon: <BsFillPeopleFill />,
       },
       {
-        title: "Lelafasd",
-        path: "lelafadf",
+        title: "My Profile",
+        path: "me",
         icon: <BsFillPeopleFill />,
       },
       {
@@ -103,7 +103,14 @@ const Settings = () => {
 
       <div className="settings-main-body">
         {/* <Outlet /> */}
-        <AgentManager />
+
+        <Switch>
+          <Route
+            path={`${path}/agents`}
+            name="agents management"
+            render={(props) => <AgentManager {...props} />}
+          />
+        </Switch>
       </div>
     </OuterSectionWrapper>
   );
