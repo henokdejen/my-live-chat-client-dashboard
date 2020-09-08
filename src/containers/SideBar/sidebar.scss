@@ -1,45 +1,69 @@
-.side-bar{
-    background-image: linear-gradient(180deg,#262f3c 0,#262f3c);
-    width: 70px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 5px;
-    list-style: none;
+.side-bar {
+  background-image: linear-gradient(180deg, #262f3c 0, #262f3c);
+  width: 70px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  color: #999;
+  list-style: none;
+
+  .upper-section {
+    flex: 1;
+  }
+
+  .lower-section {
+    margin: 20px 0;
+
+    #side-nav-avatar {
+      position: relative;
+      width: 70px;
+      padding: 10px 0px;
+      text-align: center;
+      .popup-container {
+        text-align: left;
+        width: max-content;
+        left: 50px;
+        bottom: -10px;
+      }
+    }
+  }
+
+  a {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    color: #999;
+    display: block;
+    font-size: 0.8em;
+    text-decoration: none;
     cursor: pointer;
 
-    a{
-        width: 100%;
-        text-align:center;
-        padding: 15px 0;
-        color: #999;
-        font-size: 0.8em;
-        text-decoration: none;
-        &:hover{
-            color: #fff;
-        }
-
-        &.nav-item{
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            position: relative;
-            align-items: center;
-
-            .side-nav-badge{
-                position: absolute;
-                right: 0;
-                top: 10px;
-            }
-
-            svg{
-                font-size: 1.8em;
-            }
-        }
+    &:hover {
+      color: #fff;
     }
 
-    .active {
-        color: #ffffff;
+    &.nav-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+      align-items: center;
+
+      .side-nav-badge {
+        position: absolute;
+        right: 0;
+        top: 10px;
+      }
+
+      svg {
+        font-size: 1.8em;
+      }
     }
+  }
+
+  .active {
+    color: #ffffff;
+  }
 }
