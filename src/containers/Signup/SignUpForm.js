@@ -13,6 +13,7 @@ export const SignUpForm = props => {
   const handleCheck = () => setAgree(!agree);
 
   const handleSignUp = (e) => {
+    //  e.preventDefault();
     if(props.password && props.email && passwordRe && agree){
       if(validateEmail(props.email)){
         if(props.password == passwordRe)props.Proceed();
@@ -20,6 +21,7 @@ export const SignUpForm = props => {
       }
       else e.target.setCustomValidity("please enter a valid email");
     }
+    e.target.setCustomValidity("please fill all the fields");
   }
 
   return (
@@ -37,6 +39,7 @@ export const SignUpForm = props => {
           <form>
             <div className="inputfield-container">
               <h1 className="title">Create a Free Account</h1>
+              <p id="formerror"> {props.formerrormessage} </p>
               <input type="text" placeholder="Email" name="email" value={props.email} onChange={handleEmail} required />
               <input type="password" placeholder="Password" name="psw" value={props.password} onChange={handlePassword} required />
               <input type="password" placeholder="Repeat password" name="pswr" onChange={handlePasswordRe} value={passwordRe} required />
@@ -44,7 +47,7 @@ export const SignUpForm = props => {
                 <input type="checkbox" name="terms" checked={agree} onChange={handleCheck} required/>
                 <p>I agree to These's <span className="termslink">Terms & Conditions</span> and <span className="termslink">Privacy Policy</span></p>
               </label>
-              <button type="submit" className="signupbtn" onClick={handleSignUp}>Create a Free Account</button>
+              <button className="signupbtn" onClick={handleSignUp}>Create a Free Account</button>
             </div>
           </form>
         </div>

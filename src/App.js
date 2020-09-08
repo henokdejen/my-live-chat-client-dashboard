@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { Dashboard } from './containers/Dashboard/Dashboard';
 import { JoinPage } from './containers/JoinPage/JoinPage';
-import { Signin } from './containers/Signin/Signin';
-import { Signup } from './containers/Signup/Signup';
+import Signin from './containers/Signin/Signin';
+import Signup from './containers/Signup/Signup';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import InitialLoader from './containers/InitialLoader/InitialLoader';

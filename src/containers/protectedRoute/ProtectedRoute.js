@@ -5,10 +5,11 @@ class ProtectedRoute extends React.Component {
 
     render() {
         const Component = this.props.component;
-        // const isAuthenticated = JSON.parse(localStorage.getItem("pass"));
-        // check is authenticated from server in the future
-        const isAuthenticated = true;
-      
+        let isAuthenticated = false;
+        
+        if(localStorage.getItem("usertoken")){
+            isAuthenticated = true;
+        }
         return isAuthenticated ? (
             <Component />
         ) : (

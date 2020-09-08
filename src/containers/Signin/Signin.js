@@ -1,8 +1,10 @@
 import React from "react";
 import './Signin.scss';
 import { validateEmail } from '../../Utils/index';
+import { loginRequested } from '../../store/actions/auth';
+import { connect } from 'react-redux';
 
-export const Signin = props => {
+const Signin = props => {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -10,12 +12,22 @@ export const Signin = props => {
   const handleEm = (e) => setEmail(e.target.value);
   const handlePass = (e) => setPassword(e.target.value);
   const navToSignup = () => props.history.push('/signup');
-  
-  const handleLogin = () => {
-    if(validateEmail(email) && password){
-      //do sth
+
+  React.useEffect(() => {
+    if(props.loginInfo.token){
+      props.history.push('/');
     }
-    // check for login credebility here
+    else console.log("something after login here",props.loginInfo.ErrorMessage);
+  },[props.loginInfo])
+  
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if(validateEmail(email) && password){
+      props.dispatch(loginRequested({ 
+        email : email,
+        password : password
+      }));
+    }
   }
 
   return (
@@ -30,7 +42,7 @@ export const Signin = props => {
             <h1 className="title">Sign In</h1>
             <input type="text" placeholder="Email" name="email" required value={email} onChange={handleEm}/>
             <input type="password" placeholder="Password" name="psw" required value={password} onChange={handlePass}/>
-            <button type="submit" className="signinbtn" onClick={handleLogin}>Sign In</button>
+            <button className="signinbtn" onClick={handleLogin}>Sign In</button>
             <p className="createaccount">Don't have an account? <span onClick={navToSignup}>Create free account?</span></p>
           </div>
         </form>
@@ -38,3 +50,11 @@ export const Signin = props => {
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    loginInfo: state.authenticationState
+  };
+};
+
+export default connect(mapStateToProps)(Signin)

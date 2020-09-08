@@ -10,13 +10,19 @@ export const Panelform = props => {
     const [currentStep, setCurrentStep] = React.useState(1);
 
     const goForward = (e) => {
+        // e.preventDefault();
         if(currentStep == 1){
-            if(props.name) setCurrentStep(2);
+            if(props.name){
+                if(props.name.length > 7) setCurrentStep(2);
+                else e.target.setCustomValidity("please use minimum 8 characters for name");
+            }
+            else e.target.setCustomValidity("please fill enter all the feilds");
         }
         if(currentStep == 2){
             const isurl = validURL(props.siteURL);
             if(props.siteName && isurl) props.goToHome();
             if(!isurl) e.target.setCustomValidity("please enter a valid URL");
+            else e.target.setCustomValidity("please fill enter all the feilds");
         }
       }
         
