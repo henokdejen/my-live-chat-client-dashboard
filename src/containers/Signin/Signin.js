@@ -8,6 +8,7 @@ const Signin = props => {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [errormsg, setErrorMsg] = React.useState("");
 
   const handleEm = (e) => setEmail(e.target.value);
   const handlePass = (e) => setPassword(e.target.value);
@@ -17,17 +18,20 @@ const Signin = props => {
     if(props.loginInfo.token){
       props.history.push('/');
     }
-    else console.log("something after login here",props.loginInfo.ErrorMessage);
-  },[props.loginInfo])
+    else setErrorMsg(props.loginInfo.ErrorMessage);
+  },[props.loginInfo]);
   
   const handleLogin = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if(validateEmail(email) && password){
       props.dispatch(loginRequested({ 
         email : email,
         password : password
       }));
     }
+    if (!validateEmail(email)) e.target.setCustomValidity("please enter a valid email");
+    if (!email && !password) e.target.setCustomValidity("please fill all the fields");
+    else e.target.setCustomValidity(".");
   }
 
   return (
@@ -40,6 +44,7 @@ const Signin = props => {
         <form>
           <div className="inputfield-container">
             <h1 className="title">Sign In</h1>
+            <p id="errormessage">{errormsg}</p>
             <input type="text" placeholder="Email" name="email" required value={email} onChange={handleEm}/>
             <input type="password" placeholder="Password" name="psw" required value={password} onChange={handlePass}/>
             <button className="signinbtn" onClick={handleLogin}>Sign In</button>

@@ -16,12 +16,15 @@ export const SignUpForm = props => {
     //  e.preventDefault();
     if(props.password && props.email && passwordRe && agree){
       if(validateEmail(props.email)){
-        if(props.password == passwordRe)props.Proceed();
+        if(props.password == passwordRe) {
+          if(props.password.length > 7)props.Proceed();
+          else e.target.setCustomValidity("password should contain minimum 8 characters");
+        }
         if(props.password != passwordRe) e.target.setCustomValidity("The passwords don't match!");
       }
       else e.target.setCustomValidity("please enter a valid email");
     }
-    e.target.setCustomValidity("please fill all the fields");
+    else e.target.setCustomValidity("please fill all the fields");
   }
 
   return (
