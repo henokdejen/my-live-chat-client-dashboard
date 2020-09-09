@@ -1,60 +1,68 @@
 import React from "react";
 import './Signin.scss';
-import { validateEmail } from '../../Utils/index';
-import { loginRequested } from '../../store/actions/auth';
+import * as Yup from "yup";
+import { withFormik, Form, Field } from "formik";
 import { connect } from 'react-redux';
+import { loginRequested } from '../../store/actions/auth';
 
-const Signin = props => {
+const SigninComponent = ({history, errors, touched, loginInfo, isSubmitting}) => {
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [errormsg, setErrorMsg] = React.useState("");
-
-  const handleEm = (e) => setEmail(e.target.value);
-  const handlePass = (e) => setPassword(e.target.value);
-  const navToSignup = () => props.history.push('/signup');
-
-  React.useEffect(() => {
-    if(props.loginInfo.token){
-      props.history.push('/');
-    }
-    else setErrorMsg(props.loginInfo.ErrorMessage);
-  },[props.loginInfo]);
+  const [serverError, setServerError] = React.useState('');
   
-  const handleLogin = (e) => {
-    // e.preventDefault();
-    if(validateEmail(email) && password){
-      props.dispatch(loginRequested({ 
-        email : email,
-        password : password
-      }));
-    }
-    if (!validateEmail(email)) e.target.setCustomValidity("please enter a valid email");
-    if (!email && !password) e.target.setCustomValidity("please fill all the fields");
-    else e.target.setCustomValidity(".");
-  }
+  React.useEffect(() => {
+    if(loginInfo.token) history.push('/');
+    else setServerError(loginInfo.ErrorMessage);
+  },[loginInfo]);
+
+  const navToSignup = () => history.push('/signup');
 
   return (
     <div className="signinflexcontainer">
+      
       <div className="signinadcontainer">
         <h1 id="signinnoaccount"> Don't have an account?</h1>
         <button onClick={navToSignup} className="">Create a Free Account</button>
       </div>
+
       <div className="signinformcontainer">
-        <form>
+        <Form>
           <div className="signininputfield-container">
             <h1 className="signintitle">Sign In</h1>
-            <p id="signinerrormessage">{errormsg}</p>
-            <input type="text" placeholder="Email" name="email" required value={email} onChange={handleEm}/>
-            <input type="password" placeholder="Password" name="psw" required value={password} onChange={handlePass}/>
-            <button className="signinbtn" onClick={handleLogin}>Sign In</button>
+
+            <p className="signinerrormessage">{serverError}</p>
+            {touched.email && errors.email && <p className="signinerrormessage">{errors.email}</p>}
+            
+            <Field type="email" placeholder="Email" name="email"/>
+            {touched.password && errors.password && <p className="signinerrormessage">{errors.password}</p>}
+            <Field type="password" placeholder="Password" name="password" />
+            
+            <button type="submit" disabled={isSubmitting} className="signinbtn">Sign In</button>
             <p className="signincreateaccount">Don't have an account? <span onClick={navToSignup}>Create free account?</span></p>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
 };
+
+const Signin = withFormik({
+  mapPropsToValues({email, password}){
+    return {
+      email: email || '',
+      password: password || ''
+    }
+  },
+
+  validationSchema: Yup.object().shape({
+    email: Yup.string().email().required(),
+    password: Yup.string().min(3).max(50).required()
+  }),
+
+  handleSubmit(values, {props}){
+    props.dispatch(loginRequested(values));
+  }
+
+})(SigninComponent)
 
 const mapStateToProps = (state) => {
   return {

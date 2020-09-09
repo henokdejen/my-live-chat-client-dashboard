@@ -1,5 +1,5 @@
 import React from "react";
-import { SignUpForm } from './SignUpForm';
+import SignUpForm from './SignUpForm';
 import { Panelform } from '../MultiformPanel/Panelform';
 import { signupRequested, emailRequested } from '../../store/actions/auth';
 import { connect } from 'react-redux';
@@ -11,37 +11,42 @@ const Signup = props => {
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
   const [country, setCountry] = React.useState('Ethiopia');
-  const [siteName, setSiteName] = React.useState("");
-  const [siteURL, setSiteURL] = React.useState("");
   const [formerrormessage, setFormerrormessage] = React.useState('');
+  const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if(props.signupInfo.token){
-      props.history.push('/');
-    }
+    if(props.signupInfo.token) props.history.push('/');
+    
     if(props.signupInfo.ErrorMessage){
       const err = props.signupInfo.ErrorMessage;
-      setFormerrormessage(err);
-      //when you handle error handle password min to 8
+      if(!firsttimeloading) setFormerrormessage(err);
     }
-    if(props.signupInfo.emailAvailable){
-      setVisible(false);
+
+    if(props.signupInfo.emailAvailable) setVisible(false);
+    
+    if(!props.signupInfo.emailAvailable){
+      if(!firsttimeloading) setFormerrormessage("email is already in use");
     }
+    
+    setFirstTimeLoading(false);
   },[props.signupInfo])
 
-  const Proceed = () => {
+  const Proceed = (inemail, inpassword) => {
+    setEmail(inemail);
+    setPassword(inpassword);
+
     props.dispatch(emailRequested({
-      email:email
+      email:inemail
     }));
   }
   
-  const goToHome = () => {
+  const goToHome = (webname, weburl) => {
     props.dispatch(signupRequested({ 
       email : email,
       password : password,
       country : country,
-      siteName : siteName,
-      siteURL: siteURL,
+      siteName : webname,
+      siteURL: weburl,
       name: name
     }));
   }
@@ -57,14 +62,8 @@ const Signup = props => {
                   formerrormessage={formerrormessage}
      /> : <Panelform 
             goToHome={goToHome}
-            name={name}
             setName={setName}
-            country={country}
             setCountry={setCountry}
-            siteName={siteName}
-            setSiteName={setSiteName}
-            siteURL={siteURL}
-            setSiteURL={setSiteURL}
      />}
      </>
      );

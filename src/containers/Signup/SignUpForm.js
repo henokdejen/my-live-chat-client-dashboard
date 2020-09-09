@@ -1,35 +1,13 @@
 import React from "react";
 import './Signup.scss';
-import { validateEmail } from '../../Utils/index';
+import * as Yup from "yup";
+import { withFormik, Form, Field } from "formik";
 
-export const SignUpForm = props => {
-
-  const [passwordRe, setPasswordRe] = React.useState("");
-  const [agree, setAgree] = React.useState(false);
-
-  const handleEmail = (e) => props.setEmail(e.target.value);
-  const handlePassword = (e) => props.setPassword(e.target.value);
-  const handlePasswordRe = (e) => setPasswordRe(e.target.value);
-  const handleCheck = () => setAgree(!agree);
-
-  const handleSignUp = (e) => {
-    //  e.preventDefault();
-    if(props.password && props.email && passwordRe && agree){
-      if(validateEmail(props.email)){
-        if(props.password == passwordRe) {
-          if(props.password.length > 7)props.Proceed();
-          else e.target.setCustomValidity("password should contain minimum 8 characters");
-        }
-        else e.target.setCustomValidity("The passwords don't match!");
-      }
-      else e.target.setCustomValidity("please enter a valid email");
-    }
-    else e.target.setCustomValidity("please fill all the fields");
-  }
+const SignUpFormComponent = ({errors, touched, values, formerrormessage}) => {
 
   return (
-      <div className="flexcontainer">
-        <div className="adcontainer">
+      <div className="signupflexcontainer">
+        <div className="signupadcontainer">
           <p> Amazing app, super well built at 
               an incredibly fair price. Needed some
               support in switching stores and the 
@@ -38,22 +16,55 @@ export const SignUpForm = props => {
               <br/><br/> someone 
           </p>
         </div>
-        <div className="formcontainer">
-          <form>
-            <div className="inputfield-container">
-              <h1 className="title">Create a Free Account</h1>
-              <p id="formerror"> {props.formerrormessage} </p>
-              <input type="text" placeholder="Email" name="email" value={props.email} onChange={handleEmail} required />
-              <input type="password" placeholder="Password" name="psw" value={props.password} onChange={handlePassword} required />
-              <input type="password" placeholder="Repeat password" name="pswr" onChange={handlePasswordRe} value={passwordRe} required />
-              <label className="box-container">
-                <input type="checkbox" name="terms" checked={agree} onChange={handleCheck} required/>
-                <p>I agree to These's <span className="termslink">Terms & Conditions</span> and <span className="termslink">Privacy Policy</span></p>
+
+        <div className="signupformcontainer">
+          <Form>
+            <div className="signupinputfield-container">
+              <h1 className="signuptitle">Create a Free Account</h1>
+              
+              <p className="signupformerror">{formerrormessage}</p>
+              {touched.email && errors.email && <p className="signupformerror">{errors.email}</p>}
+              <Field type="email" placeholder="Email" name="email"/>
+              {touched.password && errors.password && <p className="signupformerror">{errors.password}</p>}
+              <Field type="password" placeholder="Password" name="password" />
+              {touched.passwordre && errors.passwordre && <p className="signupformerror">{errors.passwordre}</p>}
+              <Field type="password" placeholder="Repeat password" name="passwordre"/>
+              
+              {touched.terms && errors.terms && <p className="signupformerror">{errors.terms}</p>}
+              <label className="signupbox-container">
+                <Field type="checkbox" name="terms" checked={values.terms}/>
+                <p>I agree to These <span className="signuptermslink">Terms & Conditions</span> and <span className="signuptermslink">Privacy Policy</span></p>
               </label>
-              <button className="signupbtn" onClick={handleSignUp}>Create a Free Account</button>
+              
+              <button className="signupbtn" type="submit">Create a Free Account</button>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     );
   };
+
+  const SignUpForm = withFormik({
+    mapPropsToValues({email, password, passwordre, terms}){
+      return {
+        email: email || '',
+        password: password || '',
+        passwordre: passwordre || '',
+        terms: terms || false
+      }
+    },
+  
+    validationSchema: Yup.object().shape({
+      email: Yup.string().email().required(),
+      password: Yup.string().min(8).max(50).required(),
+      passwordre: Yup.string().required().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+      terms: Yup.bool().oneOf([true], 'Accept Terms & Conditions is required')
+    }),
+  
+    handleSubmit(values, {props}){
+      props.Proceed(values.email, values.password);
+    }
+    
+  })(SignUpFormComponent)
+
+  export default SignUpForm
