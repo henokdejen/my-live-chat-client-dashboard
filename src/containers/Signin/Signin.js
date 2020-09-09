@@ -35,20 +35,20 @@ const Signin = props => {
   }
 
   return (
-    <div className="flexcontainer">
-      <div className="adcontainer">
-        <h1 id="noaccount"> Don't have an account?</h1>
+    <div className="signinflexcontainer">
+      <div className="signinadcontainer">
+        <h1 id="signinnoaccount"> Don't have an account?</h1>
         <button onClick={navToSignup} className="">Create a Free Account</button>
       </div>
-      <div className="formcontainer">
+      <div className="signinformcontainer">
         <form>
-          <div className="inputfield-container">
-            <h1 className="title">Sign In</h1>
-            <p id="errormessage">{errormsg}</p>
+          <div className="signininputfield-container">
+            <h1 className="signintitle">Sign In</h1>
+            <p id="signinerrormessage">{errormsg}</p>
             <input type="text" placeholder="Email" name="email" required value={email} onChange={handleEm}/>
             <input type="password" placeholder="Password" name="psw" required value={password} onChange={handlePass}/>
             <button className="signinbtn" onClick={handleLogin}>Sign In</button>
-            <p className="createaccount">Don't have an account? <span onClick={navToSignup}>Create free account?</span></p>
+            <p className="signincreateaccount">Don't have an account? <span onClick={navToSignup}>Create free account?</span></p>
           </div>
         </form>
       </div>

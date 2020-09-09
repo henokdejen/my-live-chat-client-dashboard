@@ -20,7 +20,7 @@ export const SignUpForm = props => {
           if(props.password.length > 7)props.Proceed();
           else e.target.setCustomValidity("password should contain minimum 8 characters");
         }
-        if(props.password != passwordRe) e.target.setCustomValidity("The passwords don't match!");
+        else e.target.setCustomValidity("The passwords don't match!");
       }
       else e.target.setCustomValidity("please enter a valid email");
     }

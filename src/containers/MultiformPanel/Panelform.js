@@ -20,8 +20,10 @@ export const Panelform = props => {
         }
         if(currentStep == 2){
             const isurl = validURL(props.siteURL);
-            if(props.siteName && isurl) props.goToHome();
-            if(!isurl) e.target.setCustomValidity("please enter a valid URL");
+            if(props.siteName){
+                if(isurl) props.goToHome();
+                else e.target.setCustomValidity("please enter a valid URL");
+            } 
             else e.target.setCustomValidity("please fill enter all the feilds");
         }
       }
@@ -46,7 +48,7 @@ export const Panelform = props => {
             </div>
             <div className="nav-buttons">
                {currentStep == 2 && <button className="gobk" onClick={goBack}> Go back </button>}
-                <button className="gofd" onClick={goForward} type="submit"> Continue </button>
+                <button type="button" className="gofd" onClick={goForward}> Continue </button>
             </div>
             </form>
          </div>
