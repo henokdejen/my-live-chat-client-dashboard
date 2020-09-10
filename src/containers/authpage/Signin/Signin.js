@@ -3,18 +3,28 @@ import './Signin.scss';
 import * as Yup from "yup";
 import { withFormik, Form, Field } from "formik";
 import { connect } from 'react-redux';
-import { loginRequested } from '../../store/actions/auth';
+import { loginRequested } from '../../../store/actions/auth';
+import { useHistory } from "react-router-dom";
 
-const SigninComponent = ({history, errors, touched, loginInfo, isSubmitting}) => {
+const SigninComponent = ({errors, touched, loginInfo, setVisible}) => {
 
   const [serverError, setServerError] = React.useState('');
+  const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
+  const history = useHistory();
   
   React.useEffect(() => {
     if(loginInfo.token) history.push('/');
-    else setServerError(loginInfo.ErrorMessage);
+    
+    if(loginInfo.ErrorMessage){
+      const err = loginInfo.ErrorMessage;
+      if(!firsttimeloading) setServerError(err);
+    }
+
+    setFirstTimeLoading(false);
+   
   },[loginInfo]);
 
-  const navToSignup = () => history.push('/signup');
+  const navToSignup = () => setVisible(true);
 
   return (
     <div className="signinflexcontainer">
@@ -36,7 +46,7 @@ const SigninComponent = ({history, errors, touched, loginInfo, isSubmitting}) =>
             {touched.password && errors.password && <p className="signinerrormessage">{errors.password}</p>}
             <Field type="password" placeholder="Password" name="password" />
             
-            <button type="submit" disabled={isSubmitting} className="signinbtn">Sign In</button>
+            <button type="submit" className="signinbtn">Sign In</button>
             <p className="signincreateaccount">Don't have an account? <span onClick={navToSignup}>Create free account?</span></p>
           </div>
         </Form>
@@ -54,8 +64,8 @@ const Signin = withFormik({
   },
 
   validationSchema: Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().min(3).max(50).required()
+    email: Yup.string().email().required("*required"),
+    password: Yup.string().min(3).max(50).required("*required")
   }),
 
   handleSubmit(values, {props}){

@@ -1,40 +1,86 @@
 import React from "react";
 import './Panelform.scss';
+import * as Yup from "yup";
+import { withFormik, Form, Field } from "formik";
+import { addprojectRequested } from '../../store/actions/project';
+import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
-import Step1 from './Formsteps/Step1';
-import Step2 from './Formsteps/Step2';
+const PanelformComponent = ({ errors, touched, projectInfo }) => {
 
-export const Panelform = props => {
+    const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
+    const history = useHistory();
 
-    const [currentStep, setCurrentStep] = React.useState(1);
-
-    const goForward = (stepvalues) => {
-        if(currentStep == 1) {
-            props.setName(stepvalues.username);
-            props.setCountry(stepvalues.country);
-            setCurrentStep(2);
+    React.useEffect(() => {
+       if(projectInfo.ErrorMessage){
+          console.log("error on adding");
         }
-        if(currentStep == 2) {
-            props.goToHome(stepvalues.websitename, stepvalues.websiteurl);
+        else{
+            if(!firsttimeloading) history.push('/');
         }
-      }
-        
-    const goBack = () => setCurrentStep(1);
-      
+        setFirstTimeLoading(false);
+      },[projectInfo]);
+
     return (
         <div className="panelrootcontainer">
             <div className="panelprogressbar">
-                <p><span> Step {currentStep}</span> / 2</p>
+                <p><span> Step 1</span> / 1</p>
                 <div className="paneldotcontainer">
                     <span className="paneldot-active"></span>
-                    <span className={`${currentStep == 2 ? "paneldot-active" : "paneldot"}`}></span>
+                    {/* <span className={`${currentStep == 2 ? "paneldot-active" : "paneldot"}`}></span> */}
                 </div>
             </div>
-          
+
             <div className="panelstepsContainer">
-                <Step1 currentStep={currentStep} goForward={goForward}/>
-                <Step2 currentStep={currentStep} goBack={goBack} goForward={goForward}/>
+                <Form>
+                    <p className="formStepswelcome"> Project Details </p>
+                    <div className="formStepsinnerform">
+                        {touched.websitename && errors.websitename && <p className="stepserrormessage">{errors.websitename}</p>}
+                        <p> Website name </p>
+                        <Field type="text" placeholder="example" name="websitename" />
+
+                        {touched.websiteurl && errors.websiteurl && <p className="stepserrormessage">{errors.websiteurl}</p>}
+                        <p> Website address </p>
+                        <Field type="text" placeholder="www.example.com" name="websiteurl" />
+
+                    </div>
+                    <div className="panelnav-buttons">
+                        {/* <button type="button" onClick={()=>{goBack()}} className="panelgobk"> Go back </button> */}
+                        <button type="submit" className="panelgofd"> Continue </button>
+                    </div>
+                </Form>
             </div>
-         </div>
+        </div>
     );
 }
+
+
+const Panelform = withFormik({
+    mapPropsToValues({websitename, websiteurl}){
+      return {
+         websitename: websitename || '',
+         websiteurl: websiteurl || ''
+      }
+    },
+  
+    validationSchema: Yup.object().shape({
+      websitename: Yup.string().required("*required"),
+      websiteurl: Yup.string().matches(/^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,'Enter correct url!')
+      .required('*required'),
+    }),
+  
+    handleSubmit(values, {props}){
+        if(localStorage.getItem("usertoken"))
+            props.dispatch(addprojectRequested(values));
+    }
+  
+  })(PanelformComponent)
+
+  
+const mapStateToProps = (state) => {
+    return {
+      projectInfo: state.projectState
+    };
+  };
+  
+  export default connect(mapStateToProps)(Panelform)

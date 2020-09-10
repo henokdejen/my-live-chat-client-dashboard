@@ -52,7 +52,7 @@
 .signupinputfield-container{
     width: 57%;
     padding: 16px;
-    margin-top: 13%;
+    margin-top: 6%;
     margin-left: 7%;
 }
 
@@ -62,7 +62,7 @@
 }
 
 /* Full-width input fields */
-.signupinputfield-container > input[type=email], input[type=password] {
+.signupinputfield-container > input[type=email],input[type=text],input[type=password]{
   width: 100%;
   height: 64px;
   padding: 15px;
@@ -98,3 +98,13 @@
   margin-bottom: 8%;
 }
 
+.signupselectbox{
+  width: 100%;
+  height: 64px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #ddd;
+  font-size: 18px;
+}

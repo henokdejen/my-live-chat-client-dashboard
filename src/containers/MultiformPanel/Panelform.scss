@@ -35,3 +35,98 @@
     margin-top: 4%;
     height: 400px;
 }
+
+.formStepswelcome{
+    font-weight: 700;
+    font-size: 27px;
+    color: #262f3c;
+}
+
+.stepserrormessage{
+    color: red;
+    font-size: 13px;
+}
+
+.formStepsinnerform{
+    margin-top: 5%;
+    width: 30%;
+}
+
+.formStepsinnerform > p{
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#formStepscountry-label{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.formStepscountries{
+    width: 100%;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    // border-bottom-style: groove;
+    background-color: #f1f1f1;
+    padding-left: 10px;
+    height: 40px;
+    font-weight: 500;
+    font-size: 18px;
+    border-bottom: 2px solid #262f3c;
+
+}
+
+.formStepsinnerform > input[type=text]{
+    width: 100%;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    background-color: #f1f1f1;
+    height: 40px;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    font-size: 18px;
+}
+
+.formStepsinnerform > input:focus, .formStepscountries:focus{
+    outline: none;
+    background-color: #f1f1f1;
+}
+
+.formStepsinnerform > input::placeholder{
+    opacity: 0.6;
+}
+
+
+.panelnav-buttons{
+    display: flex;
+    margin-top: 12%;
+    margin-left: 27%;
+    margin-right: 27%;
+}
+.panelnav-buttons > button{
+    margin-left: 4%;
+    padding: 9px 45px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 38%;
+    height: 46px;
+    font-size: 18px;
+}
+.panelgobk{
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid;
+}
+.panelgofd{
+    background-color: #262f3c;
+    opacity: 0.9;
+    color: white;
+    border: none;
+}
+
+.panelgobk:hover, .panelgofd:hover{
+    opacity: 1;
+}
