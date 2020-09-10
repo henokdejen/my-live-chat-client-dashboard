@@ -20,7 +20,7 @@ const App = ({ loadingOver }) => {
           <BrowserRouter>
             <Switch>
               <Route path="/authenticate" name="authentication page" component={props => <Authpage {...props}/>} />
-              <Route path="/projectForm" name="project form" component={props => <Panelform {...props}/>} />
+              <ProtectedRoute path="/projectForm" name="project form" component={props => <Panelform {...props}/>} />
               <ProtectedRoute exact path="/join" name="Join Page" component={props => <JoinPage {...props} />} />
               <ProtectedRoute path="/" name="the app" component={props => <Dashboard {...props} />} />
             </Switch>
