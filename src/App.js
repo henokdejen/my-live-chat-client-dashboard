@@ -5,6 +5,8 @@ import { JoinPage } from "./containers/JoinPage/JoinPage";
 import ProtectedRoute from "./containers/protectedRoute/ProtectedRoute";
 // import Signin from "./containers/Signin/Signin";
 // import Signup from "./containers/Signup/Signup";
+import Authpage from "./containers/authpage/Authpage";
+import Panelform from "./containers/MultiformPanel/Panelform";
 
 const App = () => {
   return (

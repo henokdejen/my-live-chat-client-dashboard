@@ -10,6 +10,7 @@ class ProtectedRoute extends React.Component {
     if (localStorage.getItem(LS_TOKEN) && localStorage.getItem(LS_PID)) {
       isAuthenticated = true;
     }
+    console.log("Henok", isAuthenticated);
     return isAuthenticated ? (
       <Component />
     ) : (

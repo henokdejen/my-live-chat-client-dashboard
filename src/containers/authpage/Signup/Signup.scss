@@ -1,85 +1,89 @@
 .signupflexcontainer {
-    display: flex;
-    height: 100%;
-  }
+  display: flex;
+  height: 100%;
+}
 
-.signupformerror{
-    color: red;
-    font-size: 13px;
-  }
-
+.signupformerror {
+  color: red;
+  font-size: 13px;
+}
 
 .signupformcontainer {
-    width: 50%;
+  width: 50%;
 }
 
-.signupadcontainer{
-    width: 50%;
-    background-color: #f7f9fa;
-    height: 695px;
+.signupadcontainer {
+  width: 50%;
+  background-color: #f7f9fa;
+  height: 695px;
 }
 
-.signupadcontainer > p{
-    padding:30px;
-    width: 43%;
-    opacity: 0.9;
-    font-size: 18px;
-    border: 2px solid #262f3c;
-    border-radius: 16px 16px 0px 16px;
-    margin-top: 38%;
-    margin-left: 20%;
+.signupadcontainer > p {
+  padding: 30px;
+  width: 43%;
+  opacity: 0.9;
+  font-size: 18px;
+  border: 2px solid #262f3c;
+  border-radius: 16px 16px 0px 16px;
+  margin-top: 38%;
+  margin-left: 20%;
 }
 
-.signupbox-container{
-    display: flex;
+.signupbox-container {
+  display: flex;
 }
 
 .signupbox-container > p {
-    margin-left: 3%;
-    font-size: 14px;
+  margin-left: 3%;
+  font-size: 14px;
 }
 
 .signupbox-container > input {
-    width: 15px;
-    height: 15px;
+  width: 15px;
+  height: 15px;
 }
 
-.signuptermslink{
-    color: #262f3c;
-    opacity: 0.9;
+.signuptermslink {
+  color: #262f3c;
+  opacity: 0.9;
 }
 
-.signupinputfield-container{
-    width: 57%;
-    padding: 16px;
-    margin-top: 6%;
-    margin-left: 7%;
+.signupinputfield-container {
+  width: 57%;
+  padding: 16px;
+  margin-top: 6%;
+  margin-left: 7%;
 }
 
-.signuptitle{
-    margin-left: 5%;
-    margin-bottom: 10%;
+.signuptitle {
+  margin-left: 5%;
+  margin-bottom: 10%;
 }
 
 /* Full-width input fields */
-.signupinputfield-container > input[type=email],input[type=text],input[type=password]{
-  width: 100%;
-  height: 64px;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #ddd;
-  font-size: 18px;
+.signupinputfield-container {
+  input[type="email"],
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    height: 64px;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #ddd;
+    font-size: 18px;
+  }
 }
 
-.signupinputfield-container > input[type=email]:focus, input[type=password]:focus {
+.signupinputfield-container > input[type="email"]:focus,
+input[type="password"]:focus {
   background-color: #ddd;
   outline: none;
 }
 
 .signupbtn:hover {
-  opacity:1;
+  opacity: 1;
 }
 
 /* Float cancel and signup buttons and add an equal width */
@@ -98,7 +102,7 @@
   margin-bottom: 8%;
 }
 
-.signupselectbox{
+.signupselectbox {
   width: 100%;
   height: 64px;
   padding: 15px;

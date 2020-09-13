@@ -21,12 +21,13 @@ let projectID = "";
 export const myServiceMiddleware = () => {
   return () => (next) => (action) => {
     if (action.type == INITIAL_DATA_LOADED) {
-      projectID = action.payload.userInfo.lastActiveProjectID;
+      // projectID = action.payload.userInfo.lastActiveProjectID;
+      projectID = "5f5d8e344778d226b4c1efe0";
     }
     return next(action);
   };
 };
-let token = "Bearer " + localStorage.getItem(LS_TOKEN);
+let token = localStorage.getItem(LS_TOKEN);
 
 // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElEIjoiNWY1NjY0NzljYTg0ZGUxZGE4M2E3YTZmIiwibmFtZSI6Ikhpc2tlbCBLZWxlbWV3b3JrIiwiZW1haWwiOiJ3dWhodUBnbWFpbC5jb20iLCJpc0FkbWluIjp0cnVlLCJhZ2VuY3lJRCI6IjVmNTY2NDc5Y2E4NGRlMWRhODNhN2E2ZSIsImlhdCI6MTU5OTQ5NzMzN30.gcz7rmnH1oDr99331y2g-nw_kJeyc3nHaBMB3KHFNyA";
 const API = axios.create({
