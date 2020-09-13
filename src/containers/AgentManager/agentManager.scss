@@ -1,23 +1,7 @@
 .agents-management {
-  margin: 10px;
-  margin-top: 0;
-  background-color: #fff;
-
   .input-text {
     padding-top: 15px;
     padding-bottom: 15px;
-  }
-
-  .inner-header {
-    display: flex;
-    justify-content: space-between;
-
-    .title {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      font-size: 1.3em;
-    }
   }
 
   table {

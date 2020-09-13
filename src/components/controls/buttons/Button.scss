@@ -51,10 +51,18 @@ $button-disabled-border: lighten(
 
   &.sm {
     padding: 8px 12px;
+    .css-1rpz77w {
+      width: 1em;
+      height: 1em;
+    }
   }
 
   &.xsm {
     padding: 4px 10px;
+    .css-1rpz77w {
+      width: 1.1em;
+      height: 1.1em;
+    }
   }
 
   &:disabled {

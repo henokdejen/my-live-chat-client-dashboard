@@ -54,6 +54,10 @@ const loadInitialDataSaga = function* ({ history }) {
         yield put(onlineVisitorsLoaded(onlineVisitors));
 
         yield put({ type: "FETCH_INITIAL_DATA_SUCCES" });
+        yield put({
+          type: "connect",
+          payload: { projectID: initialData.data.projectInfo._id },
+        });
       }
     } else {
       // not authenticated

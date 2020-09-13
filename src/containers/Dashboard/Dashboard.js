@@ -1,14 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Route, Switch } from "react-router-dom";
-import ChatShell from "../shell/ChatShell";
-import SideBar from "../SideBar/SideBar";
-import VisitorShell from "../visitor/VisitorShell";
-import "./dashboard.scss";
-import Settings from "../Layouts/settings/Settings";
-
+import { rootRoutes } from "../../routes";
 import InitialLoader from "../InitialLoader/InitialLoader";
+import SideBar from "../SideBar/SideBar";
+import "./dashboard.scss";
 
 const Dashboard = ({ loadingOver }) => {
   console.log("why here", loadingOver);
@@ -23,21 +19,15 @@ const Dashboard = ({ loadingOver }) => {
           </div>
           <div className="main-section-wrapper">
             <Switch>
-              <Route
-                path="/conversations"
-                name="conversations Page"
-                render={(props) => <ChatShell {...props} />}
-              />
-              <Route
-                path="/visitors"
-                name="visitors Page"
-                render={(props) => <VisitorShell {...props} />}
-              />
-              <Route
-                path="/settings"
-                name="settings Page"
-                render={(props) => <Settings {...props} />}
-              />
+              {rootRoutes &&
+                rootRoutes.routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={`/${route.path}`}
+                    name={route.name}
+                    render={(props) => <route.component {...props} />}
+                  />
+                ))}
             </Switch>
           </div>
         </div>

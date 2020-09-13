@@ -1,39 +1,12 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import * as Yup from "yup";
 import * as API from "../../../API/base";
 import Button from "../../controls/buttons/Button";
 import InputWithLabel from "../../controls/inputWithLabel/InputWithLabel";
 import Modal from "../../controls/modal/Modal";
 import "./addAgentModal.scss";
-import * as Yup from "yup";
-
-const MINIMUM_PASSWORD_LENGTH = 8;
-
-const generatePassword = (length) => {
-  let result = "";
-  let characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  console.log("fasdfsadfkljadslfj", result);
-  return result;
-};
-
-// const AddAgentSchema = Yup.object().shape({
-//   name: Yup.string()
-//     .min(2, "Too Short!")
-//     .max(50, "Too Long!")
-//     .required("* Required")
-//     .test("name", "Name should contain first name and last name", (name) => {
-//       return name && name.trim().split(" ").length === 2;
-//     }),
-
-//   email: Yup.string().email("Invalid email").required("* Required"),
-// ,
-// });
 
 const AddAgentSchema = (withPasswordField) => {
   let passField = withPasswordField
@@ -69,14 +42,14 @@ const validateEmail = (value) => {
   return valid;
 };
 
-export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
+export const AddAgentModal = ({ addAgent, handleClose }) => {
   const [passwordNeeded, setpasswordNeeded] = useState(false);
   const [checkingEmail, setcheckingEmail] = useState(false);
 
   const [accountExists, setaccountExists] = useState(false);
   const [exisitingAgentId, setexisitingAgentId] = useState("");
 
-  const checkIfAgentExists = (email, setSubmitting) => {
+  const checkIfAgentExists = (email) => {
     console.log("Siked", validateEmail(email));
     if (validateEmail(email)) {
       setcheckingEmail(true);
@@ -97,7 +70,7 @@ export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
               }
             }
           })
-          .catch((err) => {})
+          .catch(() => {})
           .then(() => {
             setcheckingEmail(false);
           });
@@ -105,8 +78,7 @@ export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
     }
   };
 
-  const onSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("ahun", values);
+  const onSubmit = (values) => {
     setTimeout(() => {
       let agent = {
         name: values.name,
@@ -119,7 +91,7 @@ export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
         agent.agentID = exisitingAgentId;
       }
 
-      API.addAgent(projectID, agent)
+      API.addAgent(agent)
         .then((response) => {
           console.log(response);
           let { data } = response;
@@ -153,7 +125,7 @@ export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
           validationSchema={AddAgentSchema(passwordNeeded)}
           onSubmit={onSubmit}
         >
-          {({ errors, touched, handleChange, isSubmitting, setFieldError }) => (
+          {({ errors, touched, handleChange, isSubmitting }) => (
             <Form>
               <InputWithLabel>
                 <label>Name </label>
@@ -202,7 +174,7 @@ export const AddAgentModal = ({ projectID, addAgent, handleClose }) => {
                 <Button
                   variant="outlined"
                   size="l"
-                  onClick={(e) => handleClose()}
+                  onClick={() => handleClose()}
                 >
                   Cancel
                 </Button>

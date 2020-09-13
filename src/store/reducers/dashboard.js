@@ -73,6 +73,12 @@ const dashboardReducer = (state = initialState, action) => {
       );
       return newState;
     }
+    case types.EDIT_USER_SUCCESS: {
+      const { name, timeZone } = action.payload;
+      const newState = { ...state };
+      newState.userInfo = { ...newState.userInfo, ...{ name, timeZone } };
+      return newState;
+    }
     default:
       return state;
   }

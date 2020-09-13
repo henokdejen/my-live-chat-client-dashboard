@@ -3,14 +3,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import { JoinPage } from "./containers/JoinPage/JoinPage";
 import ProtectedRoute from "./containers/protectedRoute/ProtectedRoute";
-import Signin from "./containers/Signin/Signin";
-import Signup from "./containers/Signup/Signup";
+// import Signin from "./containers/Signin/Signin";
+// import Signup from "./containers/Signup/Signup";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route
+        {/* <Route
           path="/signin"
           name="signin page"
           component={(props) => <Signin {...props} />}
@@ -19,7 +19,7 @@ const App = () => {
           path="/signup"
           name="signup page"
           component={(props) => <Signup {...props} />}
-        />
+        /> */}
         <ProtectedRoute
           exact
           path="/join"
