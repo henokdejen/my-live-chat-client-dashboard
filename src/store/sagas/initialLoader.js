@@ -1,6 +1,10 @@
 import { put, takeEvery, call, all, delay } from "redux-saga/effects";
 
-import { FETCH_ONLINE_VISITORS_REQUESTED } from "../../constants";
+import {
+  FETCH_ONLINE_VISITORS_REQUESTED,
+  LS_PID,
+  LS_TOKEN,
+} from "../../constants";
 import * as APIs from "../../API";
 import {
   onlineVisitorsLoaded,
@@ -10,15 +14,15 @@ import {
 import { getConversation, getSortedConversations } from "./helper";
 import * as API from "../../API/base";
 
-const loadInitialDataSaga = function* () {
+const loadInitialDataSaga = function* ({ history }) {
   console.log("Initial Data requested");
   try {
-    let projectID = localStorage.getItem("pid");
+    let projectID = localStorage.getItem(LS_PID);
     if (projectID) {
       let initialData = yield API.loadInitialData(projectID);
 
       if (initialData.success) {
-        localStorage.setItem("pid", initialData.data.projectInfo._id);
+        localStorage.setItem(LS_PID, initialData.data.projectInfo._id);
       }
       yield put(initialDataLoaded(initialData.data));
 
@@ -48,7 +52,18 @@ const loadInitialDataSaga = function* () {
 
         yield put(conversationLoaded(conversations));
         yield put(onlineVisitorsLoaded(onlineVisitors));
+
+        yield put({ type: "FETCH_INITIAL_DATA_SUCCES" });
+        yield put({
+          type: "connect",
+          payload: { projectID: initialData.data.projectInfo._id },
+        });
       }
+    } else {
+      // not authenticated
+      localStorage.clear(LS_PID);
+      localStorage.clear(LS_TOKEN);
+      history.push("/join");
     }
 
     // let conversations = [];
@@ -59,7 +74,6 @@ const loadInitialDataSaga = function* () {
 
     // conversations and online userssynchronization should be done
     // yield put({ type: "connect" });
-    yield put({ type: "FETCH_INITIAL_DATA_SUCCES" });
     // }
   } catch (error) {
     console.log("Loading Initial Data failed", error);

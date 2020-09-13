@@ -14,3 +14,9 @@ export const initialDataLoaded = (data) => ({
   type: types.INITIAL_DATA_LOADED,
   payload: data,
 });
+
+// user related
+export const userDataChanged = (name, timeZone) => ({
+  type: types.EDIT_USER_SUCCESS,
+  payload: { name, timeZone },
+});

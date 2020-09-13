@@ -6,10 +6,13 @@ import { OuterSectionWrapper } from "../../../components/section-wrapper/OuterSe
 
 import "./settings.scss";
 import { InnerNavBody } from "../../../components/innerNavBody/InnerNavBody";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { BsFillPeopleFill } from "react-icons/bs";
 // import { Outlet } from "react-router-dom";
 import AgentManager from "../../AgentManager/AgentManager";
+import MyProfile from "../../MyProfile/MyProfile";
+
+import { settingRoutes } from "../../../routes";
 
 const settings = [
   {
@@ -21,8 +24,8 @@ const settings = [
         icon: <BsFillPeopleFill />,
       },
       {
-        title: "Lelafasd",
-        path: "lelafadf",
+        title: "My Profile",
+        path: "me",
         icon: <BsFillPeopleFill />,
       },
       {
@@ -39,7 +42,7 @@ const settings = [
   },
 
   {
-    section: "General",
+    section: "Lela",
     menus: [
       {
         title: "Agents",
@@ -83,10 +86,12 @@ const Settings = () => {
       <InnerNav className="visitors-nav">
         <InnerNavHeader>Settings</InnerNavHeader>
         <InnerNavBody>
-          {settings.map((section) => {
-            let menus = section.menus.map((menu) => (
-              <SettingMenuItem to={`${path}/${menu.path}`}>
-                {" "}
+          {settings.map((section, index) => {
+            let menus = section.menus.map((menu, index) => (
+              <SettingMenuItem
+                key={section.section + index}
+                to={`${path}/${menu.path}`}
+              >
                 {menu.icon} {menu.title}{" "}
               </SettingMenuItem>
             ));
@@ -102,8 +107,17 @@ const Settings = () => {
       </InnerNav>
 
       <div className="settings-main-body">
-        {/* <Outlet /> */}
-        <AgentManager />
+        <Switch>
+          {settingRoutes &&
+            settingRoutes.routes.map((route, index) => (
+              <Route
+                key={index}
+                path={`${settingRoutes.base}/${route.path}`}
+                name="agents management"
+                render={(props) => <route.component {...props} />}
+              />
+            ))}
+        </Switch>
       </div>
     </OuterSectionWrapper>
   );

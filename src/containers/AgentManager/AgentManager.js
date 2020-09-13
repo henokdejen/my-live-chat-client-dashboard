@@ -1,52 +1,13 @@
 import React, { useState } from "react";
-import "./agentManager.scss";
-import { Badge } from "../../components/controls/badge/Badge";
-import { InnerHeader } from "../../components/controls/innerHeader/InnerHeader";
-import Button from "../../components/controls/buttons/Button";
 import { BsFillPeopleFill } from "react-icons/bs";
-import Modal from "../../components/controls/modal/Modal";
-import InputWithLabel from "../../components/controls/inputWithLabel/InputWithLabel";
-import InputText from "../../components/controls/inputText/InputText";
-
-import ClipLoader from "react-spinners/ClipLoader";
-import { ComfirmationDialog } from "../../components/controls/comfirmationDialog/ComfirmationDialog";
-import {
-  visitorGetOnline,
-  agentRemoved,
-  newAgentAdded,
-} from "../../store/actions";
 import { connect } from "react-redux";
-
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { AddAgentModal } from "../../components/modals/addAgentModal/AddAgentModal";
 import * as API from "../../API/base";
-
-const dummyAgents = [
-  {
-    id: 1,
-    name: "Henok Dejen",
-    email: "henokdejen84@gmail.com",
-    role: "admin",
-  },
-  {
-    id: 2,
-    name: "Henok Dejen ",
-    email: "henokdejen84@gmail.com",
-    role: "admin",
-  },
-  {
-    id: 21,
-    name: "Henok Dejen",
-    email: "henokdejen84@gmail.com",
-    role: "agent",
-  },
-  {
-    id: 3,
-    name: "Henok Dejen",
-    email: "henokdejen84@gmail.com",
-    role: "agent",
-  },
-];
+import Button from "../../components/controls/buttons/Button";
+import { ComfirmationDialog } from "../../components/controls/comfirmationDialog/ComfirmationDialog";
+import { InnerHeader } from "../../components/controls/innerHeader/InnerHeader";
+import { AddAgentModal } from "../../components/modals/addAgentModal/AddAgentModal";
+import { agentRemoved, newAgentAdded } from "../../store/actions";
+import "./agentManager.scss";
 
 const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
   let { id, name, email } = agent;
@@ -76,7 +37,7 @@ const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
 
         {isUserTheProjAdmin && !isAdmin && (
           <td className="actions">
-            <Button size="sm" variant="primary" onClick={(e) => setshow(true)}>
+            <Button size="sm" variant="primary" onClick={() => setshow(true)}>
               Remove
             </Button>
 
@@ -175,14 +136,13 @@ const AgentManager = ({
   userInfo,
   agents,
   ownerID,
-  projectID,
   removeAgentFromStore,
   addAgentToStore,
 }) => {
   const [showAddAgentModal, setshowAddAgentModal] = useState(false);
 
   const removeAgent = (id) => {
-    API.removeAgent(projectID, id)
+    API.removeAgent(id)
       .then((response) => {
         console.log(response);
         let { data } = response;
@@ -202,10 +162,9 @@ const AgentManager = ({
   const isUserTheProjAdmin = ownerID === userInfo._id;
 
   return (
-    <div className="agents-management">
+    <div className="agents-management setting-sections-wrapper">
       {showAddAgentModal && (
         <AddAgentModal
-          projectID={projectID}
           addAgent={addAgentToStore}
           handleClose={() => setshowAddAgentModal(false)}
         />
@@ -221,15 +180,15 @@ const AgentManager = ({
             <Button
               variant="primary"
               size="l"
-              onClick={(e) => {
-                setshowAddAgentModal(!showAddAgentModal);
+              onClick={() => {
+                setshowAddAgentModal(true);
               }}
             >
               Add Agent
             </Button>
           )}
         </div>
-      </InnerHeader>{" "}
+      </InnerHeader>
       <table>
         <tbody>
           {agents.map((agent) => (
@@ -248,9 +207,9 @@ const AgentManager = ({
 };
 
 const mapStateToProps = (state) => {
-  let { agents, _id, owner } = state.basicState.projectInfo;
+  let { agents, owner } = state.basicState.projectInfo;
   let { userInfo } = state.basicState;
-  return { userInfo, agents, projectID: _id, ownerID: owner };
+  return { userInfo, agents, ownerID: owner };
 };
 
 const mapDispatchToProps = (dispatch) => ({
