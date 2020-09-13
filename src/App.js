@@ -10,16 +10,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {/* <Route
-          path="/signin"
-          name="signin page"
-          component={(props) => <Signin {...props} />}
-        />
         <Route
-          path="/signup"
-          name="signup page"
-          component={(props) => <Signup {...props} />}
-        /> */}
+          path="/authenticate"
+          name="authentication page"
+          component={(props) => <Authpage {...props} />}
+        />
+        <ProtectedRoute
+          path="/projectForm"
+          name="project form"
+          component={(props) => <Panelform {...props} />}
+        />
         <ProtectedRoute
           exact
           path="/join"

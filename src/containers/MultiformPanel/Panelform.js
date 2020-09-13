@@ -1,54 +1,86 @@
 import React from "react";
 import './Panelform.scss';
+import * as Yup from "yup";
+import { withFormik, Form, Field } from "formik";
+import { addprojectRequested } from '../../store/actions/project';
+import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
-import { Step1 } from './Formsteps/Step1';
-import { Step2 } from './Formsteps/Step2';
-import { validURL } from '../../Utils/index';
+const PanelformComponent = ({ errors, touched, projectInfo }) => {
 
-export const Panelform = props => {
+    const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
+    const history = useHistory();
 
-    const [currentStep, setCurrentStep] = React.useState(1);
-
-    const goForward = (e) => {
-        // e.preventDefault();
-        if(currentStep == 1){
-            if(props.name){
-                if(props.name.length > 7) setCurrentStep(2);
-                else e.target.setCustomValidity("please use minimum 8 characters for name");
-            }
-            else e.target.setCustomValidity("please fill enter all the feilds");
+    React.useEffect(() => {
+       if(projectInfo.ErrorMessage){
+          console.log("error on adding");
         }
-        if(currentStep == 2){
-            const isurl = validURL(props.siteURL);
-            if(props.siteName && isurl) props.goToHome();
-            if(!isurl) e.target.setCustomValidity("please enter a valid URL");
-            else e.target.setCustomValidity("please fill enter all the feilds");
+        else{
+            if(!firsttimeloading) history.push('/');
         }
-      }
-        
-    const goBack = () => {
-        setCurrentStep(1);
-      }
-      
+        setFirstTimeLoading(false);
+      },[projectInfo]);
+
     return (
-        <div className="rootcontainer">
-            <div className="progressbar">
-                <p><span> Step {currentStep}</span> / 2</p>
-                <div className="dotcontainer">
-                    <span className="dot-active"></span>
-                    <span className={`${currentStep == 2 ? "dot-active" : "dot"}`}></span>
+        <div className="panelrootcontainer">
+            <div className="panelprogressbar">
+                <p><span> Step 1</span> / 1</p>
+                <div className="paneldotcontainer">
+                    <span className="paneldot-active"></span>
+                    {/* <span className={`${currentStep == 2 ? "paneldot-active" : "paneldot"}`}></span> */}
                 </div>
             </div>
-            <form>
-            <div className="stepsContainer">
-                <Step1 currentStep={currentStep} name={props.name} setName={props.setName} country={props.country} setCountry={props.setCountry}/>
-                <Step2 currentStep={currentStep} siteName={props.siteName} setSiteName={props.setSiteName} siteURL={props.siteURL} setSiteURL={props.setSiteURL}/>
+
+            <div className="panelstepsContainer">
+                <Form>
+                    <p className="formStepswelcome"> Project Details </p>
+                    <div className="formStepsinnerform">
+                        {touched.websitename && errors.websitename && <p className="stepserrormessage">{errors.websitename}</p>}
+                        <p> Website name </p>
+                        <Field type="text" placeholder="example" name="websitename" />
+
+                        {touched.websiteurl && errors.websiteurl && <p className="stepserrormessage">{errors.websiteurl}</p>}
+                        <p> Website address </p>
+                        <Field type="text" placeholder="www.example.com" name="websiteurl" />
+
+                    </div>
+                    <div className="panelnav-buttons">
+                        {/* <button type="button" onClick={()=>{goBack()}} className="panelgobk"> Go back </button> */}
+                        <button type="submit" className="panelgofd"> Continue </button>
+                    </div>
+                </Form>
             </div>
-            <div className="nav-buttons">
-               {currentStep == 2 && <button className="gobk" onClick={goBack}> Go back </button>}
-                <button className="gofd" onClick={goForward} type="submit"> Continue </button>
-            </div>
-            </form>
-         </div>
+        </div>
     );
 }
+
+
+const Panelform = withFormik({
+    mapPropsToValues({websitename, websiteurl}){
+      return {
+         websitename: websitename || '',
+         websiteurl: websiteurl || ''
+      }
+    },
+  
+    validationSchema: Yup.object().shape({
+      websitename: Yup.string().required("*required"),
+      websiteurl: Yup.string().matches(/^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,'Enter correct url!')
+      .required('*required'),
+    }),
+  
+    handleSubmit(values, {props}){
+        if(localStorage.getItem("usertoken"))
+            props.dispatch(addprojectRequested(values));
+    }
+  
+  })(PanelformComponent)
+
+  
+const mapStateToProps = (state) => {
+    return {
+      projectInfo: state.projectState
+    };
+  };
+  
+  export default connect(mapStateToProps)(Panelform)

@@ -29,7 +29,6 @@ const emailCheckRequestSaga = function* (action) {
     const {email} = action.payload;
     try {
         const response = yield call(API.checkemailavailable, email)
-        console.log(response.data.available);
         if (response.success) yield put(emailResponse(response.data.available));
     } catch (error) {
         console.log('Connection Error happened', error)

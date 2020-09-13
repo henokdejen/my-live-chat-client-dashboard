@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 
 import { watchSignupRequest, watchLoginRequest, watchemailCheckRequest} from './auth';
+import { watchaddProjectRequest } from './project';
 import { watchGetConversationsAsync } from './conversations';
 import { watchGetMessagesAsync, watchSendMsgAsync } from './messages';
 import {socketListener, watchMessageSeenReport, watchStartNewConversation, watchJoinConversation} from './socket'
@@ -12,6 +13,7 @@ export default function* rootSaga() {
         watchemailCheckRequest(),
         watchSignupRequest(),
         watchLoginRequest(),
+        watchaddProjectRequest(),
         watchGetMessagesAsync(),
         watchSendMsgAsync(),
         socketListener(),
