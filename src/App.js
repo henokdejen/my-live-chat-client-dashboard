@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { Dashboard } from './containers/Dashboard/Dashboard';
 import { JoinPage } from './containers/JoinPage/JoinPage';
-import Signin from './containers/Signin/Signin';
-import Signup from './containers/Signup/Signup';
+import Authpage from './containers/authpage/Authpage';
+import Panelform from './containers/MultiformPanel/Panelform';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import InitialLoader from './containers/InitialLoader/InitialLoader';
@@ -19,8 +19,8 @@ const App = ({ loadingOver }) => {
         <InitialLoader setIndex={setpageIndex} /> : (
           <BrowserRouter>
             <Switch>
-              <Route path="/signin" name="signin page" component={props => <Signin {...props}/>} />
-              <Route path="/signup" name="signup page" component={props => <Signup {...props}/>} />
+              <Route path="/authenticate" name="authentication page" component={props => <Authpage {...props}/>} />
+              <ProtectedRoute path="/projectForm" name="project form" component={props => <Panelform {...props}/>} />
               <ProtectedRoute exact path="/join" name="Join Page" component={props => <JoinPage {...props} />} />
               <ProtectedRoute path="/" name="the app" component={props => <Dashboard {...props} />} />
             </Switch>
