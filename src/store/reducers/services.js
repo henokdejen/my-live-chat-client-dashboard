@@ -31,11 +31,12 @@ const servicesReducer = (state = initialState, action) => {
     //     return newState
     // }
     case "FETCH_INITIAL_DATA_SUCCES": {
-      console.log("Tebeb new tizeta");
       let newState = { ...state };
       newState.isInitialDataLoaded = true;
       return newState;
     }
+    case types.LOGOUT_SUCCESS:
+      return initialState;
     default:
       return state;
   }

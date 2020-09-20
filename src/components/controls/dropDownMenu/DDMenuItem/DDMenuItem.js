@@ -1,10 +1,10 @@
-import React from 'react'
-import './ddMenuItem.scss'
+import React from "react";
+import "./ddMenuItem.scss";
 
-export const DDMenuItem = ({children}) => {
-    return (
-        <li className="dd-menu-item" >
-            {children}
-        </li>
-    )
-}
+export const DDMenuItem = (props) => {
+  return (
+    <li className="dd-menu-item" {...props}>
+      {props.children}
+    </li>
+  );
+};

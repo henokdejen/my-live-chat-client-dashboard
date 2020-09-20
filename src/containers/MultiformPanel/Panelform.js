@@ -6,6 +6,7 @@ import { addprojectRequested } from "../../store/actions/project";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { LS_TOKEN } from "../../constants";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const PanelformComponent = ({ errors, touched, projectInfo }) => {
   const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
@@ -15,7 +16,7 @@ const PanelformComponent = ({ errors, touched, projectInfo }) => {
     if (projectInfo.ErrorMessage) {
       console.log("error on adding");
     } else {
-      if (!firsttimeloading) history.push("/");
+      // if (!firsttimeloading) history.push("/");
     }
     setFirstTimeLoading(false);
   }, [projectInfo]);
@@ -65,29 +66,31 @@ const PanelformComponent = ({ errors, touched, projectInfo }) => {
   );
 };
 
-const Panelform = withFormik({
-  mapPropsToValues({ websitename, websiteurl }) {
-    return {
-      websitename: websitename || "",
-      websiteurl: websiteurl || "",
-    };
-  },
+let Panelform = withRouter(
+  withFormik({
+    mapPropsToValues({ websitename, websiteurl }) {
+      return {
+        websitename: websitename || "",
+        websiteurl: websiteurl || "",
+      };
+    },
 
-  validationSchema: Yup.object().shape({
-    websitename: Yup.string().required("*required"),
-    websiteurl: Yup.string()
-      .matches(
-        /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-        "Enter correct url!"
-      )
-      .required("*required"),
-  }),
+    validationSchema: Yup.object().shape({
+      websitename: Yup.string().required("*required"),
+      websiteurl: Yup.string()
+        .matches(
+          /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+          "Enter correct url!"
+        )
+        .required("*required"),
+    }),
 
-  handleSubmit(values, { props }) {
-    if (localStorage.getItem(LS_TOKEN))
-      props.dispatch(addprojectRequested(values));
-  },
-})(PanelformComponent);
+    handleSubmit(values, { props }) {
+      if (localStorage.getItem(LS_TOKEN))
+        props.dispatch(addprojectRequested(values, props.history));
+    },
+  })(PanelformComponent)
+);
 
 const mapStateToProps = (state) => {
   return {

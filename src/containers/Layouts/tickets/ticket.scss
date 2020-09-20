@@ -1,0 +1,47 @@
+@import "../../../styles/_colors";
+
+.tickets-main {
+  flex: 10;
+}
+
+.tickets-main-wrapper {
+  .ticket-search {
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
+    height: 35px;
+    border: 1px solid #ddd;
+    padding-left: 38px;
+    padding-right: 20px;
+    font-size: 0.97rem;
+    background: url("../../../images/search/search.svg") no-repeat
+      $search-background-image-color;
+    background-position: 10px center;
+    background-size: 20px 20px;
+    margin-bottom: 20px;
+  }
+
+  .tickets-main-section {
+    padding-top: 10px;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+}
+
+.inner-nav-item {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 15px;
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  &.active {
+    color: $primary-color;
+    font-weight: 600;
+  }
+}

@@ -10,6 +10,7 @@ import { ChangePasswordModal } from "../../components/modals/changePasswordModal
 import { connect } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { userDataChanged } from "../../store/actions";
+import { ButtonWithLoader } from "../../components/controls/buttons/ButtonWithLoader/ButtonWithLoader";
 
 const ProfileSchema = Yup.object().shape({
   name: Yup.string()
@@ -44,30 +45,25 @@ const MyProfile = ({ userInfo, userInfoUpdated }) => {
 
   const onProfileImageSelected = (e) => {
     const fileList = e.target.files;
-    console.log(fileList);
     setprofilePic(URL.createObjectURL(fileList[0]));
   };
 
   const updateProfile = (values, { setSubmitting }) => {
-    setSubmitting("");
+    setsubmitError("");
     setTimeout(() => {
       API.updateProfile(values.name, values.timeZone)
         .then((response) => {
-          console.log(response);
           if (response.success) {
-            console.log("Password chaged!");
             userInfoUpdated(values.name, values.timeZone);
           } else {
             setsubmitError(response.message);
-            setSubmitting("");
+            setSubmitting(false);
           }
         })
         .catch((error) => {
           console.log(error);
         })
-        .then(() => {
-          console.log("Finally hre");
-        });
+        .then(() => {});
     }, 1000);
   };
 
@@ -174,18 +170,20 @@ const MyProfile = ({ userInfo, userInfoUpdated }) => {
                     onClick={(e) => {
                       e.preventDefault();
                       resetForm();
+                      setsubmitError("");
                     }}
                   >
                     Reset
                   </Button>
-                  <Button
+                  <ButtonWithLoader
                     variant="primary"
                     size="sm"
                     disabled={isSubmitting}
                     type="submit"
+                    isLoading={isSubmitting}
                   >
-                    {isSubmitting ? <ClipLoader /> : "Save Agents"}
-                  </Button>
+                    Save Changes
+                  </ButtonWithLoader>
                 </div>
               </Form>
             )}

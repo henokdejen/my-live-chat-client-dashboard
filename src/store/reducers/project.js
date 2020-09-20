@@ -9,8 +9,6 @@ const initialState = {
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.ADDPROJECT_SUCCESS:
-      const { _id } = action.payload;
-      localStorage.setItem(LS_PID, _id);
       return {
         projectInfo: [...state.projectInfo, action.payload.projectInfo],
         ErrorMessage: "",
@@ -27,6 +25,8 @@ const projectReducer = (state = initialState, action) => {
         projectInfo: state.projectInfo,
         ErrorMessage: "",
       };
+    case types.LOGOUT_SUCCESS:
+      return initialState;
     default:
       return state;
   }

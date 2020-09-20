@@ -2,7 +2,6 @@ import { baseURL, ADD_PROJECT } from "./API_URL";
 import { LS_TOKEN } from "../constants";
 
 export const addProjectAPI = async (siteDetails) => {
-  console.log(siteDetails);
   const token = localStorage.getItem(LS_TOKEN);
   const requestOptions = {
     method: "POST",

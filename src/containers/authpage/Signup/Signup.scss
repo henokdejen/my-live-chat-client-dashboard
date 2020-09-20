@@ -73,13 +73,11 @@
     border: none;
     background: #ddd;
     font-size: 18px;
+    &:focus {
+      background-color: #ddd;
+      outline: none;
+    }
   }
-}
-
-.signupinputfield-container > input[type="email"]:focus,
-input[type="password"]:focus {
-  background-color: #ddd;
-  outline: none;
 }
 
 .signupbtn:hover {

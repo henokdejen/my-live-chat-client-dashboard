@@ -14,12 +14,11 @@ const composeEnhancers =
     : compose;
 
 const enhancer = composeEnhancers(
-  applyMiddleware(sagaMiddleware, myServiceMiddleware())
+  applyMiddleware(myServiceMiddleware(), sagaMiddleware)
 );
 
 const store = createStore(rootReducer, enhancer);
 
-console.log("IIII", rootSaga);
 export default store;
 
 sagaMiddleware.run(rootSaga);

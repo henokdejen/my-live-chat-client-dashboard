@@ -17,16 +17,18 @@
   align-items: center;
 
   &:hover {
-    color: red;
+    color: $primary-color;
   }
 
   &.active {
     color: $primary-color;
+    font-weight: 600;
   }
 }
 
 .settings-main-body {
   flex: 10;
+  overflow-y: auto;
 
   .setting-sections-wrapper {
     margin: 10px;

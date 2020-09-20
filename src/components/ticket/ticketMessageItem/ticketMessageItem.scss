@@ -1,0 +1,70 @@
+@import "../../../styles/colors";
+
+.ticket-msg-item {
+  padding: 10px 10px 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f1f1f1;
+
+  &.ticket-msg-item-pending {
+    color: #999;
+  }
+  &.ticket-msg-item-error {
+    border: 1px solid #f00;
+  }
+
+  .msg-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+
+    .sender {
+      padding: 0 0;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      column-gap: 20px;
+      justify-items: start;
+      border-radius: 4px;
+
+      .sender-image {
+        width: 40px;
+        height: 40px;
+        background-color: #ddd;
+        border-radius: 100%;
+        grid-row: span 2;
+      }
+
+      .sender-name {
+        // grid-area: sender-name;
+        padding: 0;
+        line-height: 14px;
+        font-weight: 600;
+      }
+
+      .sender-email {
+        // grid-area: sender-email;
+        color: #777;
+        font-weight: 300;
+        font-style: italic;
+      }
+    }
+    .time {
+      font-size: 0.94em;
+      font-style: italic;
+
+      &.time-pending {
+        color: $primary-color;
+      }
+
+      &.time-error {
+        color: #f00;
+      }
+    }
+  }
+
+  .msg-content {
+    font-size: 0.94em;
+    margin-top: 5px;
+    padding-left: 60px;
+  }
+}

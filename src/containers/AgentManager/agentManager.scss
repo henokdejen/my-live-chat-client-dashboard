@@ -16,19 +16,17 @@
       padding: 16px 32px 16px 0;
       border-bottom: 1px solid #f1f1f1;
       white-space: nowrap;
-      width: 30%;
-
-      &:last-child {
-        width: 100%;
-      }
     }
 
     .agent-name {
       min-width: 70px;
+      width: 30%;
+      white-space: pre-wrap;
     }
 
     .agent-email {
       min-width: 90px;
+      width: 30%;
     }
 
     .agent-role {
@@ -41,6 +39,10 @@
         border-radius: 80px;
         height: 20px;
       }
+    }
+
+    .actions {
+      width: 70%;
     }
   }
 }

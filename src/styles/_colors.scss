@@ -1,9 +1,9 @@
-@import '../../node_modules/compass-sass-mixins/lib/compass/utilities/color/_contrast.sass';
+@import "../../node_modules/compass-sass-mixins/lib/compass/utilities/color/_contrast.sass";
 
-$primary-color: #0048AA;
-$accent-color: #EEE;
+$primary-color: #0048aa;
+$accent-color: rgb(167, 11, 11);
 
-$contrasted-primary-text: #FFF; // contrast-color($primary-color, lighten($accent-color, 10), darken($accent-color, 10));
+$contrasted-primary-text: #fff; // contrast-color($primary-color, lighten($accent-color, 10), darken($accent-color, 10));
 $contrasted-accent-text: #111; // contrast-color($accent-color, lighten($primary-color, 10), darken($primary-color, 10));
 
 $primary-dark: #374252;
@@ -12,7 +12,7 @@ $contrasting-accent-text-color: white; // choose-contrast-color($accent-color);
 
 $shadow-box-color: #000000bf;
 $search-background-image-color: #ffffff4d;
-$light-grey-border: #DDD;
+$light-grey-border: #ddd;
 $accent-text-color: darken($accent-color, 86.67);
 
 $sky-blue: #57c1eb;
@@ -20,11 +20,10 @@ $sky-dark-blue: #246fa8;
 
 $nav-dark-background-lighter: #2c3544;
 
-
 $online-indicator: rgb(16, 202, 16);
 $offline-indicator: #e00;
 
 $subtitle_color: #999;
 
 $inner-nav-border-color: #ddd;
-$inner-nav-bg-color: #ffffff
+$inner-nav-bg-color: #ffffff;

@@ -15,13 +15,16 @@ import { DDMenuItem } from "../../components/controls/dropDownMenu/DDMenuItem/DD
 import { PopupContainer } from "../../components/controls/popupContainer/PopupContainer";
 import { ProfilePopup } from "../../components/profile-popup/ProfilePopup";
 import { AvatarWithOnlineIndicator } from "../../components/controls/avatar/AvatarWithOnlineIndicator";
+import { logoutRequested, logoutSucceded } from "../../store/actions";
 
 const SideBar = ({
   onlineVisitorCount,
   totalUnseenCount,
+  openTicketsCount,
   userInfo,
   projectInfo,
   allProjects,
+  logout,
 }) => {
   const menus = [
     {
@@ -37,6 +40,13 @@ const SideBar = ({
       path: "/visitors",
       showBadge: true,
       badgeValue: onlineVisitorCount,
+    },
+    {
+      title: "Tickets",
+      icon: <BsFillGearFill />,
+      path: "/tickets",
+      showBadge: true,
+      badgeValue: openTicketsCount,
     },
     {
       title: "Settings",
@@ -76,6 +86,7 @@ const SideBar = ({
               userInfo={userInfo}
               projectInfo={projectInfo}
               allProjects={allProjects}
+              logout={logout}
               handleClose={(e) => {
                 console.log("fine");
                 setshowProfilePopup(false);
@@ -94,16 +105,17 @@ const mapStateToProps = (state) => {
     projectInfo: state.basicState.projectInfo,
     allProjects: state.basicState.allProjects,
     onlineVisitorCount: state.visitorsState.onlineVisitors.length,
+    openTicketsCount: state.basicState.projectInfo.openTicketsCount,
     totalUnseenCount: state.conversationState.unSeenCount,
   };
   return props;
 };
 
-// const mapDispatchToProps = dispatch => ({
-//     loadConversations: () => {
-//         dispatch(conversationsRequested())
-//         dispatch(allOnlineVisitorsRequested())
-//     }
-// });
+const mapDispatchToProps = (dispatch) => ({
+  logout: (history) => {
+    console.log("fjaslkdfj saldjf", logoutSucceded(history));
+    dispatch(logoutSucceded(history));
+  },
+});
 
-export default connect(mapStateToProps)(SideBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

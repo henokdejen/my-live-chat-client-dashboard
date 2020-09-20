@@ -28,40 +28,20 @@ const settings = [
         path: "me",
         icon: <BsFillPeopleFill />,
       },
-      {
-        title: "Agents asdfa",
-        path: "agentsfasdf",
-        icon: <BsFillPeopleFill />,
-      },
-      {
-        title: "Lela",
-        path: "lela",
-        icon: <BsFillPeopleFill />,
-      },
     ],
   },
 
   {
-    section: "Lela",
+    section: "Channels",
     menus: [
       {
-        title: "Agents",
-        path: "agentss",
+        title: "Chat Widget",
+        path: "chatWidget",
         icon: <BsFillPeopleFill />,
       },
       {
-        title: "Lela asfdasdf",
-        path: "lelas",
-        icon: <BsFillPeopleFill />,
-      },
-      {
-        title: "Agents asfas ",
-        path: "agentssssss",
-        icon: <BsFillPeopleFill />,
-      },
-      {
-        title: "Lelass",
-        path: "lelaaf",
+        title: "Chat Page",
+        path: "chatPage",
         icon: <BsFillPeopleFill />,
       },
     ],

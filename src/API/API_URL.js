@@ -1,6 +1,6 @@
-// export const baseURL = "http://192.168.1.10:5000/agency/";
+export const baseURL = "http://192.168.1.10:5000/agency/";
 
-export const baseURL = "http://localhost:5000/agency";
+// export const baseURL = "http://localhost:5000/agency";
 
 export const LOAD_CONVERSATIONS = "conversations";
 export const LOAD_MESSAGES = "history";
@@ -47,9 +47,39 @@ export const getLoadConversationMsgsURL = (projectID, conversationID) =>
   `project/${projectID}/conversations/${conversationID}/history/?fetchedHistoryCount=0`;
 
 export const SOCKET_SERVER = "http://192.168.1.10:5000";
+// export const SOCKET_SERVER = "http://localhost:5000";
 
 // profile related
 
 export const getChangePasswordURL = (projectID) => ``;
 
 export const getChangeProfileDetailsURL = (projectID) => ``;
+
+// ticket staff
+
+const obsKeysToString = (obj) => {
+  let res = "";
+  for (let k in obj) {
+    res += `${k}=${obj[k]}&`;
+  }
+  return res.substring(0, res.length - 1);
+};
+
+export const getLoadTicketURL = (projectID, filters) => {
+  let base = `project/${projectID}/tickets?`;
+  let query = obsKeysToString(filters);
+  return base + query;
+};
+
+export const getLoadTicketDetailsURL = (projectID, ticketID) =>
+  `project/${projectID}/tickets/${ticketID}`;
+
+export const getSendTickeMsgURL = (projectID, ticketID) =>
+  `project/${projectID}/tickets/${ticketID}/reply`;
+
+export const getTicketClaimURL = (projectID, ticketID) =>
+  `project/${projectID}/tickets/${ticketID}/claim`;
+
+// project settings
+export const getProjectSettingUpdateURL = (projectID) =>
+  `project/${projectID}/setting`;

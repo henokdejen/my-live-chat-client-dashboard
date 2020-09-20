@@ -1,23 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 import {
   messagesRequested,
   reportMessageSeenRequested,
   markAllMessageSeenRequested,
+  removeUnSeenMarker,
 } from "../../store/actions";
 import Message from "../../components/message/Message";
 import "./MessageList.scss";
 import { NotificationMessage } from "../../components/notification-message-item/NotificationMessage";
+import { NewMessageMarker } from "../../components/new-message-marker/NewMessageMarker";
+
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 
 const MessageList = ({
-  conversationId,
+  selectedConversation,
   getMessagesForConversation,
   loadMessages,
   reportMessageSeen,
   markAllMessagesSeen,
+  removeMessagesMarker,
 }) => {
-  const messageDetails = getMessagesForConversation(conversationId);
+  const messageDetails = getMessagesForConversation(selectedConversation.id);
 
   const messages = messageDetails ? messageDetails.messages : null;
   const initialMsgLoaded = messageDetails
@@ -27,25 +38,30 @@ const MessageList = ({
 
   let wrapperRef;
 
+  let initialUnseenCount = 4;
+
+  const prevAmount = usePrevious(selectedConversation.id);
+
   useEffect(() => {
     if (!messageDetails || !initialMsgLoaded) {
-      loadMessages(conversationId, null);
+      loadMessages(selectedConversation.id, null);
     } else {
       wrapperRef.scrollTop = wrapperRef.scrollHeight;
-      markAllMessagesSeen(conversationId);
+      markAllMessagesSeen(selectedConversation.id);
     }
-  }, [messageDetails, loadMessages, conversationId]);
+  }, [messageDetails, loadMessages, selectedConversation.id]);
 
-  // useEffect(() => {
-  //     if (messageDetails) {
-  //         wrapperRef.scrollTop = wrapperRef.scrollHeight
-  //         markAllMessagesSeen(conversationId)
-  //     }
-  // }, [messages])
+  useEffect(() => {
+    if (prevAmount && prevAmount !== selectedConversation.id) {
+      removeMessagesMarker(prevAmount);
+    }
+  }, [selectedConversation.id]);
 
   if (messages && messages.length > 0) {
+    let { unSeenMarkerCount } = selectedConversation;
+
     messageItems = messages.map((message, index) => {
-      return message.isNotification ? (
+      let messageItem = message.isNotification ? (
         <NotificationMessage
           reportMessageSeen={reportMessageSeen}
           message={message}
@@ -58,8 +74,19 @@ const MessageList = ({
           reportMessageSeen={reportMessageSeen}
           isMyMessage={message.isMyMessage}
           message={message}
+          sender={{ name: selectedConversation.title }}
         />
       );
+
+      if (unSeenMarkerCount !== 0 && index === unSeenMarkerCount) {
+        return (
+          <>
+            <NewMessageMarker key={"nmm" + index} />
+            {messageItem}
+          </>
+        );
+      }
+      return messageItem;
     });
   }
 
@@ -93,7 +120,16 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(markAllMessageSeenRequested(conversationID));
   };
 
-  return { loadMessages, reportMessageSeen, markAllMessagesSeen };
+  const removeMessagesMarker = (conversationID) => {
+    dispatch(removeUnSeenMarker(conversationID));
+  };
+
+  return {
+    loadMessages,
+    reportMessageSeen,
+    markAllMessagesSeen,
+    removeMessagesMarker,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageList);

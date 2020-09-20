@@ -7,7 +7,6 @@ import SideBar from "../SideBar/SideBar";
 import "./dashboard.scss";
 
 const Dashboard = ({ loadingOver }) => {
-  console.log("why here", loadingOver);
   return (
     <>
       {!loadingOver ? (
@@ -37,7 +36,6 @@ const Dashboard = ({ loadingOver }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("I am hereaf", state.services.isInitialDataLoaded);
   let props = {
     loadingOver: state.services.isInitialDataLoaded,
   };

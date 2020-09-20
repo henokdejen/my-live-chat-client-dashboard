@@ -1,4 +1,4 @@
-import { put, takeLatest, takeEvery, call } from "redux-saga/effects";
+import { put, takeLatest, takeEvery, call, select } from "redux-saga/effects";
 
 import { messagesLoaded, messasgeSent, newMessageAdded } from "../actions";
 import { MessageStatus, FETCH_ALL_MESSAGES_REQUEST } from "../../constants";
@@ -9,13 +9,14 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const fetchMessagesSaga = function* (action) {
   const { conversationId, numberOfMessages, lastMessageId } = action.payload;
-  console.log("Given convId", conversationId, numberOfMessages);
 
   try {
     const response = yield call(API.loadConversationsMessages, conversationId);
+    const userInfo = yield select((state) => state.basicState.userInfo);
+
     if (response.success) {
       let messages = response.data.history.reverse().map((msg) => {
-        return getMessage(msg);
+        return getMessage(msg, userInfo._id);
       });
       console.log("RECEIVED messages", messages);
       if (!messages) messages = [];

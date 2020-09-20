@@ -13,29 +13,54 @@ import {
   UPDATE_PROFILE,
   SOCKET_SERVER,
   getLoadConversationMsgsURL,
+  getLoadTicketURL,
+  getLoadTicketDetailsURL,
+  getSendTickeMsgURL,
+  getTicketClaimURL,
+  getProjectSettingUpdateURL,
 } from "./API_URL";
-import { LS_TOKEN, INITIAL_DATA_LOADED } from "../constants";
+import {
+  LS_TOKEN,
+  INITIAL_DATA_LOADED,
+  LOGIN_SUCCESS,
+  SIGNUP_SUCCESS,
+  ADDPROJECT_SUCCESS,
+  LS_PID,
+} from "../constants";
 
 let projectID = "";
 
-export const myServiceMiddleware = () => {
-  return () => (next) => (action) => {
-    if (action.type == INITIAL_DATA_LOADED) {
-      // projectID = action.payload.userInfo.lastActiveProjectID;
-      projectID = "5f5d8e344778d226b4c1efe0";
-    }
-    return next(action);
-  };
-};
-let token = localStorage.getItem(LS_TOKEN);
+let token = "";
+let oldToken = localStorage.getItem(LS_TOKEN);
 
-// "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElEIjoiNWY1NjY0NzljYTg0ZGUxZGE4M2E3YTZmIiwibmFtZSI6Ikhpc2tlbCBLZWxlbWV3b3JrIiwiZW1haWwiOiJ3dWhodUBnbWFpbC5jb20iLCJpc0FkbWluIjp0cnVlLCJhZ2VuY3lJRCI6IjVmNTY2NDc5Y2E4NGRlMWRhODNhN2E2ZSIsImlhdCI6MTU5OTQ5NzMzN30.gcz7rmnH1oDr99331y2g-nw_kJeyc3nHaBMB3KHFNyA";
+if (oldToken && !token) {
+  token = oldToken;
+}
+
 const API = axios.create({
   baseURL: `${baseURL}`,
 });
 
 API.defaults.headers.common["Authorization"] = token;
 API.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+
+export const myServiceMiddleware = () => {
+  return () => (next) => (action) => {
+    if (action.type == INITIAL_DATA_LOADED) {
+      projectID = localStorage.getItem(LS_PID);
+    } else if (action.type === ADDPROJECT_SUCCESS) {
+      projectID = localStorage.getItem(LS_PID);
+    } else if (
+      action.type === LOGIN_SUCCESS ||
+      action.type === SIGNUP_SUCCESS
+    ) {
+      token = action.payload.token;
+      API.defaults.headers.common["Authorization"] = token;
+      // alert("New Token Teyzual");
+    }
+    return next(action);
+  };
+};
 
 // project staff
 
@@ -44,7 +69,7 @@ export const loadInitialData = (projectID) => {
 };
 
 export const removeAgent = (agentID) => {
-  return API.post(getRemoveAgentURL(projectID, agentID));
+  return API.delete(getRemoveAgentURL(projectID, agentID));
 };
 
 export const addAgent = (agent) => {
@@ -91,4 +116,34 @@ export const connectSocket = () => {
   };
 
   return io(SOCKET_SERVER, { query: agentQuery, forceNew: true });
+};
+
+// Ticket Staff goes here
+
+export const loadTickets = (filters) => {
+  return API.get(getLoadTicketURL(projectID, filters)).then((d) => d.data);
+};
+
+export const loadTicketDetails = (ticketID) => {
+  return API.get(getLoadTicketDetailsURL(projectID, ticketID)).then(
+    (d) => d.data
+  );
+};
+
+export const sendTicketMessage = (ticketID, text) => {
+  return API.post(getSendTickeMsgURL(projectID, ticketID), { text }).then(
+    (d) => d.data
+  );
+};
+
+export const claimTicketAssignee = (ticketID) => {
+  return API.post(getTicketClaimURL(projectID, ticketID)).then((d) => d.data);
+};
+
+// setting related
+
+export const updateProjectSettings = (newSettings) => {
+  return API.put(getProjectSettingUpdateURL(projectID), newSettings).then(
+    (d) => d.data
+  );
 };

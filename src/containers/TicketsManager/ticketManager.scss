@@ -1,0 +1,68 @@
+.no-tickets-msg {
+  padding: 20px;
+  margin: auto;
+}
+
+.tickets-list {
+  padding: 10px 0;
+  width: 100%;
+}
+.ticketItem {
+  display: flex;
+  padding: 10px 20px;
+  gap: 20px;
+  font-size: 0.9em;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+  align-items: center;
+
+  * {
+    height: 100%;
+  }
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+
+  .status {
+    font-size: 1.5em !important;
+    &.pending {
+      color: #aa0;
+    }
+
+    &.open {
+      color: #00a;
+    }
+
+    &.closed {
+      color: green;
+    }
+
+    svg {
+      display: block;
+    }
+    // text-align: center;
+  }
+
+  .sender {
+    min-width: 150px;
+    max-width: 180px;
+    width: 100%;
+  }
+
+  .subject-body {
+    flex: 10;
+    width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .subject {
+      font-weight: 600;
+      &::after {
+        content: "-";
+        padding: 0 10px;
+      }
+    }
+  }
+}

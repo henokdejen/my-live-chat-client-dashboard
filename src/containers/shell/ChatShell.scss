@@ -1,4 +1,4 @@
-@import '../../styles/_colors';
+@import "../../styles/_colors";
 
 $chat-shell-background: lighten($accent-color, 65%);
 
@@ -8,7 +8,7 @@ $chat-shell-background: lighten($accent-color, 65%);
   height: 100%;
   overflow: hidden;
 
-  .conversations-wrapper{
+  .conversations-wrapper {
     width: 100%;
     max-width: 320px;
     display: flex;
@@ -17,7 +17,7 @@ $chat-shell-background: lighten($accent-color, 65%);
     background: $nav-dark-background-lighter;
   }
 
-  .chat-body{
+  .chat-body {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -25,16 +25,14 @@ $chat-shell-background: lighten($accent-color, 65%);
     flex: 1;
     border-right: 1px solid #ddd;
 
-    .conversationContent{
+    .conversationContent {
       flex: 3;
       // background-color: #edeeef;
-      overflow: scroll;
+      overflow-y: auto;
     }
-
   }
 
-  .client-information-wrapper{
+  .client-information-wrapper {
     width: 320px;
   }
-
 }

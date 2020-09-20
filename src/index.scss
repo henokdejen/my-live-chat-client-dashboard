@@ -23,11 +23,16 @@ html {
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  // display: none;
 }
 
 // pop up
 .popup {
   position: absolute;
+  background-color: #fff;
+}
+
+.inner-body-section {
+  margin: 0 10px;
   background-color: #fff;
 }

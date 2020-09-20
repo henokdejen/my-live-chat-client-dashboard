@@ -4,6 +4,10 @@ import MyProfile from "./containers/MyProfile/MyProfile";
 import ChatShell from "./containers/shell/ChatShell";
 import Settings from "./containers/Layouts/settings/Settings";
 import VisitorShell from "./containers/visitor/VisitorShell";
+import Tickets from "./containers/Layouts/tickets/Tickets";
+import { ChatWidgetSettings } from "./containers/chatWidgetSettings/ChatWidgetSettings";
+import TicketManager from "./containers/TicketsManager/TicketManager";
+import TicketBody from "./containers/TicketBody/TicketBody";
 
 export const rootRoutes = {
   base: "",
@@ -19,9 +23,30 @@ export const rootRoutes = {
       component: VisitorShell,
     },
     {
+      path: "tickets",
+      name: "Tickets Page",
+      component: Tickets,
+    },
+    {
       path: "settings",
       name: "settings Page",
       component: Settings,
+    },
+  ],
+};
+
+export const ticketRoutes = {
+  base: "/tickets",
+  routes: [
+    {
+      path: ":filter/:id",
+      name: "Ticket Manager",
+      component: TicketBody,
+    },
+    {
+      path: ":filter?",
+      name: "Tickets List",
+      component: TicketManager,
     },
   ],
 };
@@ -38,6 +63,11 @@ export const settingRoutes = {
       path: "me",
       name: "My Profile",
       component: MyProfile,
+    },
+    {
+      path: "chatWidget",
+      name: "Chat Widget",
+      component: ChatWidgetSettings,
     },
   ],
 };

@@ -2,13 +2,14 @@
 @import "../../../styles/dimensions";
 
 .inner-header {
-  line-height: $inner-nav-height;
+  height: $inner-nav-height;
   padding: $inner-nav-padding;
   background-color: $inner-nav-bg-color;
   border-bottom: $basic-border;
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   .title {
     display: flex;

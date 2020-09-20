@@ -1,0 +1,10 @@
+@import "../../styles/colors";
+
+.new-message-marker {
+  padding: 7px 0;
+  text-align: left;
+  color: $accent-color;
+  border-bottom: 1px solid;
+  border-color: $accent-color;
+  margin-bottom: 20px;
+}

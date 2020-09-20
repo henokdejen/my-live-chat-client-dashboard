@@ -1,0 +1,81 @@
+.chat-widget-appearance {
+  padding: 0px 20px;
+  display: flex;
+  gap: 20px;
+  padding-bottom: 40px;
+
+  .appearance-sub-section {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin: 20px 0;
+  }
+
+  .appearance-settings {
+    flex: 0.55;
+    .setting-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 5px 0;
+      margin-bottom: 15px;
+
+      .setting-lable {
+        flex: 0.4;
+      }
+
+      .setting-value {
+        flex: 0.6;
+      }
+    }
+
+    .input-text {
+      width: 100%;
+    }
+  }
+  .widget-preview-wrapper {
+    flex: 0.45;
+  }
+}
+
+.widget_color_selector {
+  width: 100%;
+  position: relative;
+
+  .widget_color_selector__color {
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+
+    &.widget_color_selector__color-active {
+    }
+  }
+
+  .sketch-picker-wrapper {
+    position: absolute;
+    z-index: 1000;
+  }
+
+  .pop-color-picker {
+    box-shadow: none;
+    padding: 0;
+    border: none;
+    right: 0;
+    top: 40px;
+  }
+}
+
+.basic-select {
+  width: 100%;
+  padding: 10px 7px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
+
+  // &: {
+  //   border: none;
+  // }
+}

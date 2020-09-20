@@ -23,9 +23,12 @@ const VisitorItem = withRouter(({ visitor, createConversation, history }) => {
     // history.push('/conversations')
     createConversation(visitor.browserID, history);
   };
+
+  console.log("Visistor", visitor);
   return (
     <div className="visitor-item">
       <div className="visitor-id">#{visitor.browserID}</div>
+      <div className="user-agent">{visitor.userAgent.split("/")[0]}</div>
       <div className="visiting-site">
         <a href="#">https://dummy.url.fornow/#chatwindow_0-tab</a>
       </div>
@@ -72,11 +75,11 @@ const VisitorShell = ({ createConversation, getOnlineVisitors }) => {
         })}
       </InnerNav>
 
-      <div className="visitors-list-wrapper setting-sections-wrapper">
+      <div className="visitors-list-wrapper">
         <InnerHeader>
-          <h4>All Visitors</h4>
+          <div className="title">All Visitors</div>
         </InnerHeader>
-        <Card>
+        <div>
           {onlineVisitors.map((v) => (
             <VisitorItem
               key={v.browserID}
@@ -84,7 +87,7 @@ const VisitorShell = ({ createConversation, getOnlineVisitors }) => {
               createConversation={createConversation}
             />
           ))}
-        </Card>
+        </div>
       </div>
     </div>
   );

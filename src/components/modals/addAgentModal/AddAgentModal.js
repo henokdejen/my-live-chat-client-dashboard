@@ -50,7 +50,6 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
   const [exisitingAgentId, setexisitingAgentId] = useState("");
 
   const checkIfAgentExists = (email) => {
-    console.log("Siked", validateEmail(email));
     if (validateEmail(email)) {
       setcheckingEmail(true);
       setTimeout(() => {
@@ -58,7 +57,6 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
           .then((data) => {
             if (data.success) {
               if (data.data.exists) {
-                console.log("It exists");
                 setpasswordNeeded(false);
                 setaccountExists(true);
                 setexisitingAgentId(data.data.agentID);
@@ -66,7 +64,6 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
                 setpasswordNeeded(true);
                 setaccountExists(false);
                 setexisitingAgentId("");
-                console.log("good to go");
               }
             }
           })
@@ -93,7 +90,6 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
 
       API.addAgent(agent)
         .then((response) => {
-          console.log(response);
           let { data } = response;
           if (data.success) {
             addAgent(data.data);
@@ -106,9 +102,7 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
         .catch((error) => {
           console.log(error);
         })
-        .then(() => {
-          console.log("Finally hre");
-        });
+        .then(() => {});
     }, 600);
   };
 

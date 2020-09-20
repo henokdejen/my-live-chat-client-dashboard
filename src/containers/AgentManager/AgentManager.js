@@ -35,7 +35,7 @@ const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
           <span>{role}</span>
         </td>
 
-        {isUserTheProjAdmin && !isAdmin && (
+        {isUserTheProjAdmin && !isAdmin ? (
           <td className="actions">
             <Button size="sm" variant="primary" onClick={() => setshow(true)}>
               Remove
@@ -50,87 +50,13 @@ const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
               onDeny={onDeleteDenied}
             />
           </td>
+        ) : (
+          <td className="actions"></td>
         )}
       </tr>
     </>
   );
 };
-
-// const AddAgentModal = ({ show, addAgent, handleClose }) => {
-//   return (
-//     <Modal show={show}>
-//       <div className="modal-title">Add Agent</div>
-//       <div className="modal-body">
-//         <Formik
-//           initialValues={{ email: "", name: "" }}
-//           validate={(values) => {
-//             const errors = {};
-//             if (!values.email) {
-//               errors.email = "* Required";
-//             } else if (
-//               !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-//             ) {
-//               errors.email = "Invalid email address";
-//             }
-
-//             if (!values.name) {
-//               errors.name = "* Required";
-//             }
-
-//             return errors;
-//           }}
-//           onSubmit={(values, { setSubmitting }) => {
-//             setTimeout(() => {
-//               let newAgent = {
-//                 id: Date.now(),
-//                 name: values.name,
-//                 email: values.email,
-//                 role: "admin",
-//               };
-//               addAgent(newAgent);
-//               setSubmitting(false);
-//               handleClose();
-//             }, 100);
-//           }}
-//         >
-//           {({ isSubmitting }) => (
-//             <Form>
-//               <InputWithLabel>
-//                 <label>Name </label>
-//                 <Field className="input-text" type="text" name="name" />
-//                 <ErrorMessage name="name" component="div" />
-//               </InputWithLabel>
-
-//               <InputWithLabel>
-//                 <label>Email </label>
-//                 <Field className="input-text" type="email" name="email" />
-//                 <ErrorMessage name="email" component="div" />
-//               </InputWithLabel>
-
-//               <div className="modal-footer">
-//                 <Button
-//                   variant="outlined"
-//                   size="l"
-//                   onClick={(e) => handleClose()}
-//                 >
-//                   Cancel
-//                 </Button>
-//                 <Button
-//                   variant="primary"
-//                   size="l"
-//                   type="submit"
-//                   disabled={isSubmitting}
-//                 >
-//                   {isSubmitting ? <ClipLoader /> : "Add Agent"}
-//                 </Button>
-//               </div>
-//             </Form>
-//           )}
-//         </Formik>
-//       </div>
-//     </Modal>
-//   );
-// };
 
 const AgentManager = ({
   userInfo,
@@ -140,6 +66,8 @@ const AgentManager = ({
   addAgentToStore,
 }) => {
   const [showAddAgentModal, setshowAddAgentModal] = useState(false);
+
+  console.log("afafa", agents);
 
   const removeAgent = (id) => {
     API.removeAgent(id)
@@ -162,7 +90,7 @@ const AgentManager = ({
   const isUserTheProjAdmin = ownerID === userInfo._id;
 
   return (
-    <div className="agents-management setting-sections-wrapper">
+    <div className="agents-management inner-body-section">
       {showAddAgentModal && (
         <AddAgentModal
           addAgent={addAgentToStore}
@@ -209,6 +137,7 @@ const AgentManager = ({
 const mapStateToProps = (state) => {
   let { agents, owner } = state.basicState.projectInfo;
   let { userInfo } = state.basicState;
+  console.log("fjasdf fjasldj f", agents);
   return { userInfo, agents, ownerID: owner };
 };
 

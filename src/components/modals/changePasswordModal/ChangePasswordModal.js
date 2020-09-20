@@ -4,6 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import * as Yup from "yup";
 import * as API from "../../../API/base";
 import Button from "../../controls/buttons/Button";
+import { ButtonWithLoader } from "../../controls/buttons/ButtonWithLoader/ButtonWithLoader";
 import InputWithLabel from "../../controls/inputWithLabel/InputWithLabel";
 import Modal from "../../controls/modal/Modal";
 
@@ -27,14 +28,10 @@ export const ChangePasswordModal = ({ handleClose }) => {
   const [submitError, setsubmitError] = useState("");
 
   const onSubmit = (values, { setSubmitting }) => {
-    console.log("ahun", values);
-
     setsubmitError("");
     API.changePassword(values.oldPassword, values.password)
       .then((response) => {
-        console.log(response);
         if (response.success) {
-          console.log("Password chaged!");
           handleClose();
         } else {
           setsubmitError(response.message);
@@ -44,9 +41,7 @@ export const ChangePasswordModal = ({ handleClose }) => {
       .catch((error) => {
         console.log(error);
       })
-      .then(() => {
-        console.log("Finally hre");
-      });
+      .then(() => {});
   };
 
   return (
@@ -114,14 +109,15 @@ export const ChangePasswordModal = ({ handleClose }) => {
                 >
                   Cancel
                 </Button>
-                <Button
+                <ButtonWithLoader
                   variant="primary"
                   size="l"
                   type="submit"
                   disabled={isSubmitting}
+                  isLoading={isSubmitting}
                 >
-                  {isSubmitting ? <ClipLoader /> : "Save"}
-                </Button>
+                  Save
+                </ButtonWithLoader>
               </div>
             </Form>
           )}

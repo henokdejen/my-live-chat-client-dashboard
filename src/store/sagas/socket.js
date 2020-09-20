@@ -24,7 +24,7 @@ import {
   visitorLeftChat,
   conversationJoined,
 } from "../actions";
-import { getConversation, getMessage } from "./helper";
+import { getConversation, getMessage, getSneakPreviewMessage } from "./helper";
 import { connectSocket } from "../../API/base";
 
 const MessageStatus = types.MessageStatus;
@@ -71,8 +71,6 @@ function* read(channel) {
   // const channel = yield call(subscribe, socket);
   while (true) {
     let action = yield take(channel);
-    if (action.type === NEW_MESSAGE_ADDED)
-      notify(action.payload.message.messageText);
     yield put(action);
   }
 }
@@ -82,11 +80,13 @@ function* sendMsg(socket, conversationId, message) {
     text: message.messageText,
     time: Date.now(),
     conversationID: conversationId,
+    whisper: message.whisper,
   };
   yield put(newMessageAdded(conversationId, message));
-  console.log("MSG TO BE SENT", msg);
   const result = yield new Promise((resolve) => {
-    socket.emit("MESSAGE", msg, function (comfiramtion) {
+    const eventName = msg.whisper ? types.WHISPER : types.MESSAGE;
+    console.log("MSG TO BE SENT", msg, eventName);
+    socket.emit(eventName, msg, function (comfiramtion) {
       console.log("Conf", comfiramtion);
       resolve();
     });
@@ -115,7 +115,6 @@ export function* subscribe(socket) {
 
     socket.on(types.MESSAGE, (data) => {
       console.log("new message received", data);
-      // const msgTime = new Date(data.createdAt.time).toLocaleTimeString() //getTimeInMyTimeZone(data.createdAt.time, data.createdAt.serverTimeZone).toLocaleTimeString()
       let message = getMessage(data);
       message.seen = false;
       message.shouldReport = true;
@@ -141,10 +140,19 @@ export function* subscribe(socket) {
       // emit(onlineStatusChange(data.conversationID, false))
     });
 
+    socket.on("VISITORTYPING", (data) => {
+      console.log("Typing..", data);
+    });
+
+    socket.on("SNEAKPREVIEW", (data) => {
+      const message = getSneakPreviewMessage(data);
+      console.log("SneakPreview", data, message);
+      emit(newMessageAdded(data.conversationID, message));
+    });
+
     socket.on(types.VISITOR_LEFT_CHAT, (data) => {
       console.log("visitor left chat", data);
       emit(visitorLeftChat(data.conversationID));
-      // message seen event should be added here.
     });
     return () => {};
   });
@@ -202,10 +210,6 @@ export function* socketListener() {
       cancel: take("disconnect"),
     });
   }
-  // // const socket = yield call(connect)
-  // const socket = connect()
-  // yield fork(read, socket)
-  // yield fork(write, socket)
 }
 
 export function* reportMessageSeenSaga(action) {
@@ -232,8 +236,6 @@ export function* watchMessageSeenReport() {
 export function* startNewConvSaga(action) {
   console.log("I have iintereseerfasf");
   const { browserID, history } = action.payload;
-  //   history.push("/conversations");
-
   if (socket) {
     const result = yield new Promise((resolve) => {
       socket.emit("STARTCONVERSATION", { browserID }, (err, conversation) => {
@@ -247,14 +249,11 @@ export function* startNewConvSaga(action) {
       });
     });
 
-    console.log("hoo", result);
-
     if (result) {
       const conv = getConversation(result);
       conv.joined = true;
       yield put(newConversationAdded(conv));
       history.push(`/conversations/${conv.id}`);
-      console.log("eje", conv);
     }
   }
 }
