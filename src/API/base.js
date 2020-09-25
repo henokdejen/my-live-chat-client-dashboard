@@ -56,14 +56,12 @@ export const myServiceMiddleware = () => {
     ) {
       token = action.payload.token;
       API.defaults.headers.common["Authorization"] = token;
-      // alert("New Token Teyzual");
     }
     return next(action);
   };
 };
 
 // project staff
-
 export const loadInitialData = (projectID) => {
   return API.get(getInitialDataURL(projectID)).then((d) => d.data);
 };

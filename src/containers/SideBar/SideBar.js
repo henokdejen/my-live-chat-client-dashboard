@@ -3,7 +3,7 @@ import {
   BsChatFill,
   BsFillPeopleFill,
   BsFillGearFill,
-  BsArrowLeftRight,
+  BsEnvelopeFill,
 } from "react-icons/bs";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -43,7 +43,7 @@ const SideBar = ({
     },
     {
       title: "Tickets",
-      icon: <BsFillGearFill />,
+      icon: <BsEnvelopeFill />,
       path: "/tickets",
       showBadge: true,
       badgeValue: openTicketsCount,

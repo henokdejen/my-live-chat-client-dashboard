@@ -37,7 +37,6 @@ const loadInitialDataSaga = function* ({ history }) {
             ...visitor,
             ...visitor.visitorInfo,
           }));
-          // onlineVisitors = { ...onlineVisitors, ...onlineVisitors.visitorInfo };
 
           for (let conv of conversations) {
             for (let onVist of onlineVisitors) {

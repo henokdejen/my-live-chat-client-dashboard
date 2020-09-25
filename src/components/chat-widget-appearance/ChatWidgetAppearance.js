@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { Form, Formik } from "formik";
 import { FormSubmitBar } from "../form-submit-bar/FormSubmitBar";
 import Select from "react-select";
+import { BsCaretDownFill } from "react-icons/bs";
 import * as API from "../../API/base";
 
 const langauages = [
@@ -69,7 +70,9 @@ const WidgetColorPicker = ({ activeColor, onColorSelected }) => {
           backgroundColor: "#f1f1f1",
         }}
         onClick={(e) => setshowColorPicker(true)}
-      ></span>
+      >
+        <BsCaretDownFill />
+      </span>
 
       {showColorPicker && (
         <PopupContainer
@@ -196,11 +199,6 @@ const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
               <div className="setting-item widget-language">
                 <div className="setting-lable">Language</div>
                 <div className="setting-value">
-                  {/* <select className="basic-select widget-language">
-                    <option>Henok </option>
-                    <option>Henok </option>
-                    <option>Henok </option>
-                  </select> */}
                   <Select
                     className="status-selector"
                     classNamePrefix="select"

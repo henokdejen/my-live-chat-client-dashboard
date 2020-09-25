@@ -77,7 +77,7 @@ export const ProfilePopup = withRouter(
 
         <div className="section">
           <label className="profile-action-btn">
-            <span>Accept Messages</span>
+            <span>Accept Chats</span>
             <Switch
               onChange={(c) => setacceptNotification(c)}
               checked={acceptNotification}

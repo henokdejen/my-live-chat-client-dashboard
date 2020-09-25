@@ -1,32 +1,5 @@
 import * as types from "../../constants";
 
-// const dummyAgents = [
-//   {
-//     id: 1,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "admin",
-//   },
-//   {
-//     id: 2,
-//     name: "Henok Dejen ",
-//     email: "henokdejen84@gmail.com",
-//     role: "admin",
-//   },
-//   {
-//     id: 21,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "agent",
-//   },
-//   {
-//     id: 3,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "agent",
-//   },
-// ];
-
 const getAgent = (agentData) => {
   return {
     id: agentData.agentID ? agentData.agentID : agentData._id,

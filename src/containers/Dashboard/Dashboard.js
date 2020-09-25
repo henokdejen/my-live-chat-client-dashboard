@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { rootRoutes } from "../../routes";
-import InitialLoader from "../InitialLoader/InitialLoader";
+import InitialLoader from "../../Layouts/InitialLoader/InitialLoader";
 import SideBar from "../SideBar/SideBar";
 import "./dashboard.scss";
 

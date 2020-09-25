@@ -9,11 +9,7 @@ import {
   take,
   takeEvery,
 } from "redux-saga/effects";
-import io from "socket.io-client";
-import { SOCKET_SERVER } from "../../API/API_URL";
 import * as types from "../../constants";
-import { NEW_MESSAGE_ADDED } from "../../constants";
-import { notify } from "../../services/notification";
 import {
   messageSeen,
   messasgeSent,
@@ -29,15 +25,9 @@ import { connectSocket } from "../../API/base";
 
 const MessageStatus = types.MessageStatus;
 
-const query = {
-  usertype: "agent",
-  agency: "telegram",
-  username: localStorage.getItem("username"),
-};
 let socket;
 
 const connect = (projectID) => {
-  const query = { usertype: "agent", agency: "telegram", username: "henok" };
   socket = connectSocket(projectID);
   return new Promise((resolve) => {
     socket.on("connect", () => {
@@ -68,7 +58,6 @@ const reconnect = () => {
 };
 
 function* read(channel) {
-  // const channel = yield call(subscribe, socket);
   while (true) {
     let action = yield take(channel);
     yield put(action);
@@ -124,20 +113,16 @@ export function* subscribe(socket) {
     socket.on(types.MESSAGE_SEEN, (data) => {
       console.log("Message Seen", data);
       emit(messageSeen(data.conversationID, data.messageID));
-      // message seen event should be added here.
     });
 
     socket.on(types.VISITOR_CONNECTED, (data) => {
       console.log("visitor connected", data);
       emit(visitorGetOnline(data));
-      // emit(onlineStatusChange(data.conversationID, true))
     });
 
     socket.on(types.VISITOR_DISCONNECTED, (data) => {
       console.log("visitor disconnected", data);
       emit(visitorGetOffline(data));
-
-      // emit(onlineStatusChange(data.conversationID, false))
     });
 
     socket.on("VISITORTYPING", (data) => {
@@ -234,7 +219,6 @@ export function* watchMessageSeenReport() {
 }
 
 export function* startNewConvSaga(action) {
-  console.log("I have iintereseerfasf");
   const { browserID, history } = action.payload;
   if (socket) {
     const result = yield new Promise((resolve) => {

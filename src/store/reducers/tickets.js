@@ -20,7 +20,6 @@ const ticketsReducer = (state = initialState, action) => {
       const { ticketID, details } = action.payload;
 
       let newState = { ...state };
-      // newState.ticketMessages[ticketID] = details.messages;
       let selectedTicketIndex = newState.tickets.findIndex(
         (t) => t._id === ticketID
       );
@@ -65,7 +64,6 @@ const ticketsReducer = (state = initialState, action) => {
         (t) => t._id === ticketID
       );
 
-      console.log("Neka", agent);
       if (selectedTicketIndex > -1) {
         let assignedAgent = {
           email: agent.email,

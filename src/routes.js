@@ -1,13 +1,14 @@
 import React from "react";
-import AgentManager from "./containers/AgentManager/AgentManager";
-import MyProfile from "./containers/MyProfile/MyProfile";
-import ChatShell from "./containers/shell/ChatShell";
-import Settings from "./containers/Layouts/settings/Settings";
-import VisitorShell from "./containers/visitor/VisitorShell";
-import Tickets from "./containers/Layouts/tickets/Tickets";
-import { ChatWidgetSettings } from "./containers/chatWidgetSettings/ChatWidgetSettings";
-import TicketManager from "./containers/TicketsManager/TicketManager";
-import TicketBody from "./containers/TicketBody/TicketBody";
+
+import ChatShell from "./containers/chat/chat-shell/ChatShell";
+import TicketManager from "./containers/ticket/TicketsManager/TicketManager";
+import AgentManager from "./containers/settings/AgentManager/AgentManager";
+import ChatWidgetSettings from "./containers/settings/chatWidgetSettings/ChatWidgetSettings";
+import MyProfile from "./containers/settings/MyProfile/MyProfile";
+import TicketBody from "./containers/ticket/TicketBody/TicketBody";
+import VisitorShell from "./containers/visitor/visitor-shell/VisitorShell";
+import Settings from "./Layouts/settings/Settings";
+import Tickets from "./Layouts/tickets/Tickets";
 
 export const rootRoutes = {
   base: "",

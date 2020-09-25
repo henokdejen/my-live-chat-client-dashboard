@@ -1,0 +1,15 @@
+.multiline-input {
+  margin: 0;
+  padding: 0;
+  cursor: text;
+  overflow-y: auto;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:empty:before {
+    content: attr(data-placeholder);
+    color: rgba(9, 30, 66, 0.54);
+  }
+}

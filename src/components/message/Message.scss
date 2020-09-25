@@ -35,6 +35,13 @@ $speech-bubble-border-color: darken($accent-color, 13.18);
     }
   }
 
+  &.whisper {
+    .message-text {
+      background-color: $whisper-msg-bg !important;
+      color: black !important;
+    }
+  }
+
   &.you-message {
     justify-content: end;
 
@@ -75,10 +82,6 @@ $speech-bubble-border-color: darken($accent-color, 13.18);
         color: $primary-color;
         padding-bottom: 10px;
       }
-    }
-
-    .whisper {
-      background-color: red;
     }
   }
 

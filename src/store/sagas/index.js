@@ -7,13 +7,12 @@ import {
   watchLogoutRequest,
 } from "./auth";
 import { watchaddProjectRequest } from "./project";
-import { watchGetConversationsAsync } from "./conversations";
 import { watchGetMessagesAsync, watchSendMsgAsync } from "./messages";
 import {
   socketListener,
+  watchJoinConversation,
   watchMessageSeenReport,
   watchStartNewConversation,
-  watchJoinConversation,
 } from "./socket";
 import { watchGetInitialDataAsync } from "./initialLoader";
 import {
@@ -29,15 +28,14 @@ export default function* rootSaga() {
     watchLoginRequest(),
     watchaddProjectRequest(),
     watchGetMessagesAsync(),
-    watchSendMsgAsync(),
     socketListener(),
     watchGetInitialDataAsync(),
     watchMessageSeenReport(),
     watchStartNewConversation(),
-    watchJoinConversation(),
     watchLogoutRequest(),
     watchLoadTicketMsgsAsync(),
     watchSendTicketMsgsAsync(),
     watchLoadTicketsAsync(),
+    watchJoinConversation(),
   ]);
 }

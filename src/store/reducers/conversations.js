@@ -1,5 +1,3 @@
-import { select } from "redux-saga/effects";
-// import { ConversationEvents, MessageEvents, FETCH_ALL_CONVERSATIONS_REQUEST } from "../../constants";
 import * as types from "../../constants";
 
 const initialState = {
@@ -53,7 +51,6 @@ const conversationsReducer = (state = initialState, action) => {
       newState.selectedConversation = newState.conversations.find(
         (conversation) => conversation.id === action.conversationId
       );
-      // newState.unSeenCount -= newState.selectedConversation ? newState.selectedConversation.unSeenCount : 0
       return newState;
     }
     case types.DELETE_CONVERSATION_REQUEST: {

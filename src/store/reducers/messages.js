@@ -63,21 +63,18 @@ const messagesReducer = (state = initialState, action) => {
 
         let lastElement = newConversationMapEntry.messages[0];
 
-        console.log("LastEleemnet", lastElement);
-
         if (lastElement.isSneakPreview) {
           newConversationMapEntry.messages[0] = message;
         } else {
           newConversationMapEntry.messages.unshift(message);
         }
-
-        if (!message.isSneakPreview && !message.isMyMessage) {
-          notify(message.messageText);
-        }
       } else {
         newConversationMapEntry = {};
         newConversationMapEntry.initiallyLoaded = false;
         newConversationMapEntry.messages = [message];
+      }
+      if (!message.isSneakPreview && !message.isMyMessage) {
+        notify(message.messageText);
       }
       const newMessageDetails = { ...state.messageDetails };
       newMessageDetails[conversationId] = newConversationMapEntry;

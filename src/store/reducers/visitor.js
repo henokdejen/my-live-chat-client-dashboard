@@ -13,7 +13,7 @@ const visitorsReducer = (state = initialState, action) => {
       return newState;
     }
     case types.VISITOR_GET_OFFLINE: {
-      const { socketID, browserID } = action.payload;
+      const { browserID } = action.payload;
       const newState = { ...state };
 
       let newOnlineVisitors = newState.onlineVisitors.filter((visitor) => {
@@ -24,7 +24,7 @@ const visitorsReducer = (state = initialState, action) => {
       return newState;
     }
     case types.VISITOR_GET_ONLINE: {
-      const { socketID, browserID } = action.payload;
+      const { browserID } = action.payload;
       const newState = { ...state };
 
       let newOnlineVisitors = newState.onlineVisitors.filter((visitor) => {

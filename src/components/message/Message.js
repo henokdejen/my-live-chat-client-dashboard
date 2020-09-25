@@ -63,7 +63,7 @@ const Message = ({
               )}
             </div>
           )}
-          <div>{message.messageText}</div>
+          <div dangerouslySetInnerHTML={{ __html: message.messageText }} />
         </div>
         {!message.isSneakPreview && (
           <div className="message-time">
