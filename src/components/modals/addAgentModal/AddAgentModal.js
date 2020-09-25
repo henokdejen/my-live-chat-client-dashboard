@@ -45,28 +45,25 @@ const validateEmail = (value) => {
 export const AddAgentModal = ({ addAgent, handleClose }) => {
   const [passwordNeeded, setpasswordNeeded] = useState(false);
   const [checkingEmail, setcheckingEmail] = useState(false);
-
-  const [accountExists, setaccountExists] = useState(false);
   const [exisitingAgentId, setexisitingAgentId] = useState("");
 
   const checkIfAgentExists = (email) => {
-    console.log("Siked", validateEmail(email));
     if (validateEmail(email)) {
       setcheckingEmail(true);
       setTimeout(() => {
         API.checkAgentExists(email)
           .then((data) => {
+            const { available, exists } = data.data;
             if (data.success) {
-              if (data.data.exists) {
-                console.log("It exists");
+              if (exists && available) {
                 setpasswordNeeded(false);
-                setaccountExists(true);
                 setexisitingAgentId(data.data.agentID);
-              } else {
+              } else if (available && !exists) {
                 setpasswordNeeded(true);
-                setaccountExists(false);
                 setexisitingAgentId("");
-                console.log("good to go");
+              } else if (exists && !available) {
+                alert("You can't add this agent");
+                handleClose();
               }
             }
           })
@@ -87,13 +84,12 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
         role: "admin",
       };
 
-      if (accountExists && exisitingAgentId) {
+      if (exisitingAgentId) {
         agent.agentID = exisitingAgentId;
       }
 
       API.addAgent(agent)
         .then((response) => {
-          console.log(response);
           let { data } = response;
           if (data.success) {
             addAgent(data.data);
@@ -106,9 +102,7 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
         .catch((error) => {
           console.log(error);
         })
-        .then(() => {
-          console.log("Finally hre");
-        });
+        .then(() => {});
     }, 600);
   };
 
@@ -150,7 +144,7 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
                   <div className="field-msg form-error-msg">{errors.email}</div>
                 ) : checkingEmail ? (
                   <div className="field-msg">Checking email...</div>
-                ) : accountExists ? (
+                ) : exisitingAgentId ? (
                   <div className="field-msg">
                     An account with this email exists. An invitation will be
                     sent

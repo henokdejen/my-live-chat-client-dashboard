@@ -15,8 +15,12 @@ const authenticationReducer = (state = initialState, action) => {
         token,
         userInfo: { projects },
       } = action.payload;
+
       localStorage.setItem(LS_TOKEN, token);
-      localStorage.setItem(LS_PID, projects.length ? "Yehone" : "no projects");
+      localStorage.setItem(
+        LS_PID,
+        projects.length ? projects[0].projectID : "no projects"
+      );
 
       return {
         token: true,
@@ -36,11 +40,15 @@ const authenticationReducer = (state = initialState, action) => {
         token,
         userInfo: { projects },
       } = action.payload;
+
       localStorage.setItem(LS_TOKEN, token);
-      localStorage.setItem(LS_PID, projects.length ? "Yehone" : "no projects");
+      localStorage.setItem(
+        LS_PID,
+        projects.length ? projects[0].projectID : "no projects"
+      );
       return {
         token: true,
-        userInfo: state.userInfo,
+        userInfo: action.payload.userInfo,
         ErrorMessage: "",
         emailAvailable: state.emailAvailable,
       };
@@ -59,6 +67,8 @@ const authenticationReducer = (state = initialState, action) => {
         ErrorMessage: state.ErrorMessage,
         emailAvailable: action.payload.message,
       };
+    case types.LOGOUT_SUCCESS:
+      return initialState;
 
     default:
       return state;

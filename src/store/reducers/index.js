@@ -6,7 +6,8 @@ import visitorsState from "./visitor";
 import services from "./services";
 import authenticationState from "./auth";
 import basicState from "./dashboard";
-import projectState from './project';
+import projectState from "./project";
+import ticketState from "./tickets";
 
 export default combineReducers({
   conversationState,
@@ -15,5 +16,6 @@ export default combineReducers({
   services,
   authenticationState,
   basicState,
-  projectState
+  projectState,
+  ticketState,
 });

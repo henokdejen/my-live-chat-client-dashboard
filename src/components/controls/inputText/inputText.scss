@@ -1,5 +1,11 @@
+$inputBorder: 1px solid #ddd;
+
 .input-text {
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  border: $inputBorder;
+
+  &:focus {
+    outline: none;
+  }
 }

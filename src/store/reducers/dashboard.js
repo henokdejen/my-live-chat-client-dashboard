@@ -1,32 +1,5 @@
 import * as types from "../../constants";
 
-// const dummyAgents = [
-//   {
-//     id: 1,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "admin",
-//   },
-//   {
-//     id: 2,
-//     name: "Henok Dejen ",
-//     email: "henokdejen84@gmail.com",
-//     role: "admin",
-//   },
-//   {
-//     id: 21,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "agent",
-//   },
-//   {
-//     id: 3,
-//     name: "Henok Dejen",
-//     email: "henokdejen84@gmail.com",
-//     role: "agent",
-//   },
-// ];
-
 const getAgent = (agentData) => {
   return {
     id: agentData.agentID ? agentData.agentID : agentData._id,
@@ -52,7 +25,6 @@ const dashboardReducer = (state = initialState, action) => {
     case types.INITIAL_DATA_LOADED: {
       let data = action.payload;
       data = formatInitialData(data);
-      console.log("ss", data);
       // let's set few things
       const newState = { ...state, ...data };
 
@@ -77,8 +49,18 @@ const dashboardReducer = (state = initialState, action) => {
       const { name, timeZone } = action.payload;
       const newState = { ...state };
       newState.userInfo = { ...newState.userInfo, ...{ name, timeZone } };
+      const currentUserId = newState.userInfo._id;
+      newState.projectInfo.agents = newState.projectInfo.agents.map((agent) => {
+        if (agent.id === currentUserId) {
+          return { ...agent, ...{ name, timeZone } };
+        }
+        return agent;
+      });
+
       return newState;
     }
+    case types.LOGOUT_SUCCESS:
+      return initialState;
     default:
       return state;
   }

@@ -1,0 +1,40 @@
+export const FETCH_ALL_TICKETS_REQUEST = Symbol(
+  "ticket/FETCH_ALL_TICKETS_REQUEST"
+);
+export const FETCH_ALL_TICKETS_SUCCESS = Symbol(
+  "ticket/FETCH_ALL_TICKETS_SUCCESS"
+);
+export const FETCH_ALL_TICKETS_FAILURE = Symbol(
+  "ticket/FETCH_ALL_TICKETS_FAILURE"
+);
+
+export const FETCH_TICKET_HISTORY_REQUEST = Symbol(
+  "ticket/FETCH_TICKET_HISTORY_REQUEST"
+);
+export const FETCH_TICKET_HISTORY_SUCCESS = Symbol(
+  "ticket/FETCH_TICKET_HISTORY_SUCCESS"
+);
+export const FETCH_TICKET_HISTORY_FAILURE = Symbol(
+  "ticket/FETCH_TICKET_HISTORY_FAILURE"
+);
+
+export const SEND_TIKCET_MESSAGE = Symbol("ticket/SEND_TIKCET_MESSAGE");
+// export const FETCH_TICKET_HISTORY_FAILURE = Symbol(
+//   "ticket/FETCH_TICKET_HISTORY_FAILURE"
+// );
+// export const FETCH_TICKET_HISTORY_FAILURE = Symbol(
+//   "ticket/FETCH_TICKET_HISTORY_FAILURE"
+// );
+// export const FETCH_TICKET_HISTORY_FAILURE = Symbol(
+//   "ticket/FETCH_TICKET_HISTORY_FAILURE"
+// );
+
+export const NEW_TICKET_MESSAGE_ADDED = Symbol(
+  "ticket/NEW_TICKET_MESSAGE_ADDED"
+);
+
+export const TICKET_MESSAGE_SENT_RESULT = Symbol(
+  "ticket/TICKET_MESSAGE_SENT_RESULT"
+);
+
+export const TICKET_CLAIMED = Symbol("ticket/TICKET_CLAIMED");

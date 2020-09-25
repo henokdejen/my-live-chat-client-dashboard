@@ -1,24 +1,24 @@
 .signinflexcontainer {
-    display: flex;
-    height: 100%;
-  }
+  display: flex;
+  height: 100%;
+}
 
 .signinformcontainer {
-    width: 50%;
+  width: 50%;
 }
 
-.signinadcontainer{
-    width: 50%;
-    background-color: #f7f9fa;
-    height: 695px;
+.signinadcontainer {
+  width: 50%;
+  background-color: #f7f9fa;
+  height: 695px;
 }
 
-.signinerrormessage{
+.signinerrormessage {
   color: red;
   font-size: 13px;
 }
 
-.signinadcontainer > button{
+.signinadcontainer > button {
   width: 30%;
   margin-left: 35%;
   padding: 14px 20px;
@@ -26,37 +26,56 @@
   cursor: pointer;
 }
 
-.signininputfield-container{
-    width: 57%;
-    padding: 16px;
-    margin-top: 13%;
-    margin-left: 7%;
+.signininputfield-container {
+  width: 57%;
+  padding: 16px;
+  margin-top: 13%;
+  margin-left: 7%;
+
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    height: 64px;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #ddd;
+    font-size: 18px;
+
+    &:focus {
+      background-color: #ddd;
+      outline: none;
+    }
+  }
 }
 
-.signintitle{
-    margin-left: 35%;
-    margin-bottom: 10%;
+.signintitle {
+  margin-left: 35%;
+  margin-bottom: 10%;
 }
 
 /* Full-width input fields */
-.signininputfield-container > input[type=email], input[type=password] {
-  width: 100%;
-  height: 64px;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #ddd;
-  font-size: 18px;
-}
+// .signininputfield-container > input[type="email"],
+// .signininputfield-container input[type="password"] {
+//   width: 100%;
+//   height: 64px;
+//   padding: 15px;
+//   margin: 5px 0 22px 0;
+//   display: inline-block;
+//   border: none;
+//   background: #ddd;
+//   font-size: 18px;
+// }
 
-.signininputfield-container > input[type=email]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
+// .signininputfield-container > input[type="email"]:focus,
+// .signininputfield-container > input[type="password"]:focus {
+//   background-color: #ddd;
+//   outline: none;
+// }
 
 .signinbtn:hover {
-  opacity:1;
+  opacity: 1;
 }
 
 .signinbtn {
@@ -74,17 +93,17 @@
   margin-bottom: 8%;
 }
 
-.signincreateaccount{
-    color: #808080;
-    margin-left: 10%;
+.signincreateaccount {
+  color: #808080;
+  margin-left: 10%;
 }
 
-.signincreateaccount > span{
+.signincreateaccount > span {
   color: #262f3c;
   opacity: 1;
 }
 
-#signinnoaccount{
+#signinnoaccount {
   font-size: 46px;
   width: 30%;
   margin-left: 35%;

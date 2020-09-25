@@ -1,9 +1,14 @@
 import React from "react";
-import AgentManager from "./containers/AgentManager/AgentManager";
-import MyProfile from "./containers/MyProfile/MyProfile";
-import ChatShell from "./containers/shell/ChatShell";
-import Settings from "./containers/Layouts/settings/Settings";
-import VisitorShell from "./containers/visitor/VisitorShell";
+
+import ChatShell from "./containers/chat/chat-shell/ChatShell";
+import TicketManager from "./containers/ticket/TicketsManager/TicketManager";
+import AgentManager from "./containers/settings/AgentManager/AgentManager";
+import ChatWidgetSettings from "./containers/settings/chatWidgetSettings/ChatWidgetSettings";
+import MyProfile from "./containers/settings/MyProfile/MyProfile";
+import TicketBody from "./containers/ticket/TicketBody/TicketBody";
+import VisitorShell from "./containers/visitor/visitor-shell/VisitorShell";
+import Settings from "./Layouts/settings/Settings";
+import Tickets from "./Layouts/tickets/Tickets";
 
 export const rootRoutes = {
   base: "",
@@ -19,9 +24,30 @@ export const rootRoutes = {
       component: VisitorShell,
     },
     {
+      path: "tickets",
+      name: "Tickets Page",
+      component: Tickets,
+    },
+    {
       path: "settings",
       name: "settings Page",
       component: Settings,
+    },
+  ],
+};
+
+export const ticketRoutes = {
+  base: "/tickets",
+  routes: [
+    {
+      path: ":filter/:id",
+      name: "Ticket Manager",
+      component: TicketBody,
+    },
+    {
+      path: ":filter?",
+      name: "Tickets List",
+      component: TicketManager,
     },
   ],
 };
@@ -38,6 +64,11 @@ export const settingRoutes = {
       path: "me",
       name: "My Profile",
       component: MyProfile,
+    },
+    {
+      path: "chatWidget",
+      name: "Chat Widget",
+      component: ChatWidgetSettings,
     },
   ],
 };

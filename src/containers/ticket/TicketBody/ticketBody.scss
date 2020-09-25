@@ -1,0 +1,42 @@
+.ticket-body {
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  .inner-header {
+    box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+
+    svg {
+      display: block;
+      color: #888;
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+  .actions-right {
+    .css-2b097c-container {
+      min-width: 130px;
+      font-size: 0.83em;
+    }
+  }
+
+  .back-button {
+    cursor: pointer;
+    color: #888;
+    svg {
+      display: block;
+    }
+
+    &:hover {
+      color: #000;
+    }
+  }
+}
