@@ -3,6 +3,7 @@ import React from "react";
 import ChatShell from "./containers/chat/chat-shell/ChatShell";
 import TicketManager from "./containers/ticket/TicketsManager/TicketManager";
 import AgentManager from "./containers/settings/AgentManager/AgentManager";
+import DepartmentManager from "./containers/settings/DepartmentManager/DepartmentManager";
 import ChatWidgetSettings from "./containers/settings/chatWidgetSettings/ChatWidgetSettings";
 import MyProfile from "./containers/settings/MyProfile/MyProfile";
 import TicketBody from "./containers/ticket/TicketBody/TicketBody";
@@ -64,6 +65,11 @@ export const settingRoutes = {
       path: "me",
       name: "My Profile",
       component: MyProfile,
+    },
+    {
+      path: "departments",
+      name: "Departments",
+      component: DepartmentManager,
     },
     {
       path: "chatWidget",

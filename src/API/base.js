@@ -5,6 +5,10 @@ import {
   baseURL,
   getRemoveAgentURL,
   getAddAgentURL,
+  getAddDepartmentURL,
+  getRemoveDepartmentURL,
+  getAddAgentToDepartmentURL,
+  getRemoveAgentFromDepartmentURL,
   getLoadConversationsURL,
   getLoadOnlineVisitorsURL,
   getInitialDataURL,
@@ -76,6 +80,24 @@ export const addAgent = (agent) => {
 
 export const checkAgentExists = (email) => {
   return API.get(getCheckAgentExists(email)).then((d) => d.data);
+};
+
+// department related
+
+export const addDepartment = (department) => {
+  return API.post(getAddDepartmentURL(projectID), department);
+};
+
+export const removeDepartment = (departmentID) => {
+  return API.delete(getRemoveDepartmentURL(projectID, departmentID));
+};
+
+export const addAgentsToDepartment = (newAgents) => {
+  return API.post(getAddAgentToDepartmentURL(projectID, newAgents.departmentid), {agentIDs:newAgents.agentIDs});
+};
+
+export const RemoveAgentsFromDepartment = (agentsToRemove) => {
+  return API.put(getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid), {agentIDs:agentsToRemove.agentIDs});
 };
 
 // Conversations staffa

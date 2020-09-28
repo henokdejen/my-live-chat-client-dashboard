@@ -27,7 +27,6 @@ const dashboardReducer = (state = initialState, action) => {
       data = formatInitialData(data);
       // let's set few things
       const newState = { ...state, ...data };
-
       return newState;
     }
     case types.NEW_AGENT_ADDED: {
@@ -45,6 +44,34 @@ const dashboardReducer = (state = initialState, action) => {
       );
       return newState;
     }
+
+    case types.NEW_DEPARTMENT_ADDED: {
+      let { department } = action;
+      const newState = { ...state };
+      newState.projectInfo.departments.push(department);
+      return newState;
+    }
+
+    case types.DEPARTMENT_REMOVED: {
+      const { departmentID } = action;
+      const newState = { ...state };
+      newState.projectInfo.departments = newState.projectInfo.departments.filter(
+        (dept) => dept._id !== departmentID
+      );
+      return newState;
+    }
+
+    case types.ADD_AGENTS_TO_DEPARTMENT: {
+      // const {agents} = action;
+      //mimetawn temelkiteh asgeba
+      return state;
+    }
+
+    case types.REMOVE_AGENTS_FROM_DEPARTMENT: {
+      //mimetawn temelkteh atfa
+      return state;
+    }
+
     case types.EDIT_USER_SUCCESS: {
       const { name, timeZone } = action.payload;
       const newState = { ...state };
