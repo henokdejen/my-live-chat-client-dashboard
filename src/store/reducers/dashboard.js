@@ -62,14 +62,35 @@ const dashboardReducer = (state = initialState, action) => {
     }
 
     case types.ADD_AGENTS_TO_DEPARTMENT: {
-      // const {agents} = action;
-      //mimetawn temelkiteh asgeba
-      return state;
+      const {agents} = action;
+      let tempIDs = [];
+      agents.agentIDs.forEach((ag) => {
+        tempIDs.push({agentID:ag});
+      });
+    
+      const newState = { ...state };
+      newState.projectInfo.departments.forEach((dep)=>{
+        if(dep._id == agents.departmentid){
+          dep.agents.push(...tempIDs);
+        }
+      });
+      
+      return newState;
     }
 
     case types.REMOVE_AGENTS_FROM_DEPARTMENT: {
-      //mimetawn temelkteh atfa
-      return state;
+      const {agents} = action;
+      let agentsToRemove = agents.agentIDs;
+
+      const newState = {...state};
+
+      newState.projectInfo.departments.forEach((dep)=>{
+        if(dep._id == agents.departmentid){
+          dep.agents = dep.agents.filter(el => !agentsToRemove.includes(el.agentID));
+        }
+      });
+
+      return newState;
     }
 
     case types.EDIT_USER_SUCCESS: {

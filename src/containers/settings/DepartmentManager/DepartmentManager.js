@@ -8,10 +8,10 @@ import { InnerHeader } from "../../../components/controls/innerHeader/InnerHeade
 import AddDepartmentModal from "../../../components/modals/addDepartmentModal/AddDepartmentModal";
 import AddAgentToDeptModal from "../../../components/modals/addAgentToDeptModal/AddAgentToDeptModal";
 import RemoveAgentFromDept from "../../../components/modals/removeAgentFromDeptModal/RemoveAgentFromDept";
-import { departmentRemoved, newDepartmentAdded } from "../../../store/actions";
+import { departmentRemoved, newDepartmentAdded, addAgentsToDepartment, removeAgentsFromDepartment } from "../../../store/actions";
 import './departmentManager.scss';
 
-const DepartMentItem = ({isUserTheProjAdmin, department, onDepartmentRemoved, agents}) => {
+const DepartMentItem = ({isUserTheProjAdmin, department, onDepartmentRemoved, agents, onMembersAdd, onMembersRemove}) => {
     const [show, setshow] = useState(false);
     const [showAddAgentsModal, setshowAddAgentsModal] = useState(false);
     const [showRemoveAgentsModal,setshowRemoveAgentsModal] = useState(false);
@@ -47,7 +47,8 @@ const DepartMentItem = ({isUserTheProjAdmin, department, onDepartmentRemoved, ag
                 agents={agents}
                 agentsindept={department.agents}
                 departmentid={department._id}
-                handleClose={() => setshowAddAgentsModal(false)}/>)}
+                handleClose={() => setshowAddAgentsModal(false)}
+                onMembersAdd={onMembersAdd}/>)}
 
              </td>
              <td>
@@ -60,7 +61,8 @@ const DepartMentItem = ({isUserTheProjAdmin, department, onDepartmentRemoved, ag
                 agents={agents}
                 agentsindept={department.agents}
                 departmentid={department._id}
-                handleClose={() => setshowRemoveAgentsModal(false)}/>)}
+                handleClose={() => setshowRemoveAgentsModal(false)}
+                onMembersRemove={onMembersRemove}/>)}
            </td>
            <td>
               <Button size="sm" variant="primary" onClick={() => setshow(true)}>
@@ -85,7 +87,7 @@ const DepartMentItem = ({isUserTheProjAdmin, department, onDepartmentRemoved, ag
     );
   };
 
-const DepartmentManager = ({departments, agents, userInfo, ownerID, removeDepartmentFromStore, addDepartmentToStore}) => {
+const DepartmentManager = ({departments, agents, userInfo, ownerID, removeDepartmentFromStore, addDepartmentToStore, removeAgentsFromDepartmentStore, addAgentsToDepartmentStore}) => {
 
   const [showAddDepartmentModal, setshowAddDepartmentModal] = useState(false);
   const isUserTheProjAdmin = ownerID === userInfo._id;
@@ -138,6 +140,8 @@ const DepartmentManager = ({departments, agents, userInfo, ownerID, removeDepart
               key={index}
               onDepartmentRemoved={removeDepartment}
               agents={agents}
+              onMembersAdd={addAgentsToDepartmentStore}
+              onMembersRemove={removeAgentsFromDepartmentStore}
             />
           ))}
         </tbody>
@@ -159,7 +163,13 @@ const mapDispatchToProps = (dispatch) => ({
   },
   addDepartmentToStore: (ndepartment) => {
     dispatch(newDepartmentAdded(ndepartment));
-  }
+  },
+  removeAgentsFromDepartmentStore: (agentIDs) => {
+    dispatch(removeAgentsFromDepartment(agentIDs));
+  },
+  addAgentsToDepartmentStore: (nagents) => {
+    dispatch(addAgentsToDepartment(nagents));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepartmentManager);

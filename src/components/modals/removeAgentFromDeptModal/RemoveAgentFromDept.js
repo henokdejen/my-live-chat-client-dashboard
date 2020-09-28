@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import Select from 'react-select';
 import "./removeAgentFromDept.scss";
 
-const RemoveAgentFromDept = ({ agents, handleClose, agentsindept, departmentid }) => {
+const RemoveAgentFromDept = ({ agents, handleClose, agentsindept, departmentid, onMembersRemove }) => {
   const agentList = [];
   const [selectedAgentList, setSelectedAgentList] = useState([]);
   const [shouldselectAgent, setShouldselectAgent] = useState(false);
@@ -38,6 +38,7 @@ const RemoveAgentFromDept = ({ agents, handleClose, agentsindept, departmentid }
           .then((response) => {
             let { data } = response;
             if (data.success) {
+              onMembersRemove(newAgents);
               handleClose();
             } else {
               alert(data.message);

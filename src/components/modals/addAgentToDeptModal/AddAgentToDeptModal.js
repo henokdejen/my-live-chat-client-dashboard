@@ -7,7 +7,7 @@ import Modal from "../../controls/modal/Modal";
 import Select from 'react-select';
 import "./addAgentToDeptModal.scss";
 
-const AddAgentToDeptModal = ({ agents, handleClose, agentsindept, departmentid }) => {
+const AddAgentToDeptModal = ({ agents, handleClose, agentsindept, departmentid, onMembersAdd }) => {
   const agentList = [];
   const [selectedAgentList, setSelectedAgentList] = useState([]);
   const [shouldselectAgent, setShouldselectAgent] = useState(false);
@@ -32,12 +32,12 @@ const AddAgentToDeptModal = ({ agents, handleClose, agentsindept, departmentid }
           agentIDs: selectedAgentList,
           departmentid: departmentid
         };
-        // local store lay change fiter on success
       setTimeout(() => {
         API.addAgentsToDepartment(newAgents)
           .then((response) => {
             let { data } = response;
             if (data.success) {
+              onMembersAdd(newAgents);
               handleClose();
             } else {
               alert(data.message);
