@@ -156,9 +156,14 @@ const enableDisablesSettings = [
 ];
 
 const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
+
   const onSubmit = (values, { setSubmitting }) => {
+    const valuesToSubmit = {
+      settings: values,
+      appearance: {'themeColor':themecolorselected}
+    };
     setTimeout(() => {
-      API.updateProjectSettings(values)
+      API.updateProjectSettings(valuesToSubmit)
         .then((data) => {
           if (data.success) {
             alert("Updated!");
@@ -277,19 +282,19 @@ const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
             </div>
             <div id="chatMessages" className="chat-messages">
               <div className="message message-from">
-                <p className="message-text">berosh shinku ende korekoree ee 2</p>
+                <p className="message-text">Hi! how can I help you?</p>
               </div>
               <div className="message message-to">
-                <p className="message-text">berosh shinku ende korekoree ee 2 aman selam</p>
+                <p className="message-text">Hi! I heard that you have the new limited edition of a book.</p>
               </div>
               <div className="message message-to">
-                <p className="message-text">berosh shinku ende</p>
+                <p className="message-text">called The Archer</p>
               </div>
               <div className="message message-from">
-                <p className="message-text">keme weyn taemu esku degemu degemu esku dgmimu zih tela kemeweyn treat endashaw tasew</p>
+                <p className="message-text">If you are referring to The Archer by paulo coelho you are right. Visit us tommorow</p>
               </div>
               <div className="message message-to">
-                <p className="message-text">alright</p>
+                <p className="message-text">Alright&#128525;</p>
               </div>
             </div>
             <div className="chat-footer">
