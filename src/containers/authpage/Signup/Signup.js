@@ -4,13 +4,12 @@ import * as Yup from "yup";
 import { withFormik, Form, Field } from "formik";
 import { signupRequested } from '../../../store/actions/auth';
 import { connect } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignupComponent = ({errors, touched, values, signupInfo}) => {
 
   const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
   const [serverError, setServerError] = React.useState('');
-  const history = useHistory();
   const countrieslist = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina"
                     ,"Armenia", "Australia", "Austria", "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh"
                     ,"Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina"
@@ -38,17 +37,12 @@ const SignupComponent = ({errors, touched, values, signupInfo}) => {
                     ,"Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
   React.useEffect(() => {
-    if(signupInfo.token) {
-      history.push('/projectForm');
-    };
-    
     if(signupInfo.ErrorMessage){
       const err = signupInfo.ErrorMessage;
       if(!firsttimeloading) setServerError(err);
     }
-
     setFirstTimeLoading(false);
-  },[signupInfo]);
+  },[signupInfo.ErrorMessage]);
 
   return (
       <div className="signupflexcontainer">
@@ -97,7 +91,7 @@ const SignupComponent = ({errors, touched, values, signupInfo}) => {
     );
   };
 
-  const Signup = withFormik({
+  const Signup = withRouter(withFormik({
     mapPropsToValues({email, password, username, terms, country}){
       return {
         email: email || '',
@@ -117,16 +111,16 @@ const SignupComponent = ({errors, touched, values, signupInfo}) => {
       terms: Yup.bool().oneOf([true], "*required")
     }),
   
-    handleSubmit(values, {props}){
+    handleSubmit(values, { props }){
       props.dispatch(signupRequested({ 
         email : values.email,
         password : values.password,
         country : values.country,
         name: values.username,
-    }));
+    },props.history));
     }
     
-  })(SignupComponent)
+  })(SignupComponent));
 
   const mapStateToProps = (state) => {
     return {
