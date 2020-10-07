@@ -1,0 +1,55 @@
+.banned-visitors {
+    .input-text {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      padding: 0 20px;
+      display: block;
+    }
+
+    .banned-item-container{
+      width: 100%;
+    }
+
+    .banned-item-container-head{
+      width: 100%;
+    }
+
+    .banned-item-container-head td{
+      padding: 16px 22px 16px 0;
+      border-bottom: 1px solid #f1f1f1;
+    }
+
+    .banned-item-container td {
+      padding: 16px 22px 16px 0;
+      border-bottom: 1px solid #f1f1f1;
+    }
+    
+    .banned-item-name{
+      width: 17%;
+      font-size: 0.8em;
+    }
+
+    .banned-item-head-name{
+      width: 17%;
+    }
+
+    .banned-item-description{
+      width: 30%;
+      font-size: 0.8em;
+    }
+
+    .banned-item-description-head{
+      width: 30%;
+    }
+
+    .banned-item-member{
+      width: 13%;
+      font-size: 0.8em;
+    }
+  }
+  
