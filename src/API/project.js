@@ -19,3 +19,17 @@ export const addProjectAPI = async (siteDetails) => {
     throw new Error("Unexpected error!!!");
   }
 };
+
+// check visitor ip address country
+
+export const checkVisitorIPCountry = async (ipaddress) => {
+  const requestOptions = {
+    method: 'GET' };
+    
+    let response = await fetch(`http://ip-api.com/json/${ipaddress}`,requestOptions)
+    if (response.ok) {
+      return await response.json();
+    } else {
+    throw new Error("Unexpected error!!!");
+  }
+}; 

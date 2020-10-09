@@ -20,9 +20,10 @@ const signupRequestSaga = function* (action) {
   const userCredential = action.payload;
   try {
     const response = yield call(API.signupuser, userCredential);
-    if (response.success)
+    if (response.success){
       yield put(signupResponse(response.data.token, response.data.userInfo));
-    else yield put(signupError(response.message));
+      userCredential.history.push("/projectForm");
+    } else yield put(signupError(response.message));
   } catch (error) {
     console.log("Connection Error happened", error);
   }
@@ -34,6 +35,7 @@ const loginRequestSaga = function* (action) {
     const response = yield call(API.loginuser, userCredential);
     if (response.success) {
       yield put(loginResponse(response.data.token, response.data.userInfo));
+      userCredential.history.push("/");
     } else yield put(signupError(response.message));
   } catch (error) {
     console.log("Connection Error happened", error);

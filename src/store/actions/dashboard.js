@@ -21,6 +21,26 @@ export const userDataChanged = (name, timeZone) => ({
   payload: { name, timeZone },
 });
 
+// related with department
+export const newDepartmentAdded = (department) => ({
+  type: types.NEW_DEPARTMENT_ADDED,
+  department,
+});
+
+export const departmentRemoved = (departmentID) => ({
+  type: types.DEPARTMENT_REMOVED,
+  departmentID,
+});
+
+export const addAgentsToDepartment = (agents) => ({
+  type: types.ADD_AGENTS_TO_DEPARTMENT,
+  agents,
+});
+
+export const removeAgentsFromDepartment = (agents) => ({
+  type: types.REMOVE_AGENTS_FROM_DEPARTMENT,
+  agents,
+});
 export const removeAgentRequested = (agentID) => ({
   type: types.REMOVE_AGENT_REQUEST,
   payload: { agentID },

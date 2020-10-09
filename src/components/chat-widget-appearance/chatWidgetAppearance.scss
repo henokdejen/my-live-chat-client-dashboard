@@ -33,9 +33,185 @@
       width: 100%;
     }
   }
+  
+  // widget chatbox styles are below
+
   .widget-preview-wrapper {
     flex: 0.45;
+    --main-color: #262f3c;
+    --main-color-light: #EAF0F6;
+    --main-color-dark: #262f3c;
+    --main-background-color: #f1f1f1;
+    --main-button-default: #FFF;
+    --chat-message-background: #dedede;
+    --lighter-grey: #a6a6a6;
+    --plain-white: #ffffff;
+    
+    .chat-containerwidget {
+      height: 72%;
+      width: 24%;
+      color: var(--main-button-default);
+      background-color: var(--main-color);
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0px 2px 0px 0.5px rgba(0, 0, 0, 0.2);
+      position: absolute;
+      bottom: 17%;
+      right: 8%;
+    }
+
+    .chat-messages {
+      flex: 1;
+      background-color: var(--main-button-default);
+      color: var(--main-color-dark);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+    .chat-footer form {
+      display: flex;
+    }
+    
+    .chat-footer{
+      background-color: var(--plain-white);
+      padding: 11px;
+    }
+    
+    #messageSendForm > span{
+      font-size: 15px;
+      padding: 5px 5px 0 0;
+      border-color: var(--plain-white);
+    }
+
+    input[type='text']:focus {
+      border: 1px solid rgb(184, 184, 184);
+    }
+
+    input[type='text']{
+      width: 100%;
+    }
+
+    .chat-header{
+      padding: 15px;
+    }
+    
+    #onoffindicatoron{
+      background-color: #33ff0e;
+      border-radius: 50%;
+      display: inline-block;
+      color: #33ff0e;
+      width: 12px;
+      height: 12px;
+    }
+    
+    #onoffindicatoroff{
+      background-color: grey;
+      border-radius: 50%;
+      display: inline-block;
+      color: #666666;
+      width: 12px;
+      height: 12px;
+      margin-top: 5px;
+      box-shadow: #000 0 -1px 7px 1px, inset #666666 0 -1px 9px, #e6e6e6 0 2px 12px;
+    }
+    
+    #agentName{
+      display: flex;
+        align-items: center;
+        gap: 10px;}
+    
+    .chat-header {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 80px;
+    }
+    
+    #avatar_img{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      padding: 5px;
+    }
+    
+    .chat-header .group-name {
+      flex: 1;
+    }
+    
+    .chat-header .online-users {
+      width: 200px;
+    }
+    
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .chat-messages .message {
+      align-self: flex-start;
+      padding: 10px 15px;
+      background-color: var(--chat-message-background);
+      margin-bottom: 10px;
+      width: "fit-content";
+      max-width: 85%;
+    }
+    
+    .chat-messages .message .message-text {
+      font-size: 80%;
+    }
+    
+    .chat-messages .message.message-to {
+      background-color: var(--main-color);
+      color: var(--main-button-default);
+      align-self: flex-end;
+      border-radius: 8px 8px 0px 8px;
+    }
+    
+    .chat-messages .message.message-from {
+      background-color: var(--main-color-light);
+      color: var(--main-color);
+      align-self: flex-start;
+      border-radius: 8px 8px 8px 0px;
+    }
+
+    #dropdownbtncontainer{
+      margin-left: 95px;
+    }
+    
+    .widgetdropbtn {
+      color: white;
+      border: none;
+      height: 30px;
+    }
   }
+  
+
+  // widget fab styles are below
+  
+  .widget-preview-wrapper #widgetcontainerbox{
+    position: absolute;
+    bottom: 5%;
+    right: 8%;
+}
+
+  .widget-preview-wrapper #customwidget{
+    border-radius: 50%; 
+    width: 60px;
+    height: 60px;
+    background: var(--main-color);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+  .widget-preview-wrapper #customwidget > img{
+    width: 45%;
+    margin-top: 15px; 
+}
 }
 
 .widget_color_selector {
@@ -52,9 +228,6 @@
     cursor: pointer;
     text-align: center;
     padding-top: 8px;
-
-    &.widget_color_selector__color-active {
-    }
   }
 
   .sketch-picker-wrapper {

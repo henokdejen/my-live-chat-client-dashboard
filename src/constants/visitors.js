@@ -5,4 +5,5 @@ export const FETCH_ONLINE_VISITORS_FAILED = Symbol('visitors/FETCH_ONLINE_VISITO
 export const VISITOR_GET_ONLINE = Symbol('visitors/VISITOR_GET_ONLINE')
 export const VISITOR_GET_OFFLINE = Symbol('visitors/VISITOR_GET_OFFLINE')
 
-
+export const BAN_VISITOR = Symbol('visitors/BAN_VISITOR')
+export const REMOVE_BANNED_VISITOR = Symbol('visitors/REMOVE_BANNED_VISITOR')

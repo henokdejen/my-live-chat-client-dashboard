@@ -1,12 +1,13 @@
 import * as types from "../../constants";
 
-export const signupRequested = ({ email, password, country, name }) => ({
+export const signupRequested = ({ email, password, country, name }, history) => ({
   type: types.SIGNUP_REQUEST,
   payload: {
     email: email,
     password: password,
     country: country,
     name: name,
+    history
   },
 });
 
@@ -25,11 +26,12 @@ export const signupError = (message) => ({
   },
 });
 
-export const loginRequested = ({ email, password }) => ({
+export const loginRequested = ({ email, password }, history) => ({
   type: types.LOGIN_REQUEST,
   payload: {
     email: email,
     password: password,
+    history,
   },
 });
 
