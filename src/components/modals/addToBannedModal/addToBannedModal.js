@@ -53,33 +53,34 @@ const AddToBannedModal = ({handleClose, addBannedVisitorToStore, visitorBannedBy
 
   const onSubmit = (values) => {
     if(IPCountry){
-      const visitorToBan = {
-        IPaddress: values.ipaddress,
-        country: IPCountry,
-        reason: values.description,
-        bannedBy: visitorBannedBy
-      }
       // const visitorToBan = {
-      //   ip: values.ipaddress,
-      //   countryfrom: IPCountry,
-      //   date: today,
+      //   IPaddress: values.ipaddress,
+      //   country: IPCountry,
       //   reason: values.description,
-      //   agent: visitorBannedBy
+      //   bannedBy: visitorBannedBy
       // }
+      const visitorToBan = {
+        ip: values.ipaddress,
+        countryfrom: IPCountry,
+        date: today,
+        reason: values.description,
+        agent: visitorBannedBy
+      }
       setTimeout(()=>{
-        banIPAddress(visitorToBan)
-        .then((response) => {
-          let { data } = response;
-          if (data.success) {
-           console.log(data);
-          } else {
-            alert(data.message);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .then(() => {});
+        addBannedVisitorToStore(visitorToBan);
+        // banIPAddress(visitorToBan)
+        // .then((response) => {
+        //   let { data } = response;
+        //   if (data.success) {
+        //    console.log(data);
+        //   } else {
+        //     alert(data.message);
+        //   }
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        // })
+        // .then(() => {});
         // addBannedVisitorToStore(visitorToBan);
         // handleClose(true);
       },600)

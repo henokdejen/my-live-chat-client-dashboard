@@ -187,6 +187,7 @@ export const updateProjectSettings = (newSettings) => {
 // ban ip address related
 export const banIPAddress = (banInfo) => {
   return API.post(banipaddressURL(projectID), banInfo);
+}
 // report related
 
 export const loadReports = (startDate, endDate, item) => {

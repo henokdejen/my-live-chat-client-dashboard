@@ -92,6 +92,7 @@ const dashboardReducer = (state = initialState, action) => {
       });
 
       return newState;
+    }
     case types.AGENT_GET_ONLINE_OFFLINE: {
       const { online, agentId } = action.payload;
       const newState = { ...state };
