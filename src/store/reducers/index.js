@@ -8,6 +8,7 @@ import authenticationState from "./auth";
 import basicState from "./dashboard";
 import projectState from "./project";
 import ticketState from "./tickets";
+import modalState from "./modals";
 
 export default combineReducers({
   conversationState,
@@ -18,4 +19,5 @@ export default combineReducers({
   basicState,
   projectState,
   ticketState,
+  modalState,
 });

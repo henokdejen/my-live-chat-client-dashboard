@@ -4,7 +4,7 @@ import FormButton from "../controls/buttons/FormButton";
 import AttachmentIcon from "../controls/icons/attachment-icon/AttachmentIcon";
 
 import "./ChatForm.scss";
-import { MessageStatus } from "../../constants";
+import { CONVERSATION_TYPES, MessageStatus } from "../../constants";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 
@@ -27,6 +27,7 @@ const ChatForm = ({
   onMessageSubmitted,
   onJoinRequested,
   removeNewMessageMarker,
+  type,
 }) => {
   const [textMessage, setTextMessage] = useState("");
   const [whisper, setwhisper] = useState(false);
@@ -65,7 +66,7 @@ const ChatForm = ({
       setShowPicker(false);
       onMessageSubmitted(
         conversationId,
-        createMessageFromInput(textMessage, whisper)
+        createMessageFromInput(textMessage, whisper, type)
       );
       setTextMessage("");
       inputDiv.current.innerHTML = "";
@@ -79,6 +80,13 @@ const ChatForm = ({
         Join Conversation
       </Button>
     </form>
+  );
+
+  const offlineMessage = () => (
+    <div className="visitor-offline">
+      The visitor is currently offline. You can't write to this conversation at
+      this time
+    </div>
   );
 
   const getMsgInputForm = () => (
@@ -105,18 +113,22 @@ const ChatForm = ({
 
       <div className="input-controls">
         <div className="input-controls-left">
-          <span
-            className={`msg-type ${whisper ? "" : "active"}`}
-            onClick={(e) => setwhisper(false)}
-          >
-            Message
-          </span>
-          <span
-            className={`msg-type ${whisper ? "active" : ""}`}
-            onClick={(e) => setwhisper(true)}
-          >
-            Whisper
-          </span>
+          {type === CONVERSATION_TYPES.TEAM_CONVERSATION && (
+            <>
+              <span
+                className={`msg-type ${whisper ? "" : "active"}`}
+                onClick={(e) => setwhisper(false)}
+              >
+                Message
+              </span>
+              <span
+                className={`msg-type ${whisper ? "active" : ""}`}
+                onClick={(e) => setwhisper(true)}
+              >
+                Whisper
+              </span>
+            </>
+          )}
         </div>
 
         <div className="input-controls-right">
@@ -141,9 +153,15 @@ const ChatForm = ({
 
   if (selectedConversation) {
     conversationId = selectedConversation.id;
-    formContents = selectedConversation.joined
-      ? getMsgInputForm()
-      : getJoinForm();
+    if (type === CONVERSATION_TYPES.PRIVATE_CONVERSATION) {
+      formContents = getMsgInputForm();
+    } else if (type === CONVERSATION_TYPES.TEAM_CONVERSATION) {
+      formContents = selectedConversation.isOnline
+        ? selectedConversation.joined
+          ? getMsgInputForm()
+          : getJoinForm()
+        : offlineMessage();
+    }
   }
 
   return (

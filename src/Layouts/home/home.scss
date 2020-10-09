@@ -1,0 +1,47 @@
+.dashboard-home {
+  width: 100%;
+  background-color: transparent;
+}
+
+.home-main-inner-wrapper {
+  padding: 20px;
+  width: 100%;
+  margin: 0px auto;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.report-row {
+  margin: 20px 0;
+}
+
+.graph-row {
+  max-height: 500px;
+  height: 100%;
+}
+
+.visitors-satisfaction-wrapper {
+  width: 400px;
+  height: 100%;
+}
+
+.stat-graph {
+  flex: 1;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-graph-inner {
+  flex: 1;
+}
+
+.short-reports {
+  * {
+    flex: 1;
+  }
+}

@@ -1,6 +1,7 @@
 // import { push } from 'react-router-redux';
 import { eventChannel } from "redux-saga";
 import {
+  all,
   call,
   delay,
   fork,
@@ -19,9 +20,26 @@ import {
   visitorGetOnline,
   visitorLeftChat,
   conversationJoined,
+  conversationLoaded,
+  assignedToConversation,
+  closeModalRequested,
+  conversationLeft,
+  messagesRemoved,
+  convClosed,
+  agentOnlineOffline,
+  chatTransfered,
 } from "../actions";
 import { getConversation, getMessage, getSneakPreviewMessage } from "./helper";
 import { connectSocket } from "../../API/base";
+import {
+  CLOSE_CONVERSATION_REQUEST,
+  CONVERSATION_TYPES,
+  LEAVE_CONVERSATION_REQUEST,
+  REMOVE_MESSAGE_REQUEST,
+  TRANSFER_CHAT,
+  TRANSFER_CHAT_REQUEST,
+} from "../../constants";
+import { confirmSaga } from "./modals";
 
 const MessageStatus = types.MessageStatus;
 
@@ -73,15 +91,31 @@ function* sendMsg(socket, conversationId, message) {
   };
   yield put(newMessageAdded(conversationId, message));
   const result = yield new Promise((resolve) => {
-    const eventName = msg.whisper ? types.WHISPER : types.MESSAGE;
-    console.log("MSG TO BE SENT", msg, eventName);
-    socket.emit(eventName, msg, function (comfiramtion) {
-      console.log("Conf", comfiramtion);
+    let eventName = types.PRIVATE_MESSAGE;
+    if (message.type === CONVERSATION_TYPES.TEAM_CONVERSATION) {
+      eventName = msg.whisper ? types.WHISPER : types.VISITOR_MESSAGE;
+    }
+
+    console.log("MSG TO BE SENT", message, eventName);
+    socket.emit(eventName, msg, function (err, { messageID }) {
+      if (err) {
+        alert("error creating new conversation");
+        resolve(false);
+      } else {
+        console.log("Message sent", messageID);
+        resolve(messageID);
+      }
       resolve();
     });
   });
-  message.messageID = result;
-  yield put(messasgeSent(MessageStatus.SUCCESS, conversationId, message));
+  message.id = result;
+  yield put(
+    messasgeSent(
+      result ? MessageStatus.SUCCESS : MessageStatus.FAILURE,
+      conversationId,
+      message
+    )
+  );
 }
 
 function* write(socket) {
@@ -93,16 +127,50 @@ function* write(socket) {
   }
 }
 
-export function* subscribe(socket) {
+function* subscribe(socket) {
   return new eventChannel((emit) => {
+    const onNewConversationReceived = (data, joined) => {
+      const conv = getConversation(data);
+      conv.joined = joined;
+      conv.isOnline = true;
+      console.log("adv", conv);
+      emit(newConversationAdded(conv));
+    };
+
+    // conversation related
+    socket.on(types.VISITOR_LEFT_CHAT, (data) => {
+      console.log("visitor left chat", data);
+      emit(visitorLeftChat(data.conversationID));
+    });
+
+    socket.on(types.AGENT_SIDE_CHATS, (data) => {
+      console.log("metenal", data);
+    });
+
+    socket.on(types.AGENT_JOINED_CONVERSATION, (data) => {
+      console.log("Joined Conversation", data);
+      onNewConversationReceived(data, true);
+    });
+
+    socket.on(types.CONVERSATION_STARTED, (data) => {
+      onNewConversationReceived(data, true);
+    });
+
+    socket.on(types.NEW_ACTIVE_CHAT, (data) => {
+      console.log("Endale malet new", data);
+      onNewConversationReceived(data, false);
+    });
+
     socket.on(types.NEW_CHAT_ASSIGNED, (data) => {
       console.log("Chat Assigned", data);
       const conv = getConversation(data);
       conv.joined = true;
-      emit(newConversationAdded(conv));
+      conv.isOnline = true;
+      emit(assignedToConversation(conv));
     });
 
-    socket.on(types.MESSAGE, (data) => {
+    // message related
+    socket.on(types.ACTIVE_CHAT_MESSAGE, (data) => {
       console.log("new message received", data);
       let message = getMessage(data);
       message.seen = false;
@@ -115,16 +183,6 @@ export function* subscribe(socket) {
       emit(messageSeen(data.conversationID, data.messageID));
     });
 
-    socket.on(types.VISITOR_CONNECTED, (data) => {
-      console.log("visitor connected", data);
-      emit(visitorGetOnline(data));
-    });
-
-    socket.on(types.VISITOR_DISCONNECTED, (data) => {
-      console.log("visitor disconnected", data);
-      emit(visitorGetOffline(data));
-    });
-
     socket.on("VISITORTYPING", (data) => {
       console.log("Typing..", data);
     });
@@ -135,10 +193,33 @@ export function* subscribe(socket) {
       emit(newMessageAdded(data.conversationID, message));
     });
 
-    socket.on(types.VISITOR_LEFT_CHAT, (data) => {
-      console.log("visitor left chat", data);
-      emit(visitorLeftChat(data.conversationID));
+    socket.on(types.DELETED_MESSAGES, (data) => {
+      const { conversationID, messageIDs } = data;
+      emit();
     });
+
+    // visitor related
+    socket.on(types.VISITOR_CONNECTED, (data) => {
+      console.log("visitor connected", data);
+      emit(visitorGetOnline(data));
+    });
+
+    socket.on(types.VISITOR_DISCONNECTED, (data) => {
+      console.log("visitor disconnected", data);
+      emit(visitorGetOffline(data));
+    });
+
+    // agent related
+    socket.on(types.AGENT_ONLINE, (data) => {
+      console.log("Agent Online", data);
+      emit(agentOnlineOffline(true, data.agentID));
+    });
+
+    socket.on(types.AGENT_OFFLINE, (data) => {
+      console.log("Agent Offline", data);
+      emit(agentOnlineOffline(false, data.agentID));
+    });
+
     return () => {};
   });
 }
@@ -160,7 +241,7 @@ const listenConnectSaga = function* () {
   }
 };
 
-export function* setupSocket(projectID) {
+function* setupSocket(projectID) {
   try {
     // yield put({type: CHANNEL_ON});
 
@@ -187,7 +268,7 @@ export function* setupSocket(projectID) {
   }
 }
 
-export function* socketListener() {
+function* socketListener() {
   while (true) {
     const action = yield take("connect");
     yield race({
@@ -197,7 +278,7 @@ export function* socketListener() {
   }
 }
 
-export function* reportMessageSeenSaga(action) {
+function* reportMessageSeenSaga(action) {
   const { conversationId, messageId } = action.payload;
   if (socket) {
     yield socket.emit("MESSAGESEEN", {
@@ -214,35 +295,42 @@ export function* reportMessageSeenSaga(action) {
   }
 }
 
-export function* watchMessageSeenReport() {
+function* watchMessageSeenReport() {
   yield takeEvery(types.REPORT_MESSAGE_SEEN, reportMessageSeenSaga);
 }
 
-export function* startNewConvSaga(action) {
+// conversation related
+
+function* startNewConvSaga(action) {
   const { browserID, history } = action.payload;
   if (socket) {
     const result = yield new Promise((resolve) => {
-      socket.emit("STARTCONVERSATION", { browserID }, (err, conversation) => {
-        if (err) {
-          alert("error creating new conversation");
-          resolve(false);
-        } else {
-          console.log("Created Conversation", conversation);
-          resolve(conversation);
+      socket.emit(
+        types.START_CONVERSATION,
+        { browserID },
+        (err, conversation) => {
+          if (err) {
+            alert("error creating new conversation");
+            resolve(false);
+          } else {
+            console.log("Created Conversation", conversation);
+            resolve(conversation);
+          }
         }
-      });
+      );
     });
 
     if (result) {
       const conv = getConversation(result);
       conv.joined = true;
+      conv.new = result.new;
       yield put(newConversationAdded(conv));
-      history.push(`/conversations/${conv.id}`);
+      history.push(`/teamInbox/${conv.id}`);
     }
   }
 }
 
-export function* watchStartNewConversation() {
+function* watchStartNewConversation() {
   yield takeEvery(types.CREATE_CONVERSATION_REQUEST, startNewConvSaga);
 }
 
@@ -251,9 +339,13 @@ function* joinConversationSaga(action) {
 
   if (socket) {
     const result = yield new Promise((resolve) => {
-      socket.emit("JOINCHAT", { browserID, conversationID }, (err) => {
-        resolve(err);
-      });
+      socket.emit(
+        types.START_CONVERSATION,
+        { browserID, conversationID },
+        (err) => {
+          resolve(err);
+        }
+      );
     });
 
     if (!result) {
@@ -264,6 +356,229 @@ function* joinConversationSaga(action) {
   }
 }
 
-export function* watchJoinConversation() {
+function* watchJoinConversation() {
   yield takeEvery(types.JOIN_CONVERSATION_REQUEST, joinConversationSaga);
 }
+
+function* createNewPrivateConvSaga(action) {
+  let { name, members } = action.payload;
+
+  console.log("tke", name, members);
+  // return;
+  if (socket) {
+    const result = yield new Promise((resolve) => {
+      socket.emit(
+        types.CREATE_NEW_PRIVATE_CONVERSATION,
+        { name, members },
+        (err, conversation) => {
+          if (err) {
+            alert("error creating new conversation");
+            resolve(false);
+          } else {
+            console.log("Created Conversation", conversation);
+            resolve(conversation);
+          }
+        }
+      );
+    });
+
+    if (result) {
+      alert("Created");
+      console.log("Deh", result);
+      const conv = getConversation(
+        result,
+        CONVERSATION_TYPES.PRIVATE_CONVERSATION
+      );
+      conv.joined = true;
+      yield put(newConversationAdded(conv));
+      yield put(closeModalRequested("ADD_PRIVATE_CHAT"));
+      // history.push(`/conversations/${conv.id}`);
+    }
+  }
+}
+
+function* watchCreateNewConversation() {
+  yield takeEvery(
+    types.CREATE_NEW_CONVERSATION_REQUEST,
+    createNewPrivateConvSaga
+  );
+}
+
+// const leaveConversation = function* (action) {
+//   const { conversationId } = action.payload;
+
+//   // let's initialize the comfirmation first
+//   const confirmed = yield call(
+//     confirmSaga,
+//     `Are you sure you want to leave this conversation?`
+//   );
+
+//   if (confirmed && socket) {
+//     yield put(conversationLeft(conversationId));
+//     alert("Ezih ga");
+//     const result = yield new Promise((resolve) => {
+//       socket.emit(
+//         types.LEAVECHAT,
+//         { conversationID: conversationId },
+//         (err, data) => {
+//           if (err) {
+//             alert("error creating new conversation");
+//             resolve(false);
+//           } else {
+//             console.log("Created Conversation", data);
+//             resolve(data);
+//           }
+//         }
+//       );
+//     });
+
+//     // const removeAgentResponse = yield call(API.removeAgent, agentID);
+//     // if (removeAgentResponse.success) {
+//     //   alert("remove success");
+//     // } else {
+//     //   alert("remove failed");
+//     // }
+//   }
+// };
+
+// helper
+
+const closeOrLeaveConversation = function* (action) {
+  const { conversationId } = action.payload;
+
+  // let's initialize the comfirmation first
+  let msg, eventName, resultAction;
+  if (action.type === LEAVE_CONVERSATION_REQUEST) {
+    msg = `Are you sure you want to leave this conversation?`;
+    eventName = types.LEAVE_CHAT;
+    resultAction = conversationLeft;
+  } else if (action.type === CLOSE_CONVERSATION_REQUEST) {
+    msg = `Are you sure you want to CLOSE and ARCHIVE this conversation?`;
+    eventName = types.CLOSE_CHAT;
+    resultAction = convClosed;
+  }
+
+  if (!eventName) return;
+
+  const confirmed = yield call(confirmSaga, msg);
+
+  if (confirmed && socket) {
+    yield put(resultAction(conversationId));
+    const result = yield new Promise((resolve) => {
+      alert("Ezih ga");
+      console.log("man", eventName, { conversationID: conversationId });
+
+      socket.emit(
+        "LEAVECHAT",
+        { conversationID: conversationId },
+        (err, data) => {
+          alert("find");
+          if (err) {
+            alert("error creating new conversation");
+            resolve(false);
+          } else {
+            console.log("Close or leave", data);
+            resolve(data);
+          }
+        }
+      );
+    });
+  }
+};
+
+function* watchLeaveConversationAsync() {
+  yield takeEvery(LEAVE_CONVERSATION_REQUEST, closeOrLeaveConversation);
+}
+
+function* watchCloseConversationAsync() {
+  yield takeEvery(CLOSE_CONVERSATION_REQUEST, closeOrLeaveConversation);
+}
+
+const transferChatSaga = function* (action) {
+  const { conversationId, agentId, departmentId } = action.payload;
+  console.log("heee", conversationId, agentId);
+  const result = yield new Promise((resolve) => {
+    socket.emit(
+      types.TRANSFER_CHAT,
+      { conversationID: conversationId, agentID: agentId },
+      (err, data) => {
+        if (err) {
+          console.log("Transfer err", err);
+          alert("error creating transferring chat");
+          resolve(false);
+        } else {
+          console.log("Chat transferred", data);
+          resolve(data);
+        }
+      }
+    );
+  });
+
+  if (result) {
+    yield put(chatTransfered(conversationId));
+    yield put(closeModalRequested("TRANSFER_CHAT"));
+  }
+};
+
+function* watchTransferChatAsync() {
+  yield takeEvery(TRANSFER_CHAT_REQUEST, transferChatSaga);
+}
+
+// MESSAGE RELATED
+const removeMessageSaga = function* (action) {
+  const { conversationId, type, messageId } = action.payload;
+
+  // let's initialize the comfirmation first
+  const confirmed = yield call(
+    confirmSaga,
+    `Are you sure you want to remove this message?`
+  );
+  if (confirmed) {
+    yield put(messagesRemoved(conversationId, type, [messageId]));
+    // call the API HERE
+    // return;
+
+    console.log("Begin sent", {
+      conversationID: conversationId,
+      messageIDs: [messageId],
+    });
+    const result = yield new Promise((resolve) => {
+      socket.emit(
+        types.DELETE_MESSAGES,
+        { conversationID: conversationId, messageIDs: [messageId] },
+        (err, data) => {
+          if (err) {
+            console.log("ene", err);
+            alert("error REMOVE MESSAGES");
+            resolve(false);
+          } else {
+            console.log("REMOVE MESSAGE RESULT", data);
+            resolve(true);
+          }
+        }
+      );
+    });
+  }
+};
+
+const watchRemoveMessage = function* () {
+  yield takeEvery(REMOVE_MESSAGE_REQUEST, removeMessageSaga);
+};
+
+// const watchRemoveMessage = function* () {
+//   yield takeEvery(REMOVE_MESSAGE_REQUEST, removeMessageSaga);
+// };
+
+export const socketSagas = function* watchAll() {
+  yield all([
+    watchLeaveConversationAsync(),
+    socketListener(),
+    watchCloseConversationAsync(),
+    watchCreateNewConversation(),
+    watchJoinConversation(),
+    watchMessageSeenReport(),
+    watchRemoveMessage(),
+    watchStartNewConversation(),
+    watchTransferChatAsync(),
+  ]);
+};

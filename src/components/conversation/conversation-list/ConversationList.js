@@ -1,18 +1,20 @@
-import React from 'react';
+import React from "react";
 
-import ConversationItem from '../conversation-item/ConversationItem';
-import './ConversationList.scss';
+import ConversationItem from "../conversation-item/ConversationItem";
+import "./ConversationList.scss";
 
-const ConversationList = ({ conversations }) => {
-    const conversationItems = conversations.map((conversation) => {
-        return <ConversationItem key={conversation.id} conversation={conversation} />;
-    });
-
+const ConversationList = ({ conversations, isActiveChat }) => {
+  const conversationItems = conversations.map((conversation) => {
     return (
-        <div id="conversation-list">
-            {conversationItems}
-        </div>
+      <ConversationItem
+        key={conversation.id}
+        conversation={conversation}
+        isActiveChat={isActiveChat}
+      />
     );
-}
+  });
+
+  return <div id="conversation-list">{conversationItems}</div>;
+};
 
 export default ConversationList;

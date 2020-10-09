@@ -1,25 +1,25 @@
-@import '../../../styles/_colors';
+@import "../../../styles/_colors";
 
 .conversation {
-    display: grid;
-    grid-template-columns: 40px 1fr max-content;
-    grid-gap: 10px;
-    color: $contrasted-primary-text; // $contrasting-primary-text-color;
-    border-bottom: 1px solid $primary-dark;
-    padding: 12px 15px;
-    font-size: 0.8em;
-    font-weight: 500;
-    text-decoration: none;
+  display: grid;
+  grid-template-columns: 40px 1fr max-content;
+  grid-gap: 10px;
+  color: #000; // $contrasting-primary-text-color;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  text-decoration: none;
 
-  &.active,
-  &:hover {
-    background: $primary-dark;
+  &.active {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
   }
-  
+
   &:hover {
     cursor: pointer;
   }
-  
+
   .avatar-wrapper {
     grid-row: span 2;
     height: 40px;
@@ -30,14 +30,14 @@
       height: 100%;
       border-radius: 100%;
     }
-    
+
     .online-status-indicator {
       height: 12px;
       width: 12px;
       display: inline-block;
       border-radius: 100%;
       position: absolute;
-      border: 1px solid #000;
+      border: 1px solid #fff;
       right: -2.5px;
       bottom: -2.5px;
       background-color: $offline-indicator;
@@ -56,19 +56,18 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .created-date {
-    color: $light-grey-border;
+    color: rgba(0, 0, 0, 0.4);
     white-space: nowrap;
-    font-size:0.7rem;
+    font-size: 0.7rem;
   }
 
   .conversation-message {
     padding-left: 5px;
     white-space: nowrap;
-    color: $subtitle_color;
+    color: rgba(0, 0, 0, 0.4);
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-
 }

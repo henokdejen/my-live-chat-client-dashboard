@@ -38,14 +38,20 @@ export const getCheckAgentExists = (email) =>
 
 //
 
-export const getLoadConversationsURL = (projectID) =>
-  `project/${projectID}/conversations`;
+export const getLoadActiveConversationsURL = (projectID) =>
+  `project/${projectID}/conversations`; //active to be added
+
+export const getLoadArchiveConversationsURL = (projectID) =>
+  `project/${projectID}/archivedConversations`;
 
 export const getLoadOnlineVisitorsURL = (projectID) =>
   `project/${projectID}/onlineVisitors`;
 
-export const getLoadConversationMsgsURL = (projectID, conversationID) =>
+export const getLoadActiveConvMsgsURL = (projectID, conversationID) =>
   `project/${projectID}/conversations/${conversationID}/history/?fetchedHistoryCount=0`;
+
+export const getLoadArchiveConvMsgsURL = (projectID, conversationID) =>
+  `project/${projectID}/archivedConversations/${conversationID}/history?fetchedHistoryCount=0`;
 
 // profile related
 
@@ -81,3 +87,12 @@ export const getTicketClaimURL = (projectID, ticketID) =>
 // project settings
 export const getProjectSettingUpdateURL = (projectID) =>
   `project/${projectID}/setting`;
+
+// report related
+
+export const getLoadReportsURL = (projectID, startDate, endDate, item) =>
+  `project/${projectID}/report?startDate=${encodeURIComponent(
+    startDate
+  )}&endDate=${encodeURIComponent(endDate)}&filterBy=${encodeURIComponent(
+    item
+  )}`;

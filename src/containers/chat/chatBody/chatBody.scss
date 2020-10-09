@@ -1,0 +1,14 @@
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  border-right: 1px solid #ddd;
+
+  .conversationContent {
+    flex: 3;
+    // background-color: #edeeef;
+    overflow-y: auto;
+  }
+}

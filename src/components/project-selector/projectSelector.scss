@@ -1,0 +1,73 @@
+.projects-wrapper {
+  position: relative;
+}
+
+.selected-project {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 7px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 200px;
+  max-width: 250px;
+  gap: 10px;
+
+  &:hover {
+    border-color: #ccc;
+  }
+
+  .selected-proj-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.projects-popup-wrapper {
+  right: 0;
+  top: 47px;
+
+  .projects-header {
+    font-weight: 700;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .project-lst-itm {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 240px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+
+    .lst-itm-icon {
+      width: 15px;
+    }
+
+    .selected-icon {
+      font-weight: 700;
+      color: green;
+      svg {
+        display: block;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.projects-list {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.project-actions {
+  margin-top: 10px;
+}

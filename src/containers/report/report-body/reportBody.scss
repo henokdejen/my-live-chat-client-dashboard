@@ -1,0 +1,56 @@
+.report-wrapper {
+  max-width: 900px;
+  width: 100%;
+  .reports-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+
+  .date-picker-wrapper {
+    overflow: hidden;
+  }
+
+  .date-picker-controller {
+    padding: 10px 20px;
+    button {
+      min-width: 80px;
+    }
+  }
+
+  .reports-body {
+    padding: 0 20px;
+    height: 500px;
+  }
+}
+
+.selected-date-filter {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.8em;
+  display: flex;
+  gap: 10px;
+  text-align: center;
+
+  &:hover {
+    background-color: #ddd;
+  }
+}
+
+.reports-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.report-date-picker {
+  left: 0px;
+  top: 46px;
+}
+
+.report-chart-wrapper {
+  // margin: 20px 0;
+}

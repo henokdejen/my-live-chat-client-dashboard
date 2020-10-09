@@ -6,7 +6,7 @@ import {
   conversationLoaded,
   initialDataLoaded,
 } from "../actions";
-import { getConversation } from "./helper";
+import { getConversation, mapConversationsWithOnlineStatus } from "./helper";
 import * as API from "../../API/base";
 
 const loadInitialDataSaga = function* ({ history }) {
@@ -14,14 +14,27 @@ const loadInitialDataSaga = function* ({ history }) {
   try {
     let projectID = localStorage.getItem(LS_PID);
     if (projectID) {
-      let initialData = yield API.loadInitialData(projectID);
+      let initialDataResponse = yield API.loadInitialData(projectID);
 
-      if (initialData.success) {
-        localStorage.setItem(LS_PID, initialData.data.projectInfo._id);
-        yield put(initialDataLoaded(initialData.data));
+      if (initialDataResponse.success) {
+        const initialData = initialDataResponse.data;
+
+        localStorage.setItem(LS_PID, initialData.projectInfo._id);
+        //
+
+        const { agents, onlineAgents } = initialData.projectInfo;
+
+        onlineAgents.push(initialData.userInfo._id);
+
+        for (let agent of agents) {
+          agent.isOnline = onlineAgents.includes(agent.agentID);
+        }
+
+        console.log("yalehegn", initialData.projectInfo.agents);
+        yield put(initialDataLoaded(initialData));
 
         const [conversationsResponse, visitorsResponse] = yield all([
-          call(API.loadInitialConversations, projectID),
+          call(API.loadActiveConversations, projectID),
           call(API.loadInitialOnlineUsers, projectID),
         ]);
 
@@ -29,22 +42,28 @@ const loadInitialDataSaga = function* ({ history }) {
           console.log("RECEIVED Conversations", conversationsResponse.data);
           console.log("RECEIVED online visitors", visitorsResponse.data);
 
-          let conversations = conversationsResponse.data.map((conv) =>
-            getConversation(conv)
-          );
+          const activeConvs = conversationsResponse.data.active;
+          const privateConvs = conversationsResponse.data.private;
+
+          let conversations = activeConvs
+            .concat(privateConvs)
+            .map((conv) => getConversation(conv));
+
           let onlineVisitors = visitorsResponse.data;
           onlineVisitors = onlineVisitors.map((visitor) => ({
             ...visitor,
             ...visitor.visitorInfo,
           }));
 
-          for (let conv of conversations) {
-            for (let onVist of onlineVisitors) {
-              if (conv.browserID === onVist.browserID) {
-                conv.isOnline = true;
-              }
-            }
-          }
+          // for (let conv of conversations) {
+          //   for (let onVist of onlineVisitors) {
+          //     if (conv.type == 0 && conv.browserID === onVist.browserID) {
+          //       conv.isOnline = true;
+          //     }
+          //   }
+          // }
+
+          mapConversationsWithOnlineStatus(conversations, onlineVisitors);
 
           yield put(conversationLoaded(conversations));
           yield put(onlineVisitorsLoaded(onlineVisitors));
@@ -52,13 +71,13 @@ const loadInitialDataSaga = function* ({ history }) {
           yield put({ type: "FETCH_INITIAL_DATA_SUCCES" });
           yield put({
             type: "connect",
-            payload: { projectID: initialData.data.projectInfo._id },
+            payload: { projectID: initialData.projectInfo._id },
           });
         } else {
           console.log("Eenen ej");
         }
       } else {
-        alert("Something went wrong ==> " + initialData.message);
+        alert("Something went wrong ==> " + initialDataResponse.message);
       }
     } else {
       localStorage.clear(LS_PID);

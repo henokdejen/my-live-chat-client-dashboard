@@ -17,18 +17,45 @@ export const UNMOUNT_CHAT = Symbol("sockets/UNMOUNT_CHAT");
 export const SEND_MESSAGE = "sockets/SEND_MESSAGE";
 
 // socket events
+
+// message - related
+
 export const MESSAGE = "MESSAGE";
 export const WHISPER = "WHISPER";
 
+export const VISITOR_MESSAGE = "VISITORMESSAGE";
+export const PRIVATE_MESSAGE = "PRIVATEMESSAGE";
+export const ACTIVE_CHAT_MESSAGE = "ACTIVECHATMESSAGE";
+
 export const MESSAGE_SEEN = "MESSAGESEEN";
 
+export const DELETE_MESSAGES = "DELETEMESSAGES";
+export const DELETED_MESSAGES = "MESSAGESDELETED";
+
+// conversation related
 export const NEW_CHAT_ASSIGNED = "NEWCHATASSIGNED";
 export const JOINCHAT = "JOINCHAT";
-export const LEAVECHAT = "LEAVECHAT";
+export const LEAVE_CHAT = "LEAVECHAT";
+export const CLOSE_CHAT = "CLOSECHAT";
+export const RECIEVE_DELETED_CHAT = "sockets/RECIEVE_DELETED_CHAT";
+export const AGENT_SIDE_CHATS = "AGENTSIDECHATS";
+export const CREATE_NEW_PRIVATE_CONVERSATION = "CREATECONVERSATION";
+export const AGENT_JOINED_CONVERSATION = "JOINEDAGENTCONVERSATION";
+export const CONVERSATION_STARTED = "STARTEDCONVERSATION";
+export const START_CONVERSATION = "STARTCONVERSATION";
+export const NEW_ACTIVE_CHAT = "NEWACTIVECHAT";
+export const TRANSFER_CHAT = "TRANSFERCHAT";
 
+// visitor related
 export const VISITOR_CONNECTED = "VISITORCONNECTED";
 export const VISITOR_DISCONNECTED = "VISITORDISCONNECTED";
 export const VISITOR_TYPING = "VISITORTYPING";
-
 export const VISITOR_LEFT_CHAT = "VISITORLEFTCHAT";
-export const RECIEVE_DELETED_CHAT = "sockets/RECIEVE_DELETED_CHAT";
+
+//agent related
+export const AGENT_ONLINE = "AGENTONLINE";
+export const AGENT_OFFLINE = "AGENTOFFLINE";
+
+// other
+export const SET_ONLINE = "ONLINE";
+export const SET_OFFLINE = "OFFLINE";

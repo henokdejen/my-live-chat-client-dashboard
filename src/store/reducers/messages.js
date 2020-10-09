@@ -43,7 +43,8 @@ const messagesReducer = (state = initialState, action) => {
         (msg) => {
           if (msg.front_id == message.front_id) {
             // msg.status = status
-            message.status = status;
+            msg.status = status;
+            msg.id = message.id;
             return msg;
           }
           return msg;
@@ -102,6 +103,22 @@ const messagesReducer = (state = initialState, action) => {
     }
     case types.LOGOUT_SUCCESS:
       return initialState;
+
+    case types.REMOVE_MESSAGE_SUCCESS: {
+      const { conversationId, type, messageIds } = action.payload;
+      const newConversationMapEntry = {
+        ...state.messageDetails[conversationId],
+      };
+
+      console.log("huhu", messageIds);
+
+      newConversationMapEntry.messages = newConversationMapEntry.messages.filter(
+        (msg) => !messageIds.includes(msg.id)
+      );
+      const newMessageDetails = { ...state.messageDetails };
+      newMessageDetails[conversationId] = newConversationMapEntry;
+      return { messageDetails: newMessageDetails };
+    }
 
     default:
       return state;

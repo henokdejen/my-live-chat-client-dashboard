@@ -44,6 +44,35 @@ html {
 }
 
 .inner-body-section {
-  margin: 0 10px;
   background-color: #fff;
+}
+
+.report-card {
+  background-color: #fff;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 20px;
+
+  .report-card-title {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: 550;
+  }
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.button-icon {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 100%;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
 }

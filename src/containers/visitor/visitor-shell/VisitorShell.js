@@ -7,6 +7,7 @@ import { Card } from "../../../components/controls/card/Card";
 import { InnerHeader } from "../../../components/controls/innerHeader/InnerHeader";
 import { InnerNavHeader } from "../../../components/controls/innerHeader/InnerNavHeader";
 import { InnerNav } from "../../../components/controls/innerNav/InnerNav";
+import { OuterSectionWrapper } from "../../../components/section-wrapper/OuterSectionWrapper";
 import { createConversationRequested } from "../../../store/actions";
 import "./visitorsShell.scss";
 
@@ -63,7 +64,7 @@ const VisitorShell = ({ createConversation, getOnlineVisitors }) => {
   console.log("RECEIVED visitors", onlineVisitors);
 
   return (
-    <div className="visitors-wrapper">
+    <OuterSectionWrapper cn="visitors-wrapper">
       <InnerNav className="visitors-nav">
         <InnerNavHeader>Visitors</InnerNavHeader>
         {menus.map((menu, index) => {
@@ -93,7 +94,7 @@ const VisitorShell = ({ createConversation, getOnlineVisitors }) => {
           )}
         </div>
       </div>
-    </div>
+    </OuterSectionWrapper>
   );
 };
 
