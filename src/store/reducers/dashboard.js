@@ -6,6 +6,7 @@ const getAgent = (agentData) => {
     name: agentData.agentName ? agentData.agentName : agentData.name,
     email: agentData.agentEmail ? agentData.agentEmail : agentData.email,
     role: "agent",
+    isOnline: agentData.isOnline,
   };
 };
 
@@ -90,6 +91,17 @@ const dashboardReducer = (state = initialState, action) => {
         }
       });
 
+      return newState;
+    case types.AGENT_GET_ONLINE_OFFLINE: {
+      const { online, agentId } = action.payload;
+      const newState = { ...state };
+      newState.projectInfo.agents = newState.projectInfo.agents.map((agent) => {
+        if (agent.id === agentId) {
+          agent.isOnline = online;
+        }
+        return agent;
+      });
+      console.log("ss", newState.projectInfo.agents);
       return newState;
     }
 

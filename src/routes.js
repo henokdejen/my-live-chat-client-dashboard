@@ -11,14 +11,36 @@ import TicketBody from "./containers/ticket/TicketBody/TicketBody";
 import VisitorShell from "./containers/visitor/visitor-shell/VisitorShell";
 import Settings from "./Layouts/settings/Settings";
 import Tickets from "./Layouts/tickets/Tickets";
+import Home from "./Layouts/home/Home";
+import Reports from "./Layouts/reports/Reports";
+import { ReportBody } from "./containers/report/report-body/ReportBody";
+import { CONVERSATION_TYPES } from "./constants";
 
 export const rootRoutes = {
   base: "",
   routes: [
     {
-      path: "conversations",
-      name: "conversations Page",
+      path: "home",
+      name: "Home",
+      component: Home,
+    },
+    {
+      path: "teamInbox",
+      name: "teamInbox Page",
       component: ChatShell,
+      additionalProps: { type: CONVERSATION_TYPES.TEAM_CONVERSATION },
+    },
+    {
+      path: "privateInbox",
+      name: "privateInbox Page",
+      component: ChatShell,
+      additionalProps: { type: CONVERSATION_TYPES.PRIVATE_CONVERSATION },
+    },
+    {
+      path: "archives",
+      name: "Archives Page",
+      component: ChatShell,
+      additionalProps: { type: CONVERSATION_TYPES.ARCHIVE_CONVERSATION },
     },
     {
       path: "visitors",
@@ -29,6 +51,11 @@ export const rootRoutes = {
       path: "tickets",
       name: "Tickets Page",
       component: Tickets,
+    },
+    {
+      path: "reports",
+      name: "Reports Page",
+      component: Reports,
     },
     {
       path: "settings",
@@ -81,6 +108,17 @@ export const settingRoutes = {
       path: "chatWidget",
       name: "Chat Widget",
       component: ChatWidgetSettings,
+    },
+  ],
+};
+
+export const reportRoutes = {
+  base: "/reports",
+  routes: [
+    {
+      path: ":reportItem?",
+      name: "report",
+      component: ReportBody,
     },
   ],
 };

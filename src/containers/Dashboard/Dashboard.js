@@ -5,6 +5,8 @@ import { rootRoutes } from "../../routes";
 import InitialLoader from "../../Layouts/InitialLoader/InitialLoader";
 import SideBar from "../SideBar/SideBar";
 import "./dashboard.scss";
+import Header from "../Header/Header";
+import ModalManager from "../modalManager/ModalManager";
 
 const Dashboard = ({ loadingOver }) => {
   return (
@@ -17,18 +19,28 @@ const Dashboard = ({ loadingOver }) => {
             <SideBar />
           </div>
           <div className="main-section-wrapper">
-            <Switch>
-              {rootRoutes &&
-                rootRoutes.routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    path={`/${route.path}`}
-                    name={route.name}
-                    render={(props) => <route.component {...props} />}
-                  />
-                ))}
-            </Switch>
+            <Header />
+            <div className="main-section-body-wrapper">
+              <Switch>
+                {rootRoutes &&
+                  rootRoutes.routes.map((route, index) => (
+                    <Route
+                      key={index}
+                      path={`/${route.path}`}
+                      name={route.name}
+                      render={(props) => (
+                        <route.component
+                          {...props}
+                          {...route.additionalProps}
+                        />
+                      )}
+                    />
+                  ))}
+              </Switch>
+            </div>
           </div>
+
+          <ModalManager />
         </div>
       )}
     </>
@@ -39,6 +51,7 @@ const mapStateToProps = (state) => {
   let props = {
     loadingOver: state.services.isInitialDataLoaded,
   };
+
   return props;
 };
 

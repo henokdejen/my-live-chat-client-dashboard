@@ -9,19 +9,32 @@ import {
   sendMessage,
   joinConversationRequested,
   removeUnSeenMarker,
+  leaveConversationRequested,
+  sendChatTransRequested,
+  openModalRequested,
+  closeConvRequested,
 } from "../../../store/actions";
-import { TransferChatModal } from "../../../components/modals/transferChatModal/TransferChatModal";
+import "./chatBody.scss";
+import { CONVERSATION_TYPES } from "../../../constants";
+import {
+  BsArrowLeftRight,
+  BsBoxArrowUpLeft,
+  BsBoxArrowUpRight,
+  BsSlashCircle,
+} from "react-icons/bs";
 
 const ChatBody = ({
   selectedConversation,
   onMessageSubmitted,
   onJoinRequested,
+  leaveConversation,
   agents,
-  transferChatTo,
+  transferChat,
   removeMessagesMarker,
+  sendChatTransc,
+  closeConversation,
+  type,
 }) => {
-  const [showChatTransferModal, setshowChatTransferModal] = useState(false);
-
   let conversationContent = (
     <>
       <NoConversations></NoConversations>
@@ -31,36 +44,112 @@ const ChatBody = ({
   if (selectedConversation) {
     conversationContent = (
       <>
-        <MessageList selectedConversation={selectedConversation} />
+        <MessageList selectedConversation={selectedConversation} type={type} />
       </>
     );
   }
 
+  let menus = [];
+  if (type === CONVERSATION_TYPES.PRIVATE_CONVERSATION) {
+    menus = [
+      {
+        icon: BsArrowLeftRight,
+        lable: "Transfer to",
+        click: (e) => {
+          transferChat(selectedConversation.id);
+        },
+      },
+      {
+        icon: BsBoxArrowUpLeft,
+        lable: "Leave",
+        click: () => {
+          leaveConversation(selectedConversation.id);
+        },
+      },
+    ];
+  } else if (type === CONVERSATION_TYPES.TEAM_CONVERSATION) {
+    menus = [
+      {
+        icon: BsBoxArrowUpRight,
+        lable: "Send Transcript",
+        click: () => {
+          sendChatTransc(selectedConversation.id);
+        },
+      },
+      { icon: BsSlashCircle, lable: "Ban this visitor", click: () => {} },
+    ];
+
+    if (selectedConversation && selectedConversation.joined) {
+      menus = menus.concat([
+        {
+          icon: BsArrowLeftRight,
+          lable: "Transfer to",
+          click: (e) => {
+            transferChat(selectedConversation.id);
+          },
+        },
+        {
+          icon: BsBoxArrowUpLeft,
+          lable: "Leave",
+          click: () => {
+            leaveConversation(selectedConversation.id);
+          },
+        },
+      ]);
+
+      if (true) {
+        // the owner
+        menus.push({
+          icon: BsBoxArrowUpLeft,
+          lable: "Close",
+          click: () => {
+            closeConversation(selectedConversation.id);
+          },
+        });
+      }
+
+      console.log("kif", menus);
+    }
+  } else {
+    //archive
+    menus = [
+      {
+        icon: BsBoxArrowUpRight,
+        lable: "Send Transcript",
+        click: () => {
+          sendChatTransc(selectedConversation.id);
+        },
+      },
+      ,
+    ];
+  }
+
   return (
     <>
-      {showChatTransferModal && (
-        <TransferChatModal
-          agents={agents}
-          onAgentSelected={transferChatTo}
-          handleClose={(e) => setshowChatTransferModal(false)}
-        />
-      )}
+      {/* {showChatTransferModal &&
+        type === CONVERSATION_TYPES.TEAM_CONVERSATION && (
+          <TransferChatModal
+            agents={agents}
+            onAgentSelected={transferChat}
+            handleClose={(e) => setshowChatTransferModal(false)}
+          />
+        )} */}
 
       <div className="chat-body">
-        <ChatTitle
-          selectedConversation={selectedConversation}
-          openTransferChat={(e) => setshowChatTransferModal(true)}
-        />
+        <ChatTitle selectedConversation={selectedConversation} menus={menus} />
 
         <div className="conversationContent">{conversationContent}</div>
-        {selectedConversation && selectedConversation.isOnline && (
-          <ChatForm
-            selectedConversation={selectedConversation}
-            onMessageSubmitted={onMessageSubmitted}
-            onJoinRequested={onJoinRequested}
-            removeNewMessageMarker={removeMessagesMarker}
-          />
-        )}
+        {(type === CONVERSATION_TYPES.PRIVATE_CONVERSATION ||
+          type === CONVERSATION_TYPES.TEAM_CONVERSATION) &&
+          selectedConversation && (
+            <ChatForm
+              selectedConversation={selectedConversation}
+              onMessageSubmitted={onMessageSubmitted}
+              onJoinRequested={onJoinRequested}
+              removeNewMessageMarker={removeMessagesMarker}
+              type={type}
+            />
+          )}
       </div>
 
       <div className="client-information-wrapper">
@@ -70,11 +159,23 @@ const ChatBody = ({
   );
 };
 
-const mapStateToProps = (state, { match: { params } }) => {
-  let selectedConversation = state.conversationState.conversations.find(
+const mapStateToProps = (state, { match: { params }, type }) => {
+  let convStore = [];
+
+  if (
+    type === CONVERSATION_TYPES.TEAM_CONVERSATION ||
+    type === CONVERSATION_TYPES.PRIVATE_CONVERSATION
+  ) {
+    convStore = state.conversationState.conversations;
+  } else if (type === CONVERSATION_TYPES.ARCHIVE_CONVERSATION) {
+    convStore = state.conversationState.archives;
+  }
+
+  // alert(params.conversationId);
+
+  let selectedConversation = convStore.find(
     (conversation) => conversation.id === params.conversationId
   );
-
   let { agents } = state.basicState.projectInfo;
 
   return { selectedConversation, agents };
@@ -92,8 +193,20 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(removeUnSeenMarker(conversationID));
   },
 
-  transferChatTo: (agent) => {
-    console.log("Feyel case");
+  transferChat: (conversationId) => {
+    dispatch(openModalRequested("TRANSFER_CHAT", { conversationId }));
+  },
+
+  leaveConversation: (conversationId) => {
+    dispatch(leaveConversationRequested(conversationId));
+  },
+
+  sendChatTransc: (conversationId) => {
+    dispatch(openModalRequested("SEND_CHAT_TRANSCRIPT", { conversationId }));
+  },
+
+  closeConversation: (conversationId) => {
+    dispatch(closeConvRequested(conversationId));
   },
 });
 

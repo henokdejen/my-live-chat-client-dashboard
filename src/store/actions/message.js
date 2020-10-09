@@ -1,12 +1,14 @@
 import * as types from "../../constants";
 
 export const messagesRequested = (
+  type,
   conversationId,
   numberOfMessages,
   lastMessageId
 ) => ({
   type: types.FETCH_ALL_MESSAGES_REQUEST,
   payload: {
+    type,
     conversationId,
     numberOfMessages,
     lastMessageId,
@@ -51,4 +53,14 @@ export const messageSeen = (conversationId, messageId) => ({
 export const reportMessageSeenRequested = (conversationId, messageId) => ({
   type: types.REPORT_MESSAGE_SEEN,
   payload: { conversationId, messageId },
+});
+
+export const removeMessageRequested = (conversationId, type, messageId) => ({
+  type: types.REMOVE_MESSAGE_REQUEST,
+  payload: { conversationId, type, messageId },
+});
+
+export const messagesRemoved = (conversationId, type, messageIds) => ({
+  type: types.REMOVE_MESSAGE_SUCCESS,
+  payload: { conversationId, type, messageIds },
 });

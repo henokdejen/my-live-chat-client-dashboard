@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 import {
   messagesRequested,
   reportMessageSeenRequested,
   markAllMessageSeenRequested,
   removeUnSeenMarker,
+  chatShellType,
+  removeMessageRequested,
 } from "../../../store/actions";
 import Message from "../../../components/message/Message";
 import "./MessageList.scss";
 import { NotificationMessage } from "../../../components/notification-message-item/NotificationMessage";
 import { NewMessageMarker } from "../../../components/new-message-marker/NewMessageMarker";
+import Message2 from "../../../components/message/Message2";
+import { CONVERSATION_TYPES } from "../../../constants";
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -27,6 +31,8 @@ const MessageList = ({
   reportMessageSeen,
   markAllMessagesSeen,
   removeMessagesMarker,
+  type,
+  deleteMessage,
 }) => {
   const messageDetails = getMessagesForConversation(selectedConversation.id);
 
@@ -38,21 +44,22 @@ const MessageList = ({
 
   let wrapperRef;
 
-  let initialUnseenCount = 4;
-
   const prevAmount = usePrevious(selectedConversation.id);
+  const isOngoingChat =
+    type === CONVERSATION_TYPES.PRIVATE_CONVERSATION ||
+    type === CONVERSATION_TYPES.TEAM_CONVERSATION;
 
   useEffect(() => {
     if (!messageDetails || !initialMsgLoaded) {
-      loadMessages(selectedConversation.id, null);
+      loadMessages(type, selectedConversation.id, null);
     } else {
       wrapperRef.scrollTop = wrapperRef.scrollHeight;
-      markAllMessagesSeen(selectedConversation.id);
+      if (isOngoingChat) markAllMessagesSeen(selectedConversation.id);
     }
   }, [messageDetails, loadMessages, selectedConversation.id]);
 
   useEffect(() => {
-    if (prevAmount && prevAmount !== selectedConversation.id) {
+    if (isOngoingChat && prevAmount && prevAmount !== selectedConversation.id) {
       removeMessagesMarker(prevAmount);
     }
   }, [selectedConversation.id]);
@@ -68,13 +75,16 @@ const MessageList = ({
           key={index}
         />
       ) : (
-        <Message
+        <Message2
           key={index}
           initialMsgLoaded={initialMsgLoaded}
-          reportMessageSeen={reportMessageSeen}
+          reportMessageSeen={isOngoingChat ? reportMessageSeen : null}
           isMyMessage={message.isMyMessage}
           message={message}
           sender={{ name: selectedConversation.title }}
+          deleteMessage={(msgID) =>
+            deleteMessage(type, selectedConversation.id, msgID)
+          }
         />
       );
 
@@ -108,8 +118,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const loadMessages = (conversationId, lastMessageId) => {
-    dispatch(messagesRequested(conversationId, 5, lastMessageId));
+  const loadMessages = (type, conversationId, lastMessageId) => {
+    console.log("called here");
+    dispatch(messagesRequested(type, conversationId, 5, lastMessageId));
   };
 
   const reportMessageSeen = (conversationID, messageID) => {
@@ -124,11 +135,16 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(removeUnSeenMarker(conversationID));
   };
 
+  const deleteMessage = (type, conversationId, messageID) => {
+    dispatch(removeMessageRequested(conversationId, type, messageID));
+  };
+
   return {
     loadMessages,
     reportMessageSeen,
     markAllMessagesSeen,
     removeMessagesMarker,
+    deleteMessage,
   };
 };
 

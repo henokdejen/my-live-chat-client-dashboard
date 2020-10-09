@@ -1,0 +1,119 @@
+@import "../../styles/_colors";
+$message-time-color: darken($accent-color, 46.5%);
+$speech-bubble-border-color: darken($accent-color, 13.18);
+
+.message-row {
+  display: flex;
+
+  &:last-child {
+    padding-top: 20px;
+  }
+
+  .message-inner-wrapper {
+    max-width: 70%;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+
+    .message-content {
+      padding: 9px 14px;
+      min-width: 170px;
+
+      .message-report-zone {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 0.8em;
+        margin-top: 6px;
+      }
+    }
+
+    > .message-time {
+      font-size: 0.8rem;
+      color: $message-time-color;
+    }
+
+    > .message-text {
+      padding: 9px 14px;
+      margin-bottom: 5px;
+    }
+
+    .message-actions {
+      visibility: hidden;
+    }
+  }
+
+  &.you-message {
+    justify-content: flex-end;
+
+    &:hover .message-actions {
+      visibility: visible;
+    }
+
+    .message-inner-wrapper {
+      flex-direction: row-reverse;
+      align-items: center;
+    }
+
+    .message-content {
+      background: $primary-color;
+      color: $contrasted-primary-text;
+      border-radius: 14px 14px 0 14px;
+
+      > .message-text {
+      }
+
+      &.not-sent-yet {
+        background-color: #6e9ddc;
+      }
+
+      > .emoji-msg {
+        font-size: 6em;
+        background-color: transparent;
+      }
+
+      .message-report-zone {
+        color: rgba($color: #fff, $alpha: 0.8);
+      }
+    }
+  }
+
+  &.other-message {
+    justify-items: flex-start;
+
+    .message-inner-wrapper {
+      > img {
+        border-radius: 100%;
+        grid-row: span 2;
+        width: 30px;
+        height: 30px;
+      }
+
+      > .message-content {
+        grid-template-columns: 38px 1fr;
+        grid-column-gap: 10px;
+
+        background: #f1f1f1;
+        color: $contrasted-accent-text;
+        border-radius: 14px 14px 14px 0;
+
+        > .message-text {
+        }
+
+        .sender-name {
+          color: $primary-color;
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  &.whisper {
+    .message-content {
+      background-color: $whisper-msg-bg !important;
+      color: black !important;
+      .message-report-zone {
+        color: rgba($color: #000, $alpha: 0.8);
+      }
+    }
+  }
+}

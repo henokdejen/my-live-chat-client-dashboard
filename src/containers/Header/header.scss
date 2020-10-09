@@ -1,9 +1,37 @@
+@import "../../styles/_colors";
+
 .main-header {
   display: flex;
   position: fixed;
   justify-content: space-between;
-  line-height: 50px;
+  align-items: center;
+  height: 50px;
   background-color: #ffffff;
   padding: 0 20px;
   border-bottom: 1px solid #ddd;
+  right: 0;
+  left: 60px;
+  z-index: 10;
+
+  .header-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+}
+
+.header-search {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 4px;
+  outline: none;
+  height: 35px;
+  border: 1px solid #ddd;
+  padding-left: 38px;
+  padding-right: 20px;
+  font-size: 0.97rem;
+  background: url("../../images/search/search.svg") no-repeat
+    $search-background-image-color;
+  background-position: 10px center;
+  background-size: 20px 20px;
 }

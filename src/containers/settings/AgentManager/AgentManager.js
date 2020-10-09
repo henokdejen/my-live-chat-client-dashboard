@@ -5,11 +5,15 @@ import * as API from "../../../API/base";
 import Button from "../../../components/controls/buttons/Button";
 import { ComfirmationDialog } from "../../../components/controls/comfirmationDialog/ComfirmationDialog";
 import { InnerHeader } from "../../../components/controls/innerHeader/InnerHeader";
-import { AddAgentModal } from "../../../components/modals/addAgentModal/AddAgentModal";
-import { agentRemoved, newAgentAdded } from "../../../store/actions";
+import {
+  agentRemoved,
+  newAgentAdded,
+  openModalRequested,
+  removeAgentRequested,
+} from "../../../store/actions";
 import "./agentManager.scss";
 
-const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
+const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, removeAgent }) => {
   let { id, name, email } = agent;
 
   const role = isAdmin ? "Project Owner" : "agent";
@@ -17,7 +21,7 @@ const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
 
   const onDeleteComifrmed = () => {
     setshow(false);
-    onAgentRemoved(id);
+    // onAgentRemoved(id);
   };
 
   const onDeleteDenied = () => {
@@ -35,18 +39,18 @@ const AgentItem = ({ isUserTheProjAdmin, isAdmin, agent, onAgentRemoved }) => {
 
       {isUserTheProjAdmin && !isAdmin ? (
         <td className="actions">
-          <Button size="sm" variant="primary" onClick={() => setshow(true)}>
+          <Button size="sm" variant="primary" onClick={() => removeAgent(id)}>
             Remove
           </Button>
 
-          <ComfirmationDialog
+          {/* <ComfirmationDialog
             show={show}
             message="Are you sure you want to remove this agent?"
             cancelBtnTitle="Cancel"
             comfirmBtnTitle="Remove"
             onComfirmation={onDeleteComifrmed}
             onDeny={onDeleteDenied}
-          />
+          /> */}
         </td>
       ) : (
         <td className="actions"></td>
@@ -60,7 +64,7 @@ const AgentManager = ({
   agents,
   ownerID,
   removeAgentFromStore,
-  addAgentToStore,
+  openAddAgentModal,
 }) => {
   const [showAddAgentModal, setshowAddAgentModal] = useState(false);
 
@@ -88,12 +92,12 @@ const AgentManager = ({
 
   return (
     <div className="agents-management inner-body-section">
-      {showAddAgentModal && (
+      {/* {showAddAgentModal && (
         <AddAgentModal
           addAgent={addAgentToStore}
           handleClose={() => setshowAddAgentModal(false)}
         />
-      )}
+      )} */}
       <InnerHeader>
         <div className="title">
           <BsFillPeopleFill />
@@ -106,7 +110,7 @@ const AgentManager = ({
               variant="primary"
               size="sm"
               onClick={() => {
-                setshowAddAgentModal(true);
+                openAddAgentModal();
               }}
             >
               Add Agent
@@ -122,7 +126,7 @@ const AgentManager = ({
               isAdmin={agent.id === ownerID}
               agent={agent}
               key={agent.id}
-              onAgentRemoved={removeAgent}
+              removeAgent={removeAgentFromStore}
             />
           ))}
         </tbody>
@@ -134,16 +138,15 @@ const AgentManager = ({
 const mapStateToProps = (state) => {
   let { agents, owner } = state.basicState.projectInfo;
   let { userInfo } = state.basicState;
-  console.log("fjasdf fjasldj f", agents);
   return { userInfo, agents, ownerID: owner };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   removeAgentFromStore: (agentID) => {
-    dispatch(agentRemoved(agentID));
+    dispatch(removeAgentRequested(agentID));
   },
-  addAgentToStore: (agent) => {
-    dispatch(newAgentAdded(agent));
+  openAddAgentModal: () => {
+    dispatch(openModalRequested("ADD_AGENT"));
   },
 });
 

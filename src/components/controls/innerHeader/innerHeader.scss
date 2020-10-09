@@ -5,7 +5,8 @@
   height: $inner-nav-height;
   padding: $inner-nav-padding;
   background-color: $inner-nav-bg-color;
-  border-bottom: $basic-border;
+  // border-bottom: $basic-border;
+  margin-bottom: 20px;
 
   display: flex;
   justify-content: space-between;

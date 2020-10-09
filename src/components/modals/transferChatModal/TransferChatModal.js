@@ -1,9 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
+import { chatTransferRequested } from "../../../store/actions";
 import Button from "../../controls/buttons/Button";
 import Modal from "../../controls/modal/Modal";
 import "./transferChatModal.scss";
 
-export const TransferChatModal = ({ agents, onAgentSelected, handleClose }) => {
+const TransferChatModal = ({
+  conversationId,
+  agents,
+  transferTo,
+  handleClose,
+}) => {
   return (
     <Modal show={true}>
       <div className="transferChatWrapper">
@@ -12,17 +19,17 @@ export const TransferChatModal = ({ agents, onAgentSelected, handleClose }) => {
           <p className="choose-agent">Choose An Agent</p>
 
           <div className="agents-list">
-            {agents.map((agent) => {
-              let { id, name, email } = agent;
-
-              return (
-                <div className="agent-item">
-                  <img className="agent-image" />
-                  <div className="agent-name"> {name} </div>
-                  <div className="agent-email"> {email} </div>
-                </div>
-              );
-            })}
+            {agents.map(({ id, name, email }) => (
+              <div
+                className="agent-item"
+                key={id}
+                onClick={() => transferTo(conversationId, id)}
+              >
+                <img className="agent-image" />
+                <div className="agent-name"> {name} </div>
+                <div className="agent-email"> {email} </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="modal-footer">
@@ -34,3 +41,22 @@ export const TransferChatModal = ({ agents, onAgentSelected, handleClose }) => {
     </Modal>
   );
 };
+
+const mapStateToProps = (state) => {
+  let { agents } = state.basicState.projectInfo;
+  let { userInfo } = state.basicState;
+  agents = agents.filter((ag) => ag.id !== userInfo._id);
+  return { agents };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  transferTo: (conversationId, agentId) => {
+    console.log("Ezih ga", chatTransferRequested(conversationId, agentId));
+    dispatch(chatTransferRequested(conversationId, agentId));
+  },
+  // openAddAgentModal: () => {
+  //   dispatch(openModalRequested("ADD_AGENT"));
+  // },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransferChatModal);

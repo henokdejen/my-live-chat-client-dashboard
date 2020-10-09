@@ -3,7 +3,7 @@
 #search-container {
     display: flex;
     align-items: center;
-    background: $nav-dark-background-lighter;
+    background: #fff;
     padding: 20px;
     z-index: 1;
 
@@ -18,7 +18,7 @@
         padding-left: 48px;
         padding-right: 20px;
         font-size: 0.8rem;
-        background: url('../../../images/search/search.svg') no-repeat $search-background-image-color;
+        background: url('../../../images/search/search.svg') no-repeat rgba(0,0,0, 0.1);
         background-position: 15px center;
         background-size: 20px 20px;
     }

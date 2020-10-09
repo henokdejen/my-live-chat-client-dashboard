@@ -1,0 +1,24 @@
+.today-report-body {
+  display: flex;
+  gap: 20px;
+}
+
+.today-report-card {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.today-report-value {
+  font-size: 3.3em;
+}
+
+.today-report-summary {
+  font-style: italic;
+  font-size: 0.9em;
+}

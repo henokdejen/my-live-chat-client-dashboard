@@ -8,18 +8,15 @@ import {
 } from "./auth";
 import { watchaddProjectRequest } from "./project";
 import { watchGetMessagesAsync, watchSendMsgAsync } from "./messages";
-import {
-  socketListener,
-  watchJoinConversation,
-  watchMessageSeenReport,
-  watchStartNewConversation,
-} from "./socket";
 import { watchGetInitialDataAsync } from "./initialLoader";
 import {
   watchLoadTicketMsgsAsync,
   watchLoadTicketsAsync,
   watchSendTicketMsgsAsync,
 } from "./ticket";
+import { watchloadArchivesAsync } from "./conversations";
+import { watchRemoveAgentAsync } from "./dashboard";
+import { socketSagas } from "./socket";
 
 export default function* rootSaga() {
   yield all([
@@ -28,14 +25,14 @@ export default function* rootSaga() {
     watchLoginRequest(),
     watchaddProjectRequest(),
     watchGetMessagesAsync(),
-    socketListener(),
     watchGetInitialDataAsync(),
-    watchMessageSeenReport(),
-    watchStartNewConversation(),
     watchLogoutRequest(),
     watchLoadTicketMsgsAsync(),
     watchSendTicketMsgsAsync(),
     watchLoadTicketsAsync(),
-    watchJoinConversation(),
+    watchloadArchivesAsync(),
+    watchRemoveAgentAsync(),
+
+    socketSagas(),
   ]);
 }
