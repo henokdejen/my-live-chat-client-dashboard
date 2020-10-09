@@ -22,6 +22,7 @@ import {
   getSendTickeMsgURL,
   getTicketClaimURL,
   getProjectSettingUpdateURL,
+  banipaddressURL,
 } from "./API_URL";
 import {
   LS_TOKEN,
@@ -166,4 +167,10 @@ export const updateProjectSettings = (newSettings) => {
   return API.put(getProjectSettingUpdateURL(projectID), newSettings).then(
     (d) => d.data
   );
+};
+
+
+// ban ip address related
+export const banIPAddress = (banInfo) => {
+  return API.post(banipaddressURL(projectID), banInfo);
 };

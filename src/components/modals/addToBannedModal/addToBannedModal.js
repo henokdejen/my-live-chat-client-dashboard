@@ -7,6 +7,7 @@ import Modal from "../../controls/modal/Modal";
 import {getFormatedFullDate, validateIPAddress} from "../../../Utils/index";
 import ClipLoader from "react-spinners/ClipLoader";
 import * as API from "../../../API/project";
+import { banIPAddress } from "../../../API/base";
 import "./addToBannedModal.scss";
 
 const AddAgentSchema = () => {
@@ -34,32 +35,53 @@ const AddToBannedModal = ({handleClose, addBannedVisitorToStore, visitorBannedBy
     if(validateIPAddress(ipaddr)){
       setCheckingIP(true);
       setTimeout(()=>{
-        API.checkVisitorIPCountry(ipaddr)
-        .then((data) => {
-          setIPCountry(data.country);
-        })
-        .catch(() => {
-          alert("error while checking ip-address");
-        })
-        .then(() => {
-          setCheckingIP(false);
-        });
-      },600)
+        // API.checkVisitorIPCountry(ipaddr)
+        // .then((data) => {
+        //   setIPCountry(data.country);
+        // })
+        // .catch(() => {
+        //   alert("error while checking ip-address");
+        // })
+        // .then(() => {
+        //   setCheckingIP(false);
+        // });
+        setIPCountry("Ethiopia");
+        setCheckingIP(false);
+      },600);
     }
   };
 
   const onSubmit = (values) => {
     if(IPCountry){
       const visitorToBan = {
-        ip: values.ipaddress,
-        countryfrom: IPCountry,
-        date: today,
+        IPaddress: values.ipaddress,
+        country: IPCountry,
         reason: values.description,
-        agent: visitorBannedBy
+        bannedBy: visitorBannedBy
       }
+      // const visitorToBan = {
+      //   ip: values.ipaddress,
+      //   countryfrom: IPCountry,
+      //   date: today,
+      //   reason: values.description,
+      //   agent: visitorBannedBy
+      // }
       setTimeout(()=>{
-        addBannedVisitorToStore(visitorToBan);
-        handleClose(true);
+        banIPAddress(visitorToBan)
+        .then((response) => {
+          let { data } = response;
+          if (data.success) {
+           console.log(data);
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then(() => {});
+        // addBannedVisitorToStore(visitorToBan);
+        // handleClose(true);
       },600)
     }
   };

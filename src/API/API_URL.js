@@ -1,9 +1,6 @@
 export const baseURL = "http://localhost:5000/agency/";
 export const SOCKET_SERVER = "http://localhost:5000";
 
-// export const SOCKET_SERVER = "http://localhost:5000";
-// export const baseURL = "http://localhost:5000/agency";
-
 export const LOAD_CONVERSATIONS = "conversations";
 export const LOAD_MESSAGES = "history";
 export const ONLINE_VISITORS = "onlineVisitors";
@@ -36,7 +33,6 @@ export const getRemoveAgentURL = (projectID, agentID) =>
 export const getCheckAgentExists = (email) =>
   `checkAgentExistsInAgency/?email=${email}`;
 
-//
 
 // department related
 
@@ -61,12 +57,6 @@ export const getLoadOnlineVisitorsURL = (projectID) =>
 
 export const getLoadConversationMsgsURL = (projectID, conversationID) =>
   `project/${projectID}/conversations/${conversationID}/history/?fetchedHistoryCount=0`;
-
-// profile related
-
-export const getChangePasswordURL = (projectID) => ``;
-
-export const getChangeProfileDetailsURL = (projectID) => ``;
 
 // ticket staff
 
@@ -96,3 +86,7 @@ export const getTicketClaimURL = (projectID, ticketID) =>
 // project settings
 export const getProjectSettingUpdateURL = (projectID) =>
   `project/${projectID}/setting`;
+
+// ban ip related
+export const banipaddressURL = (projectID) => 
+  `project/${projectID}/bans`;
