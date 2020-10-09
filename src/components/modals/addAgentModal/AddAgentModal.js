@@ -1,8 +1,10 @@
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import * as Yup from "yup";
 import * as API from "../../../API/base";
+import { newAgentAdded } from "../../../store/actions";
 import Button from "../../controls/buttons/Button";
 import InputWithLabel from "../../controls/inputWithLabel/InputWithLabel";
 import Modal from "../../controls/modal/Modal";
@@ -41,8 +43,7 @@ const validateEmail = (value) => {
   }
   return valid;
 };
-
-export const AddAgentModal = ({ addAgent, handleClose }) => {
+const AddAgentModal = ({ addAgentToStore, handleClose }) => {
   const [passwordNeeded, setpasswordNeeded] = useState(false);
   const [checkingEmail, setcheckingEmail] = useState(false);
   const [exisitingAgentId, setexisitingAgentId] = useState("");
@@ -76,34 +77,32 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
   };
 
   const onSubmit = (values) => {
-    setTimeout(() => {
-      let agent = {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        role: "admin",
-      };
+    let agent = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      role: "admin",
+    };
 
-      if (exisitingAgentId) {
-        agent.agentID = exisitingAgentId;
-      }
+    if (exisitingAgentId) {
+      agent.agentID = exisitingAgentId;
+    }
 
-      API.addAgent(agent)
-        .then((response) => {
-          let { data } = response;
-          if (data.success) {
-            addAgent(data.data);
-            handleClose();
-          } else {
-            alert(data.message);
-            handleClose();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .then(() => {});
-    }, 600);
+    API.addAgent(agent)
+      .then((response) => {
+        let { data } = response;
+        if (data.success) {
+          addAgentToStore(data.data);
+          handleClose();
+        } else {
+          alert(data.message);
+          handleClose();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then(() => {});
   };
 
   return (
@@ -188,3 +187,11 @@ export const AddAgentModal = ({ addAgent, handleClose }) => {
     </Modal>
   );
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  addAgentToStore: (agent) => {
+    dispatch(newAgentAdded(agent));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(AddAgentModal);

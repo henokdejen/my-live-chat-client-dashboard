@@ -5,19 +5,22 @@ import {
   baseURL,
   getRemoveAgentURL,
   getAddAgentURL,
-  getLoadConversationsURL,
   getLoadOnlineVisitorsURL,
   getInitialDataURL,
   getCheckAgentExists,
   CHANGE_PASSWORD,
   UPDATE_PROFILE,
   SOCKET_SERVER,
-  getLoadConversationMsgsURL,
   getLoadTicketURL,
   getLoadTicketDetailsURL,
   getSendTickeMsgURL,
   getTicketClaimURL,
   getProjectSettingUpdateURL,
+  getLoadReportsURL,
+  getLoadArchiveConversationsURL,
+  getLoadActiveConversationsURL,
+  getLoadActiveConvMsgsURL,
+  getLoadArchiveConvMsgsURL,
 } from "./API_URL";
 import {
   LS_TOKEN,
@@ -67,7 +70,7 @@ export const loadInitialData = (projectID) => {
 };
 
 export const removeAgent = (agentID) => {
-  return API.delete(getRemoveAgentURL(projectID, agentID));
+  return API.delete(getRemoveAgentURL(projectID, agentID)).then((d) => d.data);
 };
 
 export const addAgent = (agent) => {
@@ -79,16 +82,26 @@ export const checkAgentExists = (email) => {
 };
 
 // Conversations staffa
-export const loadInitialConversations = () => {
-  return API.get(getLoadConversationsURL(projectID)).then((d) => d.data);
+export const loadActiveConversations = () => {
+  return API.get(getLoadActiveConversationsURL(projectID)).then((d) => d.data);
+};
+
+export const loadArchivedConversations = () => {
+  return API.get(getLoadArchiveConversationsURL(projectID)).then((d) => d.data);
 };
 
 export const loadInitialOnlineUsers = () => {
   return API.get(getLoadOnlineVisitorsURL(projectID)).then((d) => d.data);
 };
 
-export const loadConversationsMessages = (conversationID) => {
-  return API.get(getLoadConversationMsgsURL(projectID, conversationID)).then(
+export const loadActiveConvMessages = (conversationID) => {
+  return API.get(getLoadActiveConvMsgsURL(projectID, conversationID)).then(
+    (d) => d.data
+  );
+};
+
+export const loadArchiveConMessages = (conversationID) => {
+  return API.get(getLoadArchiveConvMsgsURL(projectID, conversationID)).then(
     (d) => d.data
   );
 };
@@ -142,6 +155,15 @@ export const claimTicketAssignee = (ticketID) => {
 
 export const updateProjectSettings = (newSettings) => {
   return API.put(getProjectSettingUpdateURL(projectID), newSettings).then(
+    (d) => d.data
+  );
+};
+
+// report related
+
+export const loadReports = (startDate, endDate, item) => {
+  console.log("yhe", startDate, endDate);
+  return API.get(getLoadReportsURL(projectID, startDate, endDate, item)).then(
     (d) => d.data
   );
 };

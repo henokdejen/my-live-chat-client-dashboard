@@ -15,7 +15,7 @@ import {
   BsBoxArrowUpLeft,
 } from "react-icons/bs";
 
-const ChatTitle = ({ selectedConversation, openTransferChat }) => {
+const ChatTitle = ({ selectedConversation, menus }) => {
   let chatTitleContents = null;
 
   const moreIcon = (
@@ -29,26 +29,12 @@ const ChatTitle = ({ selectedConversation, openTransferChat }) => {
       <>
         <span className="conv-title">{selectedConversation.title}</span>
         <DropDownMenu trigger={moreIcon} placement="bottomRight">
-          <DDMenuItem onClick={openTransferChat}>
-            {" "}
-            <BsArrowLeftRight /> Transfer to
-          </DDMenuItem>
-          <DDMenuItem>
-            {" "}
-            <BsBoxArrowUpRight /> Send Transcript
-          </DDMenuItem>
-          <DDMenuItem>
-            {" "}
-            <BsSlashCircle /> Ban this visitor
-          </DDMenuItem>
-          <DDMenuItem>
-            {" "}
-            <BsBoxArrowUpLeft /> Leave
-          </DDMenuItem>
+          {menus.map((menu, i) => (
+            <DDMenuItem onClick={menu.click} key={i}>
+              <menu.icon /> {menu.lable}
+            </DDMenuItem>
+          ))}
         </DropDownMenu>
-        {/* <div onClick={ () => { onDeleteConversation(); } } title="Delete Conversation" className="delete-icon">
-                    <TrashIcon />
-                </div> */}
       </>
     );
   }

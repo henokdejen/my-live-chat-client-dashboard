@@ -185,7 +185,6 @@ const MyProfile = ({ userInfo, userInfoUpdated }) => {
                       <td className="edit-attribute">Time Zone:</td>
                       <td className="edit-value">
                         <Select
-                          className="status-selector"
                           classNamePrefix="select"
                           defaultValue={timeZoneOptions[0]}
                           value={

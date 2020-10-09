@@ -1,4 +1,4 @@
-import { MessageStatus } from "../../constants";
+import { ACTIVE_CONVERSATION_TYPES, MessageStatus } from "../../constants";
 
 export const getFormattedLocalTime = (milliseconds, long) => {
   let date = new Date(milliseconds);
@@ -49,6 +49,7 @@ export const getConversation = (dataFromServer) => {
   let id = dataFromServer.conversationID
     ? dataFromServer.conversationID
     : dataFromServer._id;
+
   let conversation = {
     id: id,
     members: dataFromServer.members,
@@ -62,19 +63,25 @@ export const getConversation = (dataFromServer) => {
     numberOfMessages: dataFromServer.numberOfMessages
       ? dataFromServer.numberOfMessages
       : 0,
-    title: dataFromServer.email ? dataFromServer.email : id,
+    title: !dataFromServer.name
+      ? dataFromServer.name
+      : // : dataFromServer.email
+        // ? dataFromServer.email
+        id,
     createdAtMs: dataFromServer.createdAt.time,
     updatedAtMs: dataFromServer.updatedAt.time,
     browserID: dataFromServer.browserID,
-    unSeenCount: dataFromServer.agentUnseenCount
-      ? dataFromServer.agentUnseenCount
-      : 0,
+    unSeenCount: dataFromServer.unseencount || 0,
     createdAt: getFormattedLocalTime(dataFromServer.createdAt.time),
     updatedAt: getFormattedLocalTime(dataFromServer.updatedAt.time),
     latestMessageText: latestMessage,
-    joined: false,
+    type: dataFromServer.type,
+    new: true, // until overriden
   };
   conversation.unSeenMarkerCount = conversation.unSeenCount;
+  conversation.joined =
+    conversation.type === ACTIVE_CONVERSATION_TYPES.PRIVATE_CONVERSATION ||
+    false;
 
   return conversation;
 };
@@ -138,7 +145,7 @@ export const getTicketMessage = (dataFromServer) => {
   return message;
 };
 
-export const createMessageFromInput = (textMessage, whisper) => {
+export const createMessageFromInput = (textMessage, whisper, type) => {
   let now = Date.now();
   return {
     front_id: now,
@@ -150,5 +157,19 @@ export const createMessageFromInput = (textMessage, whisper) => {
     createdAt: getFormattedLocalTime(now),
     isMyMessage: true,
     status: MessageStatus.PENDING,
+    type,
   };
+};
+
+export const mapConversationsWithOnlineStatus = (
+  conversations,
+  onlineVisitors
+) => {
+  for (let conv of conversations) {
+    for (let onVist of onlineVisitors) {
+      if (conv.browserID === onVist.browserID) {
+        conv.isOnline = true;
+      }
+    }
+  }
 };

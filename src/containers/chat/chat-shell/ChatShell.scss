@@ -7,32 +7,40 @@ $chat-shell-background: lighten($accent-color, 65%);
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: #fff;
 
   .conversations-wrapper {
     width: 100%;
-    max-width: 320px;
+    max-width: 380px;
+    height: 100%;
     display: flex;
+    padding: 0 8px;
     flex-direction: column;
+    border-right: 1px solid #ddd;
     overflow-y: auto;
-    background: $nav-dark-background-lighter;
+
+    .conversations-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 56px;
+      padding: 5px 8px;
+
+      .section-title {
+        font-size: 1.3em;
+      }
+    }
   }
 
-  .chat-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  .no-conversation-selected {
     width: 100%;
-    flex: 1;
-    border-right: 1px solid #ddd;
-
-    .conversationContent {
-      flex: 3;
-      // background-color: #edeeef;
-      overflow-y: auto;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .client-information-wrapper {
     width: 320px;
+    height: 100%;
   }
 }

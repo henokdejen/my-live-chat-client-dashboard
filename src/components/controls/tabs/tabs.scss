@@ -1,0 +1,19 @@
+@import "../../../styles/colors";
+
+.tabs-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  .tab-item {
+    border-radius: 20px;
+    padding: 7px 20px;
+    cursor: pointer;
+
+    &.tab-active {
+      border: 2px solid $primary-color;
+    }
+  }
+}

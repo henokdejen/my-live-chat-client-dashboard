@@ -19,16 +19,20 @@ export const conversationsLoading = () => ({
 
 export const conversationLoaded = (conversations) => ({
   type: types.FETCH_ALL_CONVERSATIONS_SUCCESS,
-  payload: {
-    conversations,
-    selectedConversation: conversations[0],
-  },
+  payload: { conversations },
 });
 
-export const newConversationAdded = (data) => {
+export const newConversationAdded = (conversation) => {
   return {
     type: types.NEW_CONVERSATION_ADDED,
-    payload: data,
+    payload: { conversation },
+  };
+};
+
+export const assignedToConversation = (conversation) => {
+  return {
+    type: types.ASSIGNED_TO_CONVERSATION,
+    payload: { conversation },
   };
 };
 
@@ -47,7 +51,10 @@ export const visitorLeftChat = (conversationId) => {
 };
 
 export const markAllMessageSeenRequested = (conversationId) => {
-  return { type: types.MARK_ALL_MESSAGES_SEEN, conversationId };
+  return {
+    type: types.MARK_ALL_MESSAGES_SEEN,
+    payload: { conversationId },
+  };
 };
 
 export const createConversationRequested = (browserID, history) => {
@@ -68,6 +75,90 @@ export const conversationJoined = (conversationID) => {
   return { type: types.JOIN_CONVERSATION_SUCCESS, conversationID };
 };
 
-export const removeUnSeenMarker = (conversationID) => {
-  return { type: types.REMOVE_UNSEEN_MARKER, conversationID };
+export const removeUnSeenMarker = (conversationId) => {
+  return {
+    type: types.REMOVE_UNSEEN_MARKER,
+    payload: { conversationId },
+  };
 };
+
+export const createNewConversation = (roomDetail) => {
+  console.log("Ney wuch", roomDetail);
+  return {
+    type: types.CREATE_NEW_CONVERSATION_REQUEST,
+    payload: { name: roomDetail.name, members: roomDetail.members },
+  };
+};
+
+export const newConversationCreated = () => {
+  return { type: types.CREATE_NEW_CONVERSATION_SUCCESS };
+};
+
+export const leaveConversationRequested = (conversationId) => {
+  return {
+    type: types.LEAVE_CONVERSATION_REQUEST,
+    payload: { conversationId },
+  };
+};
+
+export const conversationLeft = (conversationId) => {
+  return {
+    type: types.LEAVE_CONVERSATION_SUCCESS,
+    payload: { conversationId },
+  };
+};
+
+export const sendChatTransRequested = (conversationId) => {
+  return {
+    type: types.SEND_CONV_TRANS_REQUEST,
+    payload: { conversationId },
+  };
+};
+
+export const chatTransSent = (conversationId) => {
+  return {
+    type: types.SEND_CONV_TRANS_SUCCESS,
+    payload: { conversationId },
+  };
+};
+
+export const closeConvRequested = (conversationId) => {
+  return {
+    type: types.CLOSE_CONVERSATION_REQUEST,
+    payload: { conversationId },
+  };
+};
+
+export const convClosed = (conversationId) => {
+  return {
+    type: types.CLOSE_CONVERSATION_SUCCESS,
+    payload: { conversationId },
+  };
+};
+
+export const chatTransferRequested = (conversationId, agentId) => {
+  return {
+    type: types.TRANSFER_CHAT_REQUEST,
+    payload: { conversationId, agentId },
+  };
+};
+
+export const chatTransfered = (conversationId) => {
+  return {
+    type: types.TRANSFER_CHAT_SUCCESS,
+    payload: { conversationId },
+  };
+};
+
+// ADRCHIVES related
+export const archivesRequested = () => ({
+  type: types.FETCH_ALL_ARCHIVES_REQUEST,
+});
+
+export const archivesLoaded = (archives) => ({
+  type: types.FETCH_ALL_ARCHIVES_SUCCESS,
+  payload: {
+    archives,
+    selectedArchive: archives[0],
+  },
+});

@@ -4,22 +4,23 @@ import {
   BsFillPeopleFill,
   BsFillGearFill,
   BsEnvelopeFill,
+  BsBarChartFill,
+  BsFillArchiveFill,
 } from "react-icons/bs";
+import { AiOutlineAreaChart } from "react-icons/ai";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import "./sidebar.scss";
 import { Badge } from "../../components/controls/badge/Badge";
-import { DropDownMenu } from "../../components/controls/dropDownMenu/DropDownMenu";
-import { DDMenuItem } from "../../components/controls/dropDownMenu/DDMenuItem/DDMenuItem";
-import { PopupContainer } from "../../components/controls/popupContainer/PopupContainer";
 import { ProfilePopup } from "../../components/profile-popup/ProfilePopup";
 import { AvatarWithOnlineIndicator } from "../../components/controls/avatar/AvatarWithOnlineIndicator";
-import { logoutRequested, logoutSucceded } from "../../store/actions";
+import { logoutSucceded } from "../../store/actions";
 
 const SideBar = ({
   onlineVisitorCount,
-  totalUnseenCount,
+  unSeenTeamCount,
+  unSeenPrivateCount,
   openTicketsCount,
   userInfo,
   projectInfo,
@@ -28,11 +29,28 @@ const SideBar = ({
 }) => {
   const menus = [
     {
-      title: "Chat",
+      title: "Home",
+      icon: <BsFillGearFill />,
+      path: "/home",
+    },
+    {
+      title: "Team Inbox",
       icon: <BsChatFill />,
-      path: "/conversations",
+      path: "/teamInbox",
       showBadge: true,
-      badgeValue: totalUnseenCount,
+      badgeValue: unSeenTeamCount,
+    },
+    {
+      title: "Private Inbox",
+      icon: <BsChatFill />,
+      path: "/privateInbox",
+      showBadge: true,
+      badgeValue: unSeenPrivateCount,
+    },
+    {
+      title: "Archives",
+      icon: <BsFillArchiveFill />,
+      path: "/archives",
     },
     {
       title: "Visitors",
@@ -47,6 +65,12 @@ const SideBar = ({
       path: "/tickets",
       showBadge: true,
       badgeValue: openTicketsCount,
+    },
+
+    {
+      title: "Reports",
+      icon: <BsBarChartFill />,
+      path: "/reports",
     },
     {
       title: "Settings",
@@ -75,7 +99,7 @@ const SideBar = ({
         ))}
       </div>
       <div className="lower-section">
-        <div id="side-nav-avatar" onClick={(e) => setshowProfilePopup(true)}>
+        <div id="side-nav-avatar" onClick={() => setshowProfilePopup(true)}>
           <AvatarWithOnlineIndicator
             imageUrl={require("../../images/profiles/daryl.png")}
             online={true}
@@ -87,7 +111,7 @@ const SideBar = ({
               projectInfo={projectInfo}
               allProjects={allProjects}
               logout={logout}
-              handleClose={(e) => {
+              handleClose={() => {
                 console.log("fine");
                 setshowProfilePopup(false);
               }}
@@ -100,13 +124,15 @@ const SideBar = ({
 };
 
 const mapStateToProps = (state) => {
+  const { unSeenTeamCount, unSeenPrivateCount } = state.conversationState;
   let props = {
     userInfo: state.basicState.userInfo,
     projectInfo: state.basicState.projectInfo,
     allProjects: state.basicState.allProjects,
     onlineVisitorCount: state.visitorsState.onlineVisitors.length,
     openTicketsCount: state.basicState.projectInfo.openTicketsCount,
-    totalUnseenCount: state.conversationState.unSeenCount,
+    unSeenTeamCount,
+    unSeenPrivateCount,
   };
   return props;
 };

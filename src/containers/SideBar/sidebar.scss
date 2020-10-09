@@ -1,6 +1,6 @@
 .side-bar {
   background-image: linear-gradient(180deg, #262f3c 0, #262f3c);
-  width: 70px;
+  width: 60px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,7 @@
     padding: 15px 0;
     color: #999;
     display: block;
-    font-size: 0.8em;
+    font-size: 0.7em;
     text-decoration: none;
     cursor: pointer;
 
@@ -58,7 +58,7 @@
       }
 
       svg {
-        font-size: 1.8em;
+        font-size: 1.4em;
       }
     }
   }
