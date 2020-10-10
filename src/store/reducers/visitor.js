@@ -2,6 +2,7 @@ import * as types from "../../constants";
 const initialState = {
   onlineVisitors: [],
   bannedVisitorsList: [],
+  bannedVisitorsLoaded: false,
 };
 
 const visitorsReducer = (state = initialState, action) => {
@@ -43,13 +44,14 @@ const visitorsReducer = (state = initialState, action) => {
       const newBannedVisitor = action.payload; 
       
       newState.bannedVisitorsList.push(newBannedVisitor);
+      newState.bannedVisitorsLoaded = true;
       return newState;
     }
 
     case types.REMOVE_BANNED_VISITOR: {
       const newState = { ...state };
       newState.bannedVisitorsList = newState.bannedVisitorsList.filter(
-        (visitor) => visitor.ip !== action.visitorip
+        (visitor) => visitor._id !== action.visitorbanid
       );
       return newState;
     }

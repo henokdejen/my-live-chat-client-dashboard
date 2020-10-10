@@ -26,7 +26,7 @@ export const banVisitor = (visitor) => ({
     payload: visitor
 })
 
-export const removeBanVisitor = (visitorip) => ({
+export const removeBanVisitor = (visitorbanid) => ({
     type: types.REMOVE_BANNED_VISITOR,
-    visitorip
+    visitorbanid
 })

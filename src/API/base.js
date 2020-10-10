@@ -22,6 +22,7 @@ import {
   getTicketClaimURL,
   getProjectSettingUpdateURL,
   banipaddressURL,
+  liftBanURL,
   getLoadReportsURL,
   getLoadArchiveConversationsURL,
   getLoadActiveConversationsURL,
@@ -185,9 +186,20 @@ export const updateProjectSettings = (newSettings) => {
 
 
 // ban ip address related
+
 export const banIPAddress = (banInfo) => {
   return API.post(banipaddressURL(projectID), banInfo);
 }
+
+export const getBannedIPAddress = () => {
+  return API.get(banipaddressURL(projectID))
+  .then((d) => d.data);
+}
+
+export const liftBanForVisitor = (banIdsList) => {
+  return API.post(liftBanURL(projectID), { banIDs : banIdsList });
+}
+
 // report related
 
 export const loadReports = (startDate, endDate, item) => {
