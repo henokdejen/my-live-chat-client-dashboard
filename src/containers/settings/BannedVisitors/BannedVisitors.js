@@ -64,14 +64,14 @@ const BannedItem = ({bannedVisitorsListItem, removeBanForVisitor}) => {
     );
   };
 
-const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorToStore, removeBanForVisitor, bannedVisitorsLoaded}) => {
+const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorToStore, removeBanForVisitor}) => {
 
   const [showBannedModal, setshowBannedModal] = useState(false);
   const [loadingbannedvisitors, setLoadingbannedvisitors] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
 
   React.useEffect(()=>{
-    if(!bannedVisitorsLoaded) loadBannedVisitors();
+    loadBannedVisitors();
   },[]);
   
   const loadBannedVisitors = () => {
@@ -143,10 +143,10 @@ const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorTo
 
 const mapStateToProps = (state) => {
   let { userInfo } = state.basicState;
-  let { bannedVisitorsList, bannedVisitorsLoaded } = state.visitorsState;
+  let { bannedVisitorsList } = state.visitorsState;
   let visitorBannedBy = userInfo.name;
 
-  return { visitorBannedBy, bannedVisitorsList, bannedVisitorsLoaded };
+  return { visitorBannedBy, bannedVisitorsList };
 };
 
 const mapDispatchToProps = (dispatch) => ({
