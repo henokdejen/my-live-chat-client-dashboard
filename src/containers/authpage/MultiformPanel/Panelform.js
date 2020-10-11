@@ -1,7 +1,6 @@
 import { Field, Form, withFormik } from "formik";
 import React from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import * as Yup from "yup";
 import { LS_TOKEN } from "../../../constants";
@@ -10,7 +9,6 @@ import "./Panelform.scss";
 
 const PanelformComponent = ({ errors, touched, projectInfo }) => {
   const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
-  const history = useHistory();
 
   React.useEffect(() => {
     if (projectInfo.ErrorMessage) {
@@ -19,7 +17,7 @@ const PanelformComponent = ({ errors, touched, projectInfo }) => {
       // if (!firsttimeloading) history.push("/");
     }
     setFirstTimeLoading(false);
-  }, [projectInfo]);
+  }, [projectInfo.ErrorMessage]);
 
   return (
     <div className="panelrootcontainer">
@@ -79,7 +77,7 @@ let Panelform = withRouter(
       websitename: Yup.string().required("*required"),
       websiteurl: Yup.string()
         .matches(
-          /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+          "(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})",
           "Enter correct url!"
         )
         .required("*required"),

@@ -1,8 +1,5 @@
-export const baseURL = "http://192.168.1.10:5000/agency/";
-export const SOCKET_SERVER = "http://192.168.1.10:5000";
-
-// export const SOCKET_SERVER = "http://localhost:5000";
-// export const baseURL = "http://localhost:5000/agency";
+export const baseURL = "http://localhost:5000/agency/";
+export const SOCKET_SERVER = "http://localhost:5000";
 
 export const LOAD_CONVERSATIONS = "conversations";
 export const LOAD_MESSAGES = "history";
@@ -36,6 +33,20 @@ export const getRemoveAgentURL = (projectID, agentID) =>
 export const getCheckAgentExists = (email) =>
   `checkAgentExistsInAgency/?email=${email}`;
 
+
+// department related
+
+export const getAddDepartmentURL = (projectID) => `project/${projectID}/departments`;
+
+export const getRemoveDepartmentURL = (projectID, departmentID) =>
+  `project/${projectID}/departments/${departmentID}`;
+
+export const getAddAgentToDepartmentURL = (projectID, departmentID) => 
+  `project/${projectID}/departments/${departmentID}/addAgents`;
+
+export const getRemoveAgentFromDepartmentURL = (projectID, departmentID) => 
+`project/${projectID}/departments/${departmentID}/removeAgents`;
+
 //
 
 export const getLoadActiveConversationsURL = (projectID) =>
@@ -58,7 +69,6 @@ export const getLoadArchiveConvMsgsURL = (projectID, conversationID) =>
 export const getChangePasswordURL = (projectID) => ``;
 
 export const getChangeProfileDetailsURL = (projectID) => ``;
-
 // ticket staff
 
 const obsKeysToString = (obj) => {
@@ -88,6 +98,9 @@ export const getTicketClaimURL = (projectID, ticketID) =>
 export const getProjectSettingUpdateURL = (projectID) =>
   `project/${projectID}/setting`;
 
+// ban ip related
+export const banipaddressURL = (projectID) => 
+  `project/${projectID}/bans`;
 // report related
 
 export const getLoadReportsURL = (projectID, startDate, endDate, item) =>

@@ -5,6 +5,11 @@ import {
   baseURL,
   getRemoveAgentURL,
   getAddAgentURL,
+  getAddDepartmentURL,
+  getRemoveDepartmentURL,
+  getAddAgentToDepartmentURL,
+  getRemoveAgentFromDepartmentURL,
+  getLoadConversationsURL,
   getLoadOnlineVisitorsURL,
   getInitialDataURL,
   getCheckAgentExists,
@@ -16,6 +21,7 @@ import {
   getSendTickeMsgURL,
   getTicketClaimURL,
   getProjectSettingUpdateURL,
+  banipaddressURL,
   getLoadReportsURL,
   getLoadArchiveConversationsURL,
   getLoadActiveConversationsURL,
@@ -79,6 +85,24 @@ export const addAgent = (agent) => {
 
 export const checkAgentExists = (email) => {
   return API.get(getCheckAgentExists(email)).then((d) => d.data);
+};
+
+// department related
+
+export const addDepartment = (department) => {
+  return API.post(getAddDepartmentURL(projectID), department);
+};
+
+export const removeDepartment = (departmentID) => {
+  return API.delete(getRemoveDepartmentURL(projectID, departmentID));
+};
+
+export const addAgentsToDepartment = (newAgents) => {
+  return API.post(getAddAgentToDepartmentURL(projectID, newAgents.departmentid), {agentIDs:newAgents.agentIDs});
+};
+
+export const RemoveAgentsFromDepartment = (agentsToRemove) => {
+  return API.put(getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid), {agentIDs:agentsToRemove.agentIDs});
 };
 
 // Conversations staffa
@@ -160,6 +184,11 @@ export const updateProjectSettings = (newSettings) => {
   );
 };
 
+
+// ban ip address related
+export const banIPAddress = (banInfo) => {
+  return API.post(banipaddressURL(projectID), banInfo);
+}
 // report related
 
 export const loadReports = (startDate, endDate, item) => {

@@ -22,6 +22,16 @@ const settings = [
         path: "me",
         icon: <BsFillPeopleFill />,
       },
+      {
+        title: "Departments",
+        path: "departments",
+        icon: <BsFillPeopleFill />,
+      },
+      {
+        title: "Ban list",
+        path: "bannedvisitors",
+        icon: <BsFillPeopleFill />,
+      },
     ],
   },
 

@@ -43,3 +43,14 @@ export const checkemailavailable = async (email) => {
         throw new Error("Unexpected error!!!");
     }
 }
+
+
+export const getListOfCountries = async () => {
+    const requestOptions = {method: 'GET'};
+    let response = await fetch(`https://restcountries.eu/rest/v2/all?fields=name`,requestOptions)
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error("Unexpected error!!!");
+    }
+}

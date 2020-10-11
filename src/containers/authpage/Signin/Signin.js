@@ -4,25 +4,20 @@ import * as Yup from "yup";
 import { withFormik, Form, Field } from "formik";
 import { connect } from 'react-redux';
 import { loginRequested } from '../../../store/actions/auth';
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const SigninComponent = ({errors, touched, loginInfo, setVisible}) => {
 
   const [serverError, setServerError] = React.useState('');
   const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
-  const history = useHistory();
   
   React.useEffect(() => {
-    if(loginInfo.token) history.push('/');
-    
     if(loginInfo.ErrorMessage){
       const err = loginInfo.ErrorMessage;
       if(!firsttimeloading) setServerError(err);
     }
-
     setFirstTimeLoading(false);
-   
-  },[loginInfo]);
+  },[loginInfo.ErrorMessage]);
 
   const navToSignup = () => setVisible(true);
 
@@ -55,7 +50,8 @@ const SigninComponent = ({errors, touched, loginInfo, setVisible}) => {
   );
 };
 
-const Signin = withFormik({
+const Signin = withRouter(
+  withFormik({
   mapPropsToValues({email, password}){
     return {
       email: email || '',
@@ -69,10 +65,10 @@ const Signin = withFormik({
   }),
 
   handleSubmit(values, {props}){
-    props.dispatch(loginRequested(values));
+    props.dispatch(loginRequested(values, props.history));
   }
 
-})(SigninComponent)
+})(SigninComponent));
 
 const mapStateToProps = (state) => {
   return {

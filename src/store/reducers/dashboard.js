@@ -28,7 +28,6 @@ const dashboardReducer = (state = initialState, action) => {
       data = formatInitialData(data);
       // let's set few things
       const newState = { ...state, ...data };
-
       return newState;
     }
     case types.NEW_AGENT_ADDED: {
@@ -47,6 +46,53 @@ const dashboardReducer = (state = initialState, action) => {
       return newState;
     }
 
+    case types.NEW_DEPARTMENT_ADDED: {
+      let { department } = action;
+      const newState = { ...state };
+      newState.projectInfo.departments.push(department);
+      return newState;
+    }
+
+    case types.DEPARTMENT_REMOVED: {
+      const { departmentID } = action;
+      const newState = { ...state };
+      newState.projectInfo.departments = newState.projectInfo.departments.filter(
+        (dept) => dept._id !== departmentID
+      );
+      return newState;
+    }
+
+    case types.ADD_AGENTS_TO_DEPARTMENT: {
+      const {agents} = action;
+      let tempIDs = [];
+      agents.agentIDs.forEach((ag) => {
+        tempIDs.push({agentID:ag});
+      });
+    
+      const newState = { ...state };
+      newState.projectInfo.departments.forEach((dep)=>{
+        if(dep._id == agents.departmentid){
+          dep.agents.push(...tempIDs);
+        }
+      });
+      
+      return newState;
+    }
+
+    case types.REMOVE_AGENTS_FROM_DEPARTMENT: {
+      const {agents} = action;
+      let agentsToRemove = agents.agentIDs;
+
+      const newState = {...state};
+
+      newState.projectInfo.departments.forEach((dep)=>{
+        if(dep._id == agents.departmentid){
+          dep.agents = dep.agents.filter(el => !agentsToRemove.includes(el.agentID));
+        }
+      });
+
+      return newState;
+    }
     case types.AGENT_GET_ONLINE_OFFLINE: {
       const { online, agentId } = action.payload;
       const newState = { ...state };
@@ -58,9 +104,6 @@ const dashboardReducer = (state = initialState, action) => {
       });
       console.log("ss", newState.projectInfo.agents);
       return newState;
-    }
-
-    case types.AGENT_OFFLINE: {
     }
 
     case types.EDIT_USER_SUCCESS: {

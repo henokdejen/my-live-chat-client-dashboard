@@ -13,6 +13,7 @@ import { FormSubmitBar } from "../form-submit-bar/FormSubmitBar";
 import Select from "react-select";
 import { BsCaretDownFill } from "react-icons/bs";
 import * as API from "../../API/base";
+import { SOCKET_SERVER } from '../../API/API_URL';
 
 const langauages = [
   {
@@ -37,9 +38,9 @@ const langauages = [
   },
 ];
 
-const BasicWidgetColors = ["#f00", "#0f0", "#00f", "#ff0", "#0ff"];
+const BasicWidgetColors = ["#f00", "#0f0", "#00f", "#ff0", "#262f3c"];
 
-const WidgetColorPicker = ({ activeColor, onColorSelected }) => {
+const WidgetColorPicker = ({ activeColor, onColorSelected, setThemeColorSelected }) => {
   const [showColorPicker, setshowColorPicker] = useState(false);
 
   const [color, setcolor] = useState({
@@ -61,6 +62,7 @@ const WidgetColorPicker = ({ activeColor, onColorSelected }) => {
             backgroundColor: color,
           }}
           key={index}
+          onClick={(e) => setThemeColorSelected(color)}
         />
       ))}
 
@@ -84,7 +86,7 @@ const WidgetColorPicker = ({ activeColor, onColorSelected }) => {
           <SketchPicker
             color={color}
             onChange={(color) => {
-              console.log("Selected Color", color);
+              setThemeColorSelected(color.hex);
               setcolor(color.hex);
             }}
           />
@@ -154,9 +156,14 @@ const enableDisablesSettings = [
 ];
 
 const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
+
   const onSubmit = (values, { setSubmitting }) => {
+    const valuesToSubmit = {
+      settings: values,
+      appearance: {'themeColor':themecolorselected}
+    };
     setTimeout(() => {
-      API.updateProjectSettings(values)
+      API.updateProjectSettings(valuesToSubmit)
         .then((data) => {
           if (data.success) {
             alert("Updated!");
@@ -172,6 +179,19 @@ const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
         .then(() => {});
     }, 1000);
   };
+
+  const [themecolorselected, setThemeColorSelected] = useState('#262f3c');
+
+  let cssProperties = {};
+  cssProperties['--main-color'] = themecolorselected;
+  cssProperties['--main-color-light'] = '#EAF0F6';
+  cssProperties['--main-color-dark'] = '262f3c';
+  cssProperties['--main-background-color'] = 'f1f1f1';
+  cssProperties['--main-button-default'] = '#FFF';
+  cssProperties['--chat-message-background'] = '#dedede';
+  cssProperties['--lighter-grey'] = '#a6a6a6';
+  cssProperties['--plain-white'] = '#ffffff';
+  cssProperties['--btn-color'] = '#ff9900';
 
   return (
     <div className="chat-widget-appearance">
@@ -192,7 +212,7 @@ const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
               <div className="setting-item widget-color">
                 <div className="setting-lable"> Widget Color </div>
                 <div className="setting-value">
-                  <WidgetColorPicker activeColor="#ff0" />
+                  <WidgetColorPicker activeColor="#ff0" setThemeColorSelected={setThemeColorSelected}/>
                 </div>
               </div>
 
@@ -247,7 +267,54 @@ const ChatWidgetAppearance = ({ widgetSettings, changeWidgetSettings }) => {
           )}
         </Formik>
       </div>
-      <div className="widget-preview-wrapper"></div>
+      <div className="widget-preview-wrapper" style={cssProperties}>
+ 
+        <div id="chat-containerwidget" className="chat-containerwidget">
+          <div className="chat-main">
+             <div className="chat-header">
+              <img id="avatar_img" src={SOCKET_SERVER+"/images/avatar.png"} alt="Avatar" className="avatar" />
+              <div id="agentName" className="group-name">
+                <span id="agent_Name">Agent Name</span>
+                <span id="onoffindicatoroff"></span>
+                <span id="dropdownbtncontainer"><img id="widgetdropbtn" className="widgetdropbtn" src={SOCKET_SERVER+"/images/more_vert_white.png"}/></span>
+              </div>
+        
+            </div>
+            <div id="chatMessages" className="chat-messages">
+              <div className="message message-from">
+                <p className="message-text">Hi! how can I help you?</p>
+              </div>
+              <div className="message message-to">
+                <p className="message-text">Hi! I heard that you have the new limited edition of a book.</p>
+              </div>
+              <div className="message message-to">
+                <p className="message-text">called The Archer</p>
+              </div>
+              <div className="message message-from">
+                <p className="message-text">If you are referring to The Archer by paulo coelho you are right. Visit us tommorow</p>
+              </div>
+              <div className="message message-to">
+                <p className="message-text">Alright&#128525;</p>
+              </div>
+            </div>
+            <div className="chat-footer">
+              <form id="messageSendForm">
+                <span> <img src={SOCKET_SERVER+"/images/attachfileicon.png"} width="20px" height="20px"/> </span>
+                <span id="triggerpickerbtn">&#128578;</span>
+                <input id="messageInput" type="text" placeholder="Type message here..." disabled={true}/>
+              </form>
+            </div>
+          </div> 
+        </div>
+        
+        <div id="widgetcontainerbox">
+          <div id="customwidget">
+            <img id="widgetimageicon" src={SOCKET_SERVER+"/images/smsinactiveicon.png"} />
+            <span id="notificationbadge"> </span>
+          </div>
+        </div> 
+
+      </div>
     </div>
   );
 };

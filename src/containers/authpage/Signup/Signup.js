@@ -1,29 +1,38 @@
 import React from "react";
 import './Signup.scss';
 import * as Yup from "yup";
+import { getListOfCountries } from "../../../API/auth";
 import { withFormik, Form, Field } from "formik";
 import { signupRequested } from '../../../store/actions/auth';
 import { connect } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignupComponent = ({errors, touched, values, signupInfo}) => {
 
   const [firsttimeloading, setFirstTimeLoading] = React.useState(true);
   const [serverError, setServerError] = React.useState('');
-  const history = useHistory();
+  const [countrieslist, setCountriesList] = React.useState([]);
 
   React.useEffect(() => {
-    if(signupInfo.token) {
-      history.push('/projectForm');
-    };
-    
+    setTimeout(()=>{
+      getListOfCountries()
+      .then((data) => {
+        setCountriesList(data);
+      })
+      .catch(() => {
+        alert("error while loading countries");
+      })
+      .then(() => {
+        //success
+      });
+    },400);
+
     if(signupInfo.ErrorMessage){
       const err = signupInfo.ErrorMessage;
       if(!firsttimeloading) setServerError(err);
     }
-
     setFirstTimeLoading(false);
-  },[signupInfo]);
+  },[signupInfo.ErrorMessage]);
 
   return (
       <div className="signupflexcontainer">
@@ -53,13 +62,10 @@ const SignupComponent = ({errors, touched, values, signupInfo}) => {
               <Field type="password" placeholder="Password" name="password" />
               
               <Field className="signupselectbox" component="select" name="country" placeholder="Country">
-                    <option value="Ethiopia">Ethiopia</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="Germany">Germany</option>
-                    <option value="USA">United States</option>
-                    <option value="England">England</option>
-                    <option value="Russia">Russia</option>
-                </Field>
+                    {countrieslist.map((item)=>{
+                      return <option key={item.name} value={item.name}>{item.name}</option>;
+                    })}
+              </Field>
               
               {touched.terms && errors.terms && <p className="signupformerror">{errors.terms}</p>}
               <label className="signupbox-container">
@@ -75,34 +81,36 @@ const SignupComponent = ({errors, touched, values, signupInfo}) => {
     );
   };
 
-  const Signup = withFormik({
+  const Signup = withRouter(withFormik({
     mapPropsToValues({email, password, username, terms, country}){
       return {
         email: email || '',
         password: password || '',
         username: username || '',
         terms: terms || false,
-        country: country || 'Ethiopia'
+        country: country || 'United States'
       }
     },
   
     validationSchema: Yup.object().shape({
       email: Yup.string().email().required("*required"),
       password: Yup.string().min(8).max(50).required("*required"),
-      username: Yup.string().min(8).required("*required"),
+      username: Yup.string().min(3).required("*required").test("username", "Name should contain first name and last name", (username) => {
+        return username && username.trim().split(" ").length === 2;
+      }),
       terms: Yup.bool().oneOf([true], "*required")
     }),
   
-    handleSubmit(values, {props}){
+    handleSubmit(values, { props }){
       props.dispatch(signupRequested({ 
         email : values.email,
         password : values.password,
         country : values.country,
         name: values.username,
-    }));
+    },props.history));
     }
     
-  })(SignupComponent)
+  })(SignupComponent));
 
   const mapStateToProps = (state) => {
     return {
