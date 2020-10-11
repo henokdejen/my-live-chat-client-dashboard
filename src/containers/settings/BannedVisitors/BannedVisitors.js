@@ -6,6 +6,8 @@ import { InnerHeader } from "../../../components/controls/innerHeader/InnerHeade
 import { banVisitor, removeBanVisitor } from "../../../store/actions/visitors";
 import { connect } from "react-redux";
 import * as API from "../../../API/base";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import AddToBannedModal from "../../../components/modals/addToBannedModal/addToBannedModal";
 import { getFormatedFullDate } from "../../../Utils/index";
 import './bannedvisitors.scss';
@@ -66,21 +68,19 @@ const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorTo
 
   const [showBannedModal, setshowBannedModal] = useState(false);
   const [loadingbannedvisitors, setLoadingbannedvisitors] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
 
   React.useEffect(()=>{
-    loadBannedVisitors();
+    if(!bannedVisitorsLoaded) loadBannedVisitors();
   },[]);
   
   const loadBannedVisitors = () => {
-    if(bannedVisitorsLoaded) return;
     setLoadingbannedvisitors(true);
     setTimeout(() => {
-        API.getBannedIPAddress()
+        API.getBannedIPAddress(startDate.getTime())
         .then((response) => {
           if (response.success) {
-            response.data.forEach((d)=>{
-              addBannedVisitorToStore(d);
-            });
+            addBannedVisitorToStore(response.data, false);
           }
           })
         .catch((error) => {
@@ -105,6 +105,10 @@ const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorTo
         <div className="title">
           <BsFillPeopleFill />
           BAN LIST
+        </div>
+        <div className="action-menu">
+          <span className="datepickerlabel"> Banned-before </span>
+          <DatePicker selected={startDate} onChange={date => {setStartDate(date); loadBannedVisitors();}}/>
         </div>
         <div className="action-menu">
             <Button
@@ -146,8 +150,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addBannedVisitorToStore: (visitorobj) => {
-    dispatch(banVisitor(visitorobj));
+  addBannedVisitorToStore: (visitorobj, adding) => {
+    dispatch(banVisitor(visitorobj, adding));
   },
   removeBanForVisitor: (visitorbanid) => {
     dispatch(removeBanVisitor(visitorbanid));

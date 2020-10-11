@@ -191,8 +191,8 @@ export const banIPAddress = (banInfo) => {
   return API.post(banipaddressURL(projectID), banInfo);
 }
 
-export const getBannedIPAddress = () => {
-  return API.get(banipaddressURL(projectID))
+export const getBannedIPAddress = (beforeThisTime) => {
+  return API.get(banipaddressURL(projectID)+`/?beforeThisTime=${beforeThisTime}`)
   .then((d) => d.data);
 }
 

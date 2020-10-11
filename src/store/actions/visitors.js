@@ -21,9 +21,12 @@ export const visitorGetOffline = (visitor) => ({
     payload: visitor
 })
 
-export const banVisitor = (visitor) => ({
+export const banVisitor = (visitor, adding) => ({
     type: types.BAN_VISITOR,
-    payload: visitor
+    payload: {
+        visitor: visitor,
+        adding: adding
+    }
 })
 
 export const removeBanVisitor = (visitorbanid) => ({

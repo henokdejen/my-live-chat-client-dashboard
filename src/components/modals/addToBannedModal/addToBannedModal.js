@@ -62,7 +62,7 @@ const AddToBannedModal = ({handleClose, addBannedVisitorToStore, visitorBannedBy
         .then((response) => {
           let { data } = response;
           if (data.success) {
-          addBannedVisitorToStore(data.data);
+          addBannedVisitorToStore(data.data, true);
           handleClose(true);
           } else {
             alert(data.message);
