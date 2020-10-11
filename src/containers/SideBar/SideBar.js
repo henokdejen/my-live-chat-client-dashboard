@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BsChatFill,
   BsFillPeopleFill,
@@ -7,25 +7,17 @@ import {
   BsBarChartFill,
   BsFillArchiveFill,
 } from "react-icons/bs";
-import { AiOutlineAreaChart } from "react-icons/ai";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import "./sidebar.scss";
 import { Badge } from "../../components/controls/badge/Badge";
-import { ProfilePopup } from "../../components/profile-popup/ProfilePopup";
-import { AvatarWithOnlineIndicator } from "../../components/controls/avatar/AvatarWithOnlineIndicator";
-import { logoutSucceded } from "../../store/actions";
 
 const SideBar = ({
   onlineVisitorCount,
   unSeenTeamCount,
   unSeenPrivateCount,
   openTicketsCount,
-  userInfo,
-  projectInfo,
-  allProjects,
-  logout,
 }) => {
   const menus = [
     {
@@ -79,8 +71,6 @@ const SideBar = ({
     },
   ];
 
-  const [showProfilePopup, setshowProfilePopup] = useState(false);
-
   return (
     <div className="side-bar">
       <div className="upper-section">
@@ -98,27 +88,7 @@ const SideBar = ({
           </NavLink>
         ))}
       </div>
-      <div className="lower-section">
-        <div id="side-nav-avatar" onClick={() => setshowProfilePopup(true)}>
-          <AvatarWithOnlineIndicator
-            imageUrl={require("../../images/profiles/daryl.png")}
-            online={true}
-            width={40}
-          />
-          {showProfilePopup && (
-            <ProfilePopup
-              userInfo={userInfo}
-              projectInfo={projectInfo}
-              allProjects={allProjects}
-              logout={logout}
-              handleClose={() => {
-                console.log("fine");
-                setshowProfilePopup(false);
-              }}
-            />
-          )}
-        </div>
-      </div>
+      <div className="lower-section"></div>
     </div>
   );
 };
@@ -137,11 +107,6 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  logout: (history) => {
-    console.log("fjaslkdfj saldjf", logoutSucceded(history));
-    dispatch(logoutSucceded(history));
-  },
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

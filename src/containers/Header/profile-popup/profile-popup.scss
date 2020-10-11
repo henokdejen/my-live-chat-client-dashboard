@@ -1,0 +1,81 @@
+.profile-popup-wrapper {
+  color: #000;
+  position: relative;
+
+  .profile-link-item {
+    cursor: pointer;
+  }
+
+  .popup-container {
+    text-align: left;
+    right: 0px;
+    top: 55px;
+    min-width: 300px;
+  }
+
+  .section:not(:last-child) {
+    padding: 10px 20px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .top-section {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 100%;
+    }
+
+    .current-agent-name {
+      margin: 8px 0;
+    }
+
+    .current-agent-email {
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+  }
+
+  .middle-section {
+  }
+
+  .profile-action-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+  }
+
+  .action-btn-with-icon {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 5px 0;
+
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  .css-2b097c-container {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .css-yk16xz-control {
+    background-color: #f1f1f1;
+    border: none;
+  }
+
+  .css-tlfecz-indicatorContainer {
+    color: #222;
+  }
+}

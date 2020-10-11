@@ -120,13 +120,14 @@ export const updateProfile = (name, timeZone) => {
 
 // socket Stuff
 export const connectSocket = () => {
+  console.log("Please", projectID, token);
   const agentQuery = {
     usertype: "agent",
     projectID,
     token,
   };
 
-  return io(SOCKET_SERVER, { query: agentQuery, forceNew: true });
+  return io(SOCKET_SERVER, { query: agentQuery, forceNew: false });
 };
 
 // Ticket Staff goes here

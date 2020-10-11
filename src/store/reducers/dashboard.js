@@ -35,7 +35,7 @@ const dashboardReducer = (state = initialState, action) => {
       let { agent } = action;
       agent = getAgent(agent);
       const newState = { ...state };
-      newState.projectInfo.agents.push(agent);
+      newState.projectInfo.agents = newState.projectInfo.agents.concat(agent);
       return newState;
     }
     case types.AGENT_REMOVED: {

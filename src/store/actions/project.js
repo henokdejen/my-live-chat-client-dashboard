@@ -22,3 +22,29 @@ export const addprojectError = (message) => ({
     message,
   },
 });
+
+export const switchProjectRequested = (projectId, history) => ({
+  type: types.SWITCH_PROJECT_REQUESET,
+  payload: {
+    projectId,
+    history,
+  },
+});
+
+export const switchProjectSuccess = (projectId) => ({
+  type: types.SWITCH_PROJECT_SUCCESS,
+  payload: {
+    projectId,
+  },
+});
+
+export const openAddProject = (history) => ({
+  type: types.OPEN_ADD_PROJECT,
+  payload: {
+    history,
+  },
+});
+
+export const openAddProjectSucces = () => ({
+  type: types.OPEN_ADD_PROJECT_SUCCESS,
+});

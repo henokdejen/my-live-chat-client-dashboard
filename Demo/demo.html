@@ -7,6 +7,39 @@
   </head>
   <body>
     <h1>Hello there</h1>
-    <script src="http://localhost:5000/scripts/5f78073daa29bf4e3c25c8cd"></script>
+    <input type="text" name="" id="note" />
+    <script>
+      // const urlParams = new URLSearchParams(window.location.search);
+      // if (urlParams.has("b")) {
+      //   document.getElementById("note").value = urlParams.get("b");
+      // }
+      // console.log("ff", urlParams.get("henok"));
+      // try {
+      //   alert(urlParams.get("bss"));
+      // } catch (error) {
+      //   alert("err");
+      // }
+
+      function getQueryString() {
+        var queryStringKeyValue = window.parent.location.search
+          .replace("?", "")
+          .split("&");
+        var qsJsonObject = {};
+        if (queryStringKeyValue != "") {
+          for (i = 0; i < queryStringKeyValue.length; i++) {
+            qsJsonObject[queryStringKeyValue[i].split("=")[0]] = decodeURI(
+              queryStringKeyValue[i].split("=")[1]
+            );
+          }
+        }
+        return qsJsonObject;
+      }
+
+      let queryStrings = getQueryString();
+
+      if (queryStrings.b) {
+        document.getElementById("note").value = queryStrings["b"];
+      }
+    </script>
   </body>
 </html>

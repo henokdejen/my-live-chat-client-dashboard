@@ -52,6 +52,10 @@ const connect = (projectID) => {
       console.log("Socket Connected!");
       resolve(socket);
     });
+
+    socket.on("error", (err) => {
+      console.log("huhu", err);
+    });
   });
 };
 

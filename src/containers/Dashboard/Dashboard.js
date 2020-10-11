@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { rootRoutes } from "../../routes";
 import InitialLoader from "../../Layouts/InitialLoader/InitialLoader";
 import SideBar from "../SideBar/SideBar";
@@ -36,6 +36,8 @@ const Dashboard = ({ loadingOver }) => {
                       )}
                     />
                   ))}
+
+                {/* <Redirect to={{ pathname: "/home" }} /> */}
               </Switch>
             </div>
           </div>

@@ -43,7 +43,7 @@ const ChatShell = ({
     ) {
       loadConversations(type);
     }
-  });
+  }, []);
 
   return (
     <div id="chat-container">
