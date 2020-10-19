@@ -7,6 +7,7 @@ import {
   BsBarChartFill,
   BsFillArchiveFill,
 } from "react-icons/bs";
+import { AiFillHome } from "react-icons/ai";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
@@ -22,7 +23,7 @@ const SideBar = ({
   const menus = [
     {
       title: "Home",
-      icon: <BsFillGearFill />,
+      icon: <AiFillHome />,
       path: "/home",
     },
     {

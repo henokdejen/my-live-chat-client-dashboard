@@ -27,6 +27,7 @@ import {
   getLoadActiveConversationsURL,
   getLoadActiveConvMsgsURL,
   getLoadArchiveConvMsgsURL,
+  getSendConvTranscriptURL,
 } from "./API_URL";
 import {
   LS_TOKEN,
@@ -98,14 +99,20 @@ export const removeDepartment = (departmentID) => {
 };
 
 export const addAgentsToDepartment = (newAgents) => {
-  return API.post(getAddAgentToDepartmentURL(projectID, newAgents.departmentid), {agentIDs:newAgents.agentIDs});
+  return API.post(
+    getAddAgentToDepartmentURL(projectID, newAgents.departmentid),
+    { agentIDs: newAgents.agentIDs }
+  );
 };
 
 export const RemoveAgentsFromDepartment = (agentsToRemove) => {
-  return API.put(getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid), {agentIDs:agentsToRemove.agentIDs});
+  return API.put(
+    getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid),
+    { agentIDs: agentsToRemove.agentIDs }
+  );
 };
 
-// Conversations staffa
+// Conversations related
 export const loadActiveConversations = () => {
   return API.get(getLoadActiveConversationsURL(projectID)).then((d) => d.data);
 };
@@ -130,6 +137,14 @@ export const loadArchiveConMessages = (conversationID) => {
   );
 };
 
+export const sendConvTranscript = (conversationID, type, receipents) => {
+  return API.post(getSendConvTranscriptURL(projectID), {
+    conversationID,
+    type,
+    to: receipents,
+  }).then((d) => d.data);
+};
+
 // profile related
 
 export const changePassword = (oldPassword, newPassword) => {
@@ -151,7 +166,7 @@ export const connectSocket = () => {
     token,
   };
 
-  return io(SOCKET_SERVER, { query: agentQuery, forceNew: false });
+  return io(SOCKET_SERVER, { query: agentQuery, forceNew: true });
 };
 
 // Ticket Staff goes here
@@ -184,11 +199,10 @@ export const updateProjectSettings = (newSettings) => {
   );
 };
 
-
 // ban ip address related
 export const banIPAddress = (banInfo) => {
   return API.post(banipaddressURL(projectID), banInfo);
-}
+};
 // report related
 
 export const loadReports = (startDate, endDate, item) => {

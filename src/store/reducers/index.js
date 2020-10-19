@@ -45,7 +45,6 @@ const rootReducer = (state, action) => {
     localStorage.setItem(LS_TOKEN, token);
     state = undefined;
   }
-  console.log("my state", state);
   return appReducer(state, action);
 };
 

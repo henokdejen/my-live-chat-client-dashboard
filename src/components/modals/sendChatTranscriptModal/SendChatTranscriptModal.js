@@ -4,19 +4,45 @@ import InputWithLabel from "../../controls/inputWithLabel/InputWithLabel";
 import Modal from "../../controls/modal/Modal";
 import { FormSubmitBar } from "../../form-submit-bar/FormSubmitBar";
 import * as Yup from "yup";
+import * as API from "../../../API/base";
 
 import "./sendChatTrans.scss";
+import { CONVERSATION_TYPES } from "../../../constants";
 
 const sendChatTransSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("* Required"),
 });
 
-export const SendChatTranscriptModal = ({ handleClose }) => {
+export const SendChatTranscriptModal = ({
+  conversationId,
+  type,
+  handleClose,
+}) => {
   const [submitError, setsubmitError] = useState("");
+
+  alert(conversationId);
 
   const onSubmit = (values, { setSubmitting }) => {
     setsubmitError("");
-    alert("yami yami");
+    const convType =
+      type === CONVERSATION_TYPES.ARCHIVE_CONVERSATION ? "archived" : "active";
+    console.log("sssss", conversationId, type, [values.email]);
+    API.sendConvTranscript(conversationId, convType, [values.email])
+      .then((response) => {
+        let { data } = response;
+        if (data.success) {
+          // addAgentToStore(data.data);
+          console.log("dem", data.data);
+          handleClose();
+        } else {
+          alert("error sending the transcript");
+          handleClose();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then(() => {});
     // addNewConversation({ name: values.roomName, members: values.members });
   };
   return (

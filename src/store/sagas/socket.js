@@ -9,6 +9,7 @@ import {
   race,
   take,
   takeEvery,
+  takeLatest,
 } from "redux-saga/effects";
 import * as types from "../../constants";
 import {
@@ -35,7 +36,9 @@ import {
   CLOSE_CONVERSATION_REQUEST,
   CONVERSATION_TYPES,
   LEAVE_CONVERSATION_REQUEST,
+  OPEN_ADD_PROJECT,
   REMOVE_MESSAGE_REQUEST,
+  SWITCH_PROJECT_REQUESET,
   TRANSFER_CHAT,
   TRANSFER_CHAT_REQUEST,
 } from "../../constants";
@@ -262,8 +265,8 @@ function* setupSocket(projectID) {
     // const socket = yield call(connect)
     const channel = yield call(subscribe, socket);
 
-    yield fork(listenDisconnectSaga);
-    yield fork(listenConnectSaga);
+    // yield fork(listenDisconnectSaga);
+    // yield fork(listenConnectSaga);
 
     yield fork(read, channel);
     yield fork(write, socket);
@@ -573,6 +576,27 @@ const watchRemoveMessage = function* () {
 //   yield takeEvery(REMOVE_MESSAGE_REQUEST, removeMessageSaga);
 // };
 
+const openAddProjectSaga = function* (action) {
+  socket.disconnect();
+  yield put({ type: "disconnect" });
+  socket = null;
+};
+
+const watchOpenAddProject = function* () {
+  yield takeLatest(OPEN_ADD_PROJECT, openAddProjectSaga);
+};
+
+const switchprojectRequestSaga = function* (action) {
+  socket.disconnect();
+  console.log(socket);
+  yield put({ type: "disconnect" });
+  socket = null;
+};
+
+const watchSwitchProjectRequest = function* () {
+  yield takeLatest(SWITCH_PROJECT_REQUESET, switchprojectRequestSaga);
+};
+
 export const socketSagas = function* watchAll() {
   yield all([
     watchLeaveConversationAsync(),
@@ -584,5 +608,7 @@ export const socketSagas = function* watchAll() {
     watchRemoveMessage(),
     watchStartNewConversation(),
     watchTransferChatAsync(),
+    watchOpenAddProject(),
+    watchSwitchProjectRequest(),
   ]);
 };

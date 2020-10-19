@@ -1,3 +1,6 @@
+// export const baseURL = "http://192.168.1.10:5000/agency/";
+// export const SOCKET_SERVER = "http://192.168.1.10:5000";
+
 export const baseURL = "http://localhost:5000/agency/";
 export const SOCKET_SERVER = "http://localhost:5000";
 
@@ -33,21 +36,21 @@ export const getRemoveAgentURL = (projectID, agentID) =>
 export const getCheckAgentExists = (email) =>
   `checkAgentExistsInAgency/?email=${email}`;
 
-
 // department related
 
-export const getAddDepartmentURL = (projectID) => `project/${projectID}/departments`;
+export const getAddDepartmentURL = (projectID) =>
+  `project/${projectID}/departments`;
 
 export const getRemoveDepartmentURL = (projectID, departmentID) =>
   `project/${projectID}/departments/${departmentID}`;
 
-export const getAddAgentToDepartmentURL = (projectID, departmentID) => 
+export const getAddAgentToDepartmentURL = (projectID, departmentID) =>
   `project/${projectID}/departments/${departmentID}/addAgents`;
 
-export const getRemoveAgentFromDepartmentURL = (projectID, departmentID) => 
-`project/${projectID}/departments/${departmentID}/removeAgents`;
+export const getRemoveAgentFromDepartmentURL = (projectID, departmentID) =>
+  `project/${projectID}/departments/${departmentID}/removeAgents`;
 
-//
+// conversations related
 
 export const getLoadActiveConversationsURL = (projectID) =>
   `project/${projectID}/conversations`; //active to be added
@@ -63,6 +66,9 @@ export const getLoadActiveConvMsgsURL = (projectID, conversationID) =>
 
 export const getLoadArchiveConvMsgsURL = (projectID, conversationID) =>
   `project/${projectID}/archivedConversations/${conversationID}/history?fetchedHistoryCount=0`;
+
+export const getSendConvTranscriptURL = (projectID) =>
+  `project/${projectID}/sendTranscript`;
 
 // profile related
 
@@ -99,8 +105,7 @@ export const getProjectSettingUpdateURL = (projectID) =>
   `project/${projectID}/setting`;
 
 // ban ip related
-export const banipaddressURL = (projectID) => 
-  `project/${projectID}/bans`;
+export const banipaddressURL = (projectID) => `project/${projectID}/bans`;
 // report related
 
 export const getLoadReportsURL = (projectID, startDate, endDate, item) =>

@@ -37,7 +37,7 @@ const Dashboard = ({ loadingOver }) => {
                     />
                   ))}
 
-                {/* <Redirect to={{ pathname: "/home" }} /> */}
+                <Redirect to={{ pathname: "/home" }} />
               </Switch>
             </div>
           </div>

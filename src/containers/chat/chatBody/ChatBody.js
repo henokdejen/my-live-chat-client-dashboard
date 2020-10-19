@@ -49,63 +49,48 @@ const ChatBody = ({
     );
   }
 
+  const getMenuItem = (lable, icon, click) => ({
+    icon,
+    lable,
+    click,
+  });
+
   let menus = [];
   if (type === CONVERSATION_TYPES.PRIVATE_CONVERSATION) {
     menus = [
-      {
-        icon: BsArrowLeftRight,
-        lable: "Transfer to",
-        click: (e) => {
-          transferChat(selectedConversation.id);
-        },
-      },
-      {
-        icon: BsBoxArrowUpLeft,
-        lable: "Leave",
-        click: () => {
-          leaveConversation(selectedConversation.id);
-        },
-      },
+      getMenuItem("Transfer to", BsArrowLeftRight, (e) => {
+        transferChat(selectedConversation.id);
+      }),
+
+      getMenuItem("Leave", BsBoxArrowUpLeft, () => {
+        leaveConversation(selectedConversation.id);
+      }),
     ];
   } else if (type === CONVERSATION_TYPES.TEAM_CONVERSATION) {
     menus = [
-      {
-        icon: BsBoxArrowUpRight,
-        lable: "Send Transcript",
-        click: () => {
-          sendChatTransc(selectedConversation.id);
-        },
-      },
-      { icon: BsSlashCircle, lable: "Ban this visitor", click: () => {} },
+      getMenuItem("Send Transcript", BsBoxArrowUpRight, () => {
+        sendChatTransc(selectedConversation.id, type);
+      }),
+      getMenuItem("Ban this visitor", BsSlashCircle, () => {}),
     ];
 
     if (selectedConversation && selectedConversation.joined) {
       menus = menus.concat([
-        {
-          icon: BsArrowLeftRight,
-          lable: "Transfer to",
-          click: (e) => {
-            transferChat(selectedConversation.id);
-          },
-        },
-        {
-          icon: BsBoxArrowUpLeft,
-          lable: "Leave",
-          click: () => {
-            leaveConversation(selectedConversation.id);
-          },
-        },
+        getMenuItem("Transfer to", BsArrowLeftRight, (e) => {
+          transferChat(selectedConversation.id);
+        }),
+        getMenuItem("Leave", BsBoxArrowUpLeft, () => {
+          leaveConversation(selectedConversation.id);
+        }),
       ]);
 
       if (true) {
         // the owner
-        menus.push({
-          icon: BsBoxArrowUpLeft,
-          lable: "Close",
-          click: () => {
+        menus.push(
+          getMenuItem("Close", BsBoxArrowUpLeft, () => {
             closeConversation(selectedConversation.id);
-          },
-        });
+          })
+        );
       }
 
       console.log("kif", menus);
@@ -113,13 +98,9 @@ const ChatBody = ({
   } else {
     //archive
     menus = [
-      {
-        icon: BsBoxArrowUpRight,
-        lable: "Send Transcript",
-        click: () => {
-          sendChatTransc(selectedConversation.id);
-        },
-      },
+      getMenuItem("Send Transcript", BsBoxArrowUpRight, () => {
+        sendChatTransc(selectedConversation.id, type);
+      }),
       ,
     ];
   }
@@ -201,8 +182,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(leaveConversationRequested(conversationId));
   },
 
-  sendChatTransc: (conversationId) => {
-    dispatch(openModalRequested("SEND_CHAT_TRANSCRIPT", { conversationId }));
+  sendChatTransc: (conversationId, type) => {
+    dispatch(
+      openModalRequested("SEND_CHAT_TRANSCRIPT", { conversationId, type })
+    );
   },
 
   closeConversation: (conversationId) => {
