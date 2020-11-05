@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { newVisitorSound } from "../../Utils/notification-center";
 
 const getAgent = (agentData) => {
   return {
@@ -96,6 +97,10 @@ const dashboardReducer = (state = initialState, action) => {
     case types.AGENT_GET_ONLINE_OFFLINE: {
       const { online, agentId } = action.payload;
       const newState = { ...state };
+      if (online) {
+        alert('Wu Wu')
+        newVisitorSound()
+      }
       newState.projectInfo.agents = newState.projectInfo.agents.map((agent) => {
         if (agent.id === agentId) {
           agent.isOnline = online;

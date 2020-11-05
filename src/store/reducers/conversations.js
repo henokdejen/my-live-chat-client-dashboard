@@ -1,6 +1,7 @@
 import * as types from "../../constants";
 import { ACTIVE_CONVERSATION_TYPES, CONVERSATION_TYPES } from "../../constants";
 import { NEW_MESSAGE_SOUND } from "../../constants/notifications";
+import { newVisitorSound } from "../../Utils/notification-center";
 
 const initialState = {
   conversations: [],
@@ -38,7 +39,7 @@ const getUnSeenMsgsCount = (conversations) => {
 const conversationsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_ALL_CONVERSATIONS_SUCCESS: {
-      console.log('%PUBLIC_URL%') 
+      console.log("%PUBLIC_URL%");
       const { conversations } = action.payload;
       const newState = { ...state };
       newState.conversations = conversations ? conversations : [];
@@ -202,13 +203,18 @@ const conversationsReducer = (state = initialState, action) => {
       const { browserID, socketID } = action.payload;
       const newState = { ...state };
 
+      const isOnline = action.type === types.VISITOR_GET_ONLINE;
+
+      if (isOnline) {
+        newVisitorSound();
+      }
+
       let selectedConversationIndex = newState.conversations.findIndex(
         (c) => c.browserID === browserID
       );
 
       if (selectedConversationIndex >= 0) {
-        newState.conversations[selectedConversationIndex].isOnline =
-          action.type === types.VISITOR_GET_ONLINE;
+        newState.conversations[selectedConversationIndex].isOnline = isOnline;
         newState.conversations[selectedConversationIndex].joined = false;
       }
 

@@ -1,6 +1,7 @@
 import * as types from "../../constants";
 import { NEW_MESSAGE_SOUND } from "../../constants/notifications";
 import { notify } from "../../services/notification";
+import { newMessageSound } from "../../Utils/notification-center";
 
 const initialState = {
   messageDetails: {},
@@ -77,9 +78,7 @@ const messagesReducer = (state = initialState, action) => {
       }
       if (!message.isSneakPreview && !message.isMyMessage) {
         notify(message.messageText);
-        const audio = new Audio(NEW_MESSAGE_SOUND);
-        audio.play();
-
+        newMessageSound()
       }
       const newMessageDetails = { ...state.messageDetails };
       newMessageDetails[conversationId] = newConversationMapEntry;
