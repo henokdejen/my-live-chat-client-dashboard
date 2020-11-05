@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { BsFillPeopleFill } from "react-icons/bs";
+import { BsFillPeopleFill, BsPeopleCircle } from "react-icons/bs";
+import { FaBan } from "react-icons/fa";
 import { NavLink, Route, Switch, useRouteMatch } from "react-router-dom";
 import { InnerNavHeader } from "../../components/controls/innerHeader/InnerNavHeader";
 import { InnerNav } from "../../components/controls/innerNav/InnerNav";
@@ -20,7 +21,7 @@ const settings = [
       {
         title: "My Profile",
         path: "me",
-        icon: <BsFillPeopleFill />,
+        icon: <BsPeopleCircle />,
       },
       {
         title: "Departments",
@@ -30,7 +31,7 @@ const settings = [
       {
         title: "Ban list",
         path: "bannedvisitors",
-        icon: <BsFillPeopleFill />,
+        icon: <FaBan />,
       },
     ],
   },

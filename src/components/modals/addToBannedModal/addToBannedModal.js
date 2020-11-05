@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import Button from "../../controls/buttons/Button";
 import InputWithLabel from "../../controls/inputWithLabel/InputWithLabel";
 import Modal from "../../controls/modal/Modal"; 
-import {getFormatedFullDate, validateIPAddress} from "../../../Utils/index";
+import { validateIPAddress } from "../../../Utils/index";
 import ClipLoader from "react-spinners/ClipLoader";
 import * as API from "../../../API/project";
 import { banIPAddress } from "../../../API/base";
@@ -29,60 +29,49 @@ const AddToBannedModal = ({handleClose, addBannedVisitorToStore, visitorBannedBy
   
   const [IPCountry, setIPCountry] = useState('');
   const [checkingIP, setCheckingIP] = useState(false);
-  const today = getFormatedFullDate(new Date);
 
   const checkIPCountry = (ipaddr) => {
     if(validateIPAddress(ipaddr)){
       setCheckingIP(true);
       setTimeout(()=>{
-        // API.checkVisitorIPCountry(ipaddr)
-        // .then((data) => {
-        //   setIPCountry(data.country);
-        // })
-        // .catch(() => {
-        //   alert("error while checking ip-address");
-        // })
-        // .then(() => {
-        //   setCheckingIP(false);
-        // });
-        setIPCountry("Ethiopia");
-        setCheckingIP(false);
+        API.checkVisitorIPCountry(ipaddr)
+        .then((data) => {
+          setIPCountry(data.country);
+          setCheckingIP(false);
+        })
+        .catch(() => {
+          alert("error while checking ip-address.. tryagain");
+        })
+        .then(() => {
+          setCheckingIP(false);
+        });
       },600);
     }
   };
 
   const onSubmit = (values) => {
     if(IPCountry){
-      // const visitorToBan = {
-      //   IPaddress: values.ipaddress,
-      //   country: IPCountry,
-      //   reason: values.description,
-      //   bannedBy: visitorBannedBy
-      // }
       const visitorToBan = {
-        ip: values.ipaddress,
-        countryfrom: IPCountry,
-        date: today,
+        IPaddress: values.ipaddress,
+        country: IPCountry,
         reason: values.description,
-        agent: visitorBannedBy
+        bannedBy: visitorBannedBy
       }
       setTimeout(()=>{
-        addBannedVisitorToStore(visitorToBan);
-        // banIPAddress(visitorToBan)
-        // .then((response) => {
-        //   let { data } = response;
-        //   if (data.success) {
-        //    console.log(data);
-        //   } else {
-        //     alert(data.message);
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // })
-        // .then(() => {});
-        // addBannedVisitorToStore(visitorToBan);
-        // handleClose(true);
+        banIPAddress(visitorToBan)
+        .then((response) => {
+          let { data } = response;
+          if (data.success) {
+          addBannedVisitorToStore(data.data, true);
+          handleClose(true);
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then(() => {});
       },600)
     }
   };

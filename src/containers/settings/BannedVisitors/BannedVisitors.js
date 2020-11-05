@@ -5,15 +5,32 @@ import { ComfirmationDialog } from "../../../components/controls/comfirmationDia
 import { InnerHeader } from "../../../components/controls/innerHeader/InnerHeader";
 import { banVisitor, removeBanVisitor } from "../../../store/actions/visitors";
 import { connect } from "react-redux";
+import * as API from "../../../API/base";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import AddToBannedModal from "../../../components/modals/addToBannedModal/addToBannedModal";
+import { getFormatedFullDate } from "../../../Utils/index";
 import './bannedvisitors.scss';
 
 const BannedItem = ({bannedVisitorsListItem, removeBanForVisitor}) => {
     const [show, setshow] = useState(false);
     
     const onDeleteComifrmed = () => {
-      removeBanForVisitor(bannedVisitorsListItem.ip);
-      setshow(false);
+      setTimeout(() => {
+        API.liftBanForVisitor([bannedVisitorsListItem._id])
+        .then((response) => {
+          const { data } = response;
+          if (data.success) {
+            removeBanForVisitor(bannedVisitorsListItem._id);      
+          }
+          })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then(() => {
+          setshow(false);
+        });
+    },600);
     };
   
     const onDeleteDenied = () => {
@@ -23,11 +40,11 @@ const BannedItem = ({bannedVisitorsListItem, removeBanForVisitor}) => {
     return (
       <>
         <tr className="banned-item-container">
-          <td className="banned-item-name">{bannedVisitorsListItem.ip}</td>
-          <td className="banned-item-name">{bannedVisitorsListItem.countryfrom}</td>
+          <td className="banned-item-name">{bannedVisitorsListItem.IPaddress}</td>
+          <td className="banned-item-name">{bannedVisitorsListItem.country}</td>
           <td className="banned-item-description">{bannedVisitorsListItem.reason}</td>
-          <td className="banned-item-name">{bannedVisitorsListItem.agent}</td>
-          <td className="banned-item-name">{bannedVisitorsListItem.date}</td>           
+          <td className="banned-item-name">{bannedVisitorsListItem.bannedBy}</td>
+          <td className="banned-item-name">{getFormatedFullDate(new Date(parseInt(bannedVisitorsListItem.date)))}</td>           
            <td>
               <Button size="sm" variant="primary" onClick={() => setshow(true)}>
                 Remove
@@ -50,6 +67,30 @@ const BannedItem = ({bannedVisitorsListItem, removeBanForVisitor}) => {
 const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorToStore, removeBanForVisitor}) => {
 
   const [showBannedModal, setshowBannedModal] = useState(false);
+  const [loadingbannedvisitors, setLoadingbannedvisitors] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+
+  React.useEffect(()=>{
+    loadBannedVisitors();
+  },[]);
+  
+  const loadBannedVisitors = () => {
+    setLoadingbannedvisitors(true);
+    setTimeout(() => {
+        API.getBannedIPAddress(startDate.getTime())
+        .then((response) => {
+          if (response.success) {
+            addBannedVisitorToStore(response.data, false);
+          }
+          })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then(() => {
+          setLoadingbannedvisitors(false);
+        });
+    },600);
+  }
 
   return (
     <div className="banned-visitors inner-body-section">
@@ -66,9 +107,13 @@ const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorTo
           BAN LIST
         </div>
         <div className="action-menu">
+          <span className="datepickerlabel"> Banned-before </span>
+          <DatePicker selected={startDate} onChange={date => {setStartDate(date); loadBannedVisitors();}}/>
+        </div>
+        <div className="action-menu">
             <Button
+              size="sm"
               variant="primary"
-              size="l"
               onClick={() => setshowBannedModal(true)}>
               BanIP
             </Button>
@@ -86,7 +131,7 @@ const BannedVisitors = ({visitorBannedBy, bannedVisitorsList, addBannedVisitorTo
           {bannedVisitorsList.map((bannedVisitorsListItem)=>{
           return <BannedItem 
                 bannedVisitorsListItem={bannedVisitorsListItem}
-                key={bannedVisitorsListItem.ip}
+                key={bannedVisitorsListItem._id}
                 removeBanForVisitor={removeBanForVisitor}
             />
           })}
@@ -105,11 +150,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addBannedVisitorToStore: (visitorobj) => {
-    dispatch(banVisitor(visitorobj));
+  addBannedVisitorToStore: (visitorobj, adding) => {
+    dispatch(banVisitor(visitorobj, adding));
   },
-  removeBanForVisitor: (visitorip) => {
-    dispatch(removeBanVisitor(visitorip));
+  removeBanForVisitor: (visitorbanid) => {
+    dispatch(removeBanVisitor(visitorbanid));
   },
 });
 

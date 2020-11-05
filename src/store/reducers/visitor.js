@@ -40,16 +40,22 @@ const visitorsReducer = (state = initialState, action) => {
 
     case types.BAN_VISITOR: {
       const newState = { ...state };
-      const newBannedVisitor = action.payload; 
+      const newBannedVisitor = action.payload.visitor;
       
-      newState.bannedVisitorsList.push(newBannedVisitor);
+      if(action.payload.adding){
+        newState.bannedVisitorsList.push(newBannedVisitor);
+      }
+      else{
+        newState.bannedVisitorsList = newBannedVisitor;
+      }
+
       return newState;
     }
 
     case types.REMOVE_BANNED_VISITOR: {
       const newState = { ...state };
       newState.bannedVisitorsList = newState.bannedVisitorsList.filter(
-        (visitor) => visitor.ip !== action.visitorip
+        (visitor) => visitor._id !== action.visitorbanid
       );
       return newState;
     }

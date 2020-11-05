@@ -105,9 +105,13 @@ export const getProjectSettingUpdateURL = (projectID) =>
   `project/${projectID}/setting`;
 
 // ban ip related
-export const banipaddressURL = (projectID) => `project/${projectID}/bans`;
-// report related
+export const banipaddressURL = (projectID) => 
+  `project/${projectID}/bans`;
 
+export const liftBanURL = (projectID) =>
+  `project/${projectID}/bans/lift`;
+
+  // report related
 export const getLoadReportsURL = (projectID, startDate, endDate, item) =>
   `project/${projectID}/report?startDate=${encodeURIComponent(
     startDate

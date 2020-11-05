@@ -125,7 +125,7 @@ const DepartmentManager = ({departments, agents, userInfo, ownerID, removeDepart
         <div className="action-menu">
             <Button
               variant="primary"
-              size="l"
+              size="sm"
               onClick={() => setshowAddDepartmentModal(true)}>
               Add Department
             </Button>
