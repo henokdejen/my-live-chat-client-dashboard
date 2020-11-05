@@ -1,6 +1,6 @@
 // export const baseURL = "http://192.168.1.10:5000/agency/";
 // export const SOCKET_SERVER = "http://192.168.1.10:5000";
-
+export const mainURL = "http://localhost:5000"
 export const baseURL = "http://localhost:5000/agency/";
 export const SOCKET_SERVER = "http://localhost:5000";
 

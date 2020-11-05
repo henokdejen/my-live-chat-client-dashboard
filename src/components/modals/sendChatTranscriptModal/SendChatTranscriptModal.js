@@ -26,13 +26,13 @@ export const SendChatTranscriptModal = ({
     setsubmitError("");
     const convType =
       type === CONVERSATION_TYPES.ARCHIVE_CONVERSATION ? "archived" : "active";
-    console.log("sssss", conversationId, type, [values.email]);
     API.sendConvTranscript(conversationId, convType, [values.email])
       .then((response) => {
-        let { data } = response;
-        if (data.success) {
+        // let { data } = response;
+        // console.log(data, response)
+        if (response.success) {
           // addAgentToStore(data.data);
-          console.log("dem", data.data);
+          console.log("dem", response.data);
           handleClose();
         } else {
           alert("error sending the transcript");
@@ -43,7 +43,6 @@ export const SendChatTranscriptModal = ({
         console.log(error);
       })
       .then(() => {});
-    // addNewConversation({ name: values.roomName, members: values.members });
   };
   return (
     <Modal show={true}>

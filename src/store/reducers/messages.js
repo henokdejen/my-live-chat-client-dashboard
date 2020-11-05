@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { NEW_MESSAGE_SOUND } from "../../constants/notifications";
 import { notify } from "../../services/notification";
 
 const initialState = {
@@ -76,6 +77,9 @@ const messagesReducer = (state = initialState, action) => {
       }
       if (!message.isSneakPreview && !message.isMyMessage) {
         notify(message.messageText);
+        const audio = new Audio(NEW_MESSAGE_SOUND);
+        audio.play();
+
       }
       const newMessageDetails = { ...state.messageDetails };
       newMessageDetails[conversationId] = newConversationMapEntry;
@@ -110,7 +114,7 @@ const messagesReducer = (state = initialState, action) => {
         ...state.messageDetails[conversationId],
       };
 
-      console.log("huhu", messageIds);
+      console.log("huhu", action.payload);
 
       newConversationMapEntry.messages = newConversationMapEntry.messages.filter(
         (msg) => !messageIds.includes(msg.id)

@@ -1,3 +1,5 @@
+@import "../../../styles/_colors";
+
 .transferChatWrapper {
   .modal-body {
     .choose-agent {
@@ -23,7 +25,7 @@
         border-radius: 4px;
 
         &:hover {
-          background-color: #f1f1f1;
+          background-color: #fdfdfd;
         }
 
         .agent-image {
@@ -40,11 +42,15 @@
           line-height: 14px;
         }
 
-        .agent-email {
+        .agent-status {
           // grid-area: agent-email;
-          color: #777;
           font-weight: 300;
           font-style: italic;
+          color: $online-indicator;
+
+          &.offline{
+            color: $offline-indicator;
+          }
         }
       }
     }

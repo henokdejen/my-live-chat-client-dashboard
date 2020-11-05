@@ -202,7 +202,7 @@ function* subscribe(socket) {
 
     socket.on(types.DELETED_MESSAGES, (data) => {
       const { conversationID, messageIDs } = data;
-      emit();
+      emit(messagesRemoved(conversationID, messageIDs));
     });
 
     // visitor related
@@ -515,7 +515,7 @@ const transferChatSaga = function* (action) {
           resolve(false);
         } else {
           console.log("Chat transferred", data);
-          resolve(data);
+          resolve(true);
         }
       }
     );
@@ -533,7 +533,9 @@ function* watchTransferChatAsync() {
 
 // MESSAGE RELATED
 const removeMessageSaga = function* (action) {
-  const { conversationId, type, messageId } = action.payload;
+  const { conversationId, messageId } = action.payload;
+
+  // console.log('lela', )
 
   // let's initialize the comfirmation first
   const confirmed = yield call(
@@ -541,7 +543,7 @@ const removeMessageSaga = function* (action) {
     `Are you sure you want to remove this message?`
   );
   if (confirmed) {
-    yield put(messagesRemoved(conversationId, type, [messageId]));
+    yield put(messagesRemoved(conversationId, [messageId]));
     // call the API HERE
     // return;
 

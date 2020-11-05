@@ -58,10 +58,6 @@ const ChatBody = ({
   let menus = [];
   if (type === CONVERSATION_TYPES.PRIVATE_CONVERSATION) {
     menus = [
-      getMenuItem("Transfer to", BsArrowLeftRight, (e) => {
-        transferChat(selectedConversation.id);
-      }),
-
       getMenuItem("Leave", BsBoxArrowUpLeft, () => {
         leaveConversation(selectedConversation.id);
       }),
