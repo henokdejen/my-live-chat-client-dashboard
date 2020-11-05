@@ -11,6 +11,28 @@ const TransferChatModal = ({
   transferTo,
   handleClose,
 }) => {
+  let onlineAgents = agents.filter(({ isOnline }) => isOnline);
+
+  let agentListView = null;
+
+  if (onlineAgents.length) {
+    agentListView = onlineAgents.map(({ id, name, isOnline }) => (
+      <div
+        className="agent-item"
+        key={id}
+        onClick={() => transferTo(conversationId, id)}
+      >
+        <img className="agent-image" />
+        <div className="agent-name"> {name} </div>
+        <div className={"agent-status " + (isOnline ? "" : "offline")}>
+          {isOnline ? "Online" : "Offline"}{" "}
+        </div>
+      </div>
+    ));
+  } else {
+    agentListView = <div>There are other online agents at this time</div>;
+  }
+
   return (
     <Modal show={true}>
       <div className="transferChatWrapper">
@@ -18,19 +40,7 @@ const TransferChatModal = ({
         <div className="modal-body">
           <p className="choose-agent">Choose An Agent</p>
 
-          <div className="agents-list">
-            {agents.map(({ id, name, email }) => (
-              <div
-                className="agent-item"
-                key={id}
-                onClick={() => transferTo(conversationId, id)}
-              >
-                <img className="agent-image" />
-                <div className="agent-name"> {name} </div>
-                <div className="agent-email"> {email} </div>
-              </div>
-            ))}
-          </div>
+          <div className="agents-list">{agentListView}</div>
         </div>
         <div className="modal-footer">
           <Button variant="outlined" size="sm" onClick={handleClose}>
@@ -54,9 +64,6 @@ const mapDispatchToProps = (dispatch) => ({
     console.log("Ezih ga", chatTransferRequested(conversationId, agentId));
     dispatch(chatTransferRequested(conversationId, agentId));
   },
-  // openAddAgentModal: () => {
-  //   dispatch(openModalRequested("ADD_AGENT"));
-  // },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferChatModal);

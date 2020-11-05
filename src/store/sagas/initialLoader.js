@@ -1,4 +1,4 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import { put, takeEvery, call, all, delay } from "redux-saga/effects";
 
 import { LS_PID, LS_TOKEN } from "../../constants";
 import {
@@ -11,6 +11,7 @@ import * as API from "../../API/base";
 
 const loadInitialDataSaga = function* ({ history }) {
   console.log("Initial Data requested", localStorage.getItem(LS_PID));
+  // yield delay(2000);
   try {
     let projectID = localStorage.getItem(LS_PID);
     if (projectID) {

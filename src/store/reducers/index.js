@@ -9,8 +9,15 @@ import basicState from "./dashboard";
 import projectState from "./project";
 import ticketState from "./tickets";
 import modalState from "./modals";
+import {
+  LOGOUT_SUCCESS,
+  LS_PID,
+  LS_TOKEN,
+  OPEN_ADD_PROJECT_SUCCESS,
+  SWITCH_PROJECT_SUCCESS,
+} from "../../constants";
 
-export default combineReducers({
+const appReducer = combineReducers({
   conversationState,
   messagesState,
   visitorsState,
@@ -21,3 +28,24 @@ export default combineReducers({
   ticketState,
   modalState,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === LOGOUT_SUCCESS) {
+    localStorage.removeItem("persist:root");
+    state = undefined;
+  } else if (action.type === SWITCH_PROJECT_SUCCESS) {
+    state = undefined;
+    let token = localStorage.getItem(LS_TOKEN);
+    localStorage.removeItem("persist:root");
+    localStorage.setItem(LS_TOKEN, token);
+    localStorage.setItem(LS_PID, action.payload.projectId);
+  } else if (action.type === OPEN_ADD_PROJECT_SUCCESS) {
+    let token = localStorage.getItem(LS_TOKEN);
+    localStorage.removeItem("persist:root");
+    localStorage.setItem(LS_TOKEN, token);
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
+export default rootReducer;

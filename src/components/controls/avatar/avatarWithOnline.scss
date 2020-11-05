@@ -14,7 +14,9 @@
     display: inline-block;
     border-radius: 100%;
     position: absolute;
-    bottom: 0px;
+    bottom: -2px;
+    left: calc(50% - 6px);
+    border: 2px solid #fff;
     background-color: $offline-indicator;
 
     &.online {

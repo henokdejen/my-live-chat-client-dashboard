@@ -164,6 +164,8 @@ const ChatForm = ({
     }
   }
 
+  console.log("kidus lalibela", selectedConversation)
+
   return (
     <div id="chat-form" onSubmit={handleFormSubmit}>
       {formContents}

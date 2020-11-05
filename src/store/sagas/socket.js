@@ -9,6 +9,7 @@ import {
   race,
   take,
   takeEvery,
+  takeLatest,
 } from "redux-saga/effects";
 import * as types from "../../constants";
 import {
@@ -35,7 +36,9 @@ import {
   CLOSE_CONVERSATION_REQUEST,
   CONVERSATION_TYPES,
   LEAVE_CONVERSATION_REQUEST,
+  OPEN_ADD_PROJECT,
   REMOVE_MESSAGE_REQUEST,
+  SWITCH_PROJECT_REQUESET,
   TRANSFER_CHAT,
   TRANSFER_CHAT_REQUEST,
 } from "../../constants";
@@ -51,6 +54,10 @@ const connect = (projectID) => {
     socket.on("connect", () => {
       console.log("Socket Connected!");
       resolve(socket);
+    });
+
+    socket.on("error", (err) => {
+      console.log("huhu", err);
     });
   });
 };
@@ -195,7 +202,7 @@ function* subscribe(socket) {
 
     socket.on(types.DELETED_MESSAGES, (data) => {
       const { conversationID, messageIDs } = data;
-      emit();
+      emit(messagesRemoved(conversationID, messageIDs));
     });
 
     // visitor related
@@ -258,8 +265,8 @@ function* setupSocket(projectID) {
     // const socket = yield call(connect)
     const channel = yield call(subscribe, socket);
 
-    yield fork(listenDisconnectSaga);
-    yield fork(listenConnectSaga);
+    // yield fork(listenDisconnectSaga);
+    // yield fork(listenConnectSaga);
 
     yield fork(read, channel);
     yield fork(write, socket);
@@ -508,7 +515,7 @@ const transferChatSaga = function* (action) {
           resolve(false);
         } else {
           console.log("Chat transferred", data);
-          resolve(data);
+          resolve(true);
         }
       }
     );
@@ -526,7 +533,9 @@ function* watchTransferChatAsync() {
 
 // MESSAGE RELATED
 const removeMessageSaga = function* (action) {
-  const { conversationId, type, messageId } = action.payload;
+  const { conversationId, messageId } = action.payload;
+
+  // console.log('lela', )
 
   // let's initialize the comfirmation first
   const confirmed = yield call(
@@ -534,7 +543,7 @@ const removeMessageSaga = function* (action) {
     `Are you sure you want to remove this message?`
   );
   if (confirmed) {
-    yield put(messagesRemoved(conversationId, type, [messageId]));
+    yield put(messagesRemoved(conversationId, [messageId]));
     // call the API HERE
     // return;
 
@@ -569,6 +578,27 @@ const watchRemoveMessage = function* () {
 //   yield takeEvery(REMOVE_MESSAGE_REQUEST, removeMessageSaga);
 // };
 
+const openAddProjectSaga = function* (action) {
+  socket.disconnect();
+  yield put({ type: "disconnect" });
+  socket = null;
+};
+
+const watchOpenAddProject = function* () {
+  yield takeLatest(OPEN_ADD_PROJECT, openAddProjectSaga);
+};
+
+const switchprojectRequestSaga = function* (action) {
+  socket.disconnect();
+  console.log(socket);
+  yield put({ type: "disconnect" });
+  socket = null;
+};
+
+const watchSwitchProjectRequest = function* () {
+  yield takeLatest(SWITCH_PROJECT_REQUESET, switchprojectRequestSaga);
+};
+
 export const socketSagas = function* watchAll() {
   yield all([
     watchLeaveConversationAsync(),
@@ -580,5 +610,7 @@ export const socketSagas = function* watchAll() {
     watchRemoveMessage(),
     watchStartNewConversation(),
     watchTransferChatAsync(),
+    watchOpenAddProject(),
+    watchSwitchProjectRequest(),
   ]);
 };

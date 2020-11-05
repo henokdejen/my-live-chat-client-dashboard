@@ -60,7 +60,7 @@ export const removeMessageRequested = (conversationId, type, messageId) => ({
   payload: { conversationId, type, messageId },
 });
 
-export const messagesRemoved = (conversationId, type, messageIds) => ({
+export const messagesRemoved = (conversationId, messageIds) => ({
   type: types.REMOVE_MESSAGE_SUCCESS,
-  payload: { conversationId, type, messageIds },
+  payload: { conversationId, messageIds },
 });

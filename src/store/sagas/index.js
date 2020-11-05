@@ -6,7 +6,7 @@ import {
   watchemailCheckRequest,
   watchLogoutRequest,
 } from "./auth";
-import { watchaddProjectRequest } from "./project";
+import { projectSagas } from "./project";
 import { watchGetMessagesAsync, watchSendMsgAsync } from "./messages";
 import { watchGetInitialDataAsync } from "./initialLoader";
 import {
@@ -23,7 +23,6 @@ export default function* rootSaga() {
     watchemailCheckRequest(),
     watchSignupRequest(),
     watchLoginRequest(),
-    watchaddProjectRequest(),
     watchGetMessagesAsync(),
     watchGetInitialDataAsync(),
     watchLogoutRequest(),
@@ -34,5 +33,6 @@ export default function* rootSaga() {
     watchRemoveAgentAsync(),
 
     socketSagas(),
+    projectSagas(),
   ]);
 }

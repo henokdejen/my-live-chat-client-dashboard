@@ -138,6 +138,7 @@ const AgentManager = ({
 const mapStateToProps = (state) => {
   let { agents, owner } = state.basicState.projectInfo;
   let { userInfo } = state.basicState;
+  console.log("tt", agents);
   return { userInfo, agents, ownerID: owner };
 };
 

@@ -28,6 +28,7 @@ import {
   getLoadActiveConversationsURL,
   getLoadActiveConvMsgsURL,
   getLoadArchiveConvMsgsURL,
+  getSendConvTranscriptURL,
 } from "./API_URL";
 import {
   LS_TOKEN,
@@ -99,14 +100,20 @@ export const removeDepartment = (departmentID) => {
 };
 
 export const addAgentsToDepartment = (newAgents) => {
-  return API.post(getAddAgentToDepartmentURL(projectID, newAgents.departmentid), {agentIDs:newAgents.agentIDs});
+  return API.post(
+    getAddAgentToDepartmentURL(projectID, newAgents.departmentid),
+    { agentIDs: newAgents.agentIDs }
+  );
 };
 
 export const RemoveAgentsFromDepartment = (agentsToRemove) => {
-  return API.put(getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid), {agentIDs:agentsToRemove.agentIDs});
+  return API.put(
+    getRemoveAgentFromDepartmentURL(projectID, agentsToRemove.departmentid),
+    { agentIDs: agentsToRemove.agentIDs }
+  );
 };
 
-// Conversations staffa
+// Conversations related
 export const loadActiveConversations = () => {
   return API.get(getLoadActiveConversationsURL(projectID)).then((d) => d.data);
 };
@@ -131,6 +138,14 @@ export const loadArchiveConMessages = (conversationID) => {
   );
 };
 
+export const sendConvTranscript = (conversationID, type, receipents) => {
+  return API.post(getSendConvTranscriptURL(projectID), {
+    conversationID,
+    type,
+    to: receipents,
+  }).then((d) => d.data);
+};
+
 // profile related
 
 export const changePassword = (oldPassword, newPassword) => {
@@ -145,6 +160,7 @@ export const updateProfile = (name, timeZone) => {
 
 // socket Stuff
 export const connectSocket = () => {
+  console.log("Please", projectID, token);
   const agentQuery = {
     usertype: "agent",
     projectID,
@@ -184,7 +200,6 @@ export const updateProjectSettings = (newSettings) => {
   );
 };
 
-
 // ban ip address related
 
 export const banIPAddress = (banInfo) => {
@@ -199,6 +214,7 @@ export const getBannedIPAddress = (beforeThisTime) => {
 export const liftBanForVisitor = (banIdsList) => {
   return API.post(liftBanURL(projectID), { banIDs : banIdsList });
 }
+
 
 // report related
 

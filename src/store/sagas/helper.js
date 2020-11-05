@@ -63,11 +63,11 @@ export const getConversation = (dataFromServer) => {
     numberOfMessages: dataFromServer.numberOfMessages
       ? dataFromServer.numberOfMessages
       : 0,
-    title: !dataFromServer.name
+    title: dataFromServer.name
       ? dataFromServer.name
-      : // : dataFromServer.email
-        // ? dataFromServer.email
-        id,
+      : dataFromServer.email
+      ? dataFromServer.email
+      : id,
     createdAtMs: dataFromServer.createdAt.time,
     updatedAtMs: dataFromServer.updatedAt.time,
     browserID: dataFromServer.browserID,

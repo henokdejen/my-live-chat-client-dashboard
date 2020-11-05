@@ -1,5 +1,6 @@
 import * as types from "../../constants";
 import { ACTIVE_CONVERSATION_TYPES, CONVERSATION_TYPES } from "../../constants";
+import { NEW_MESSAGE_SOUND } from "../../constants/notifications";
 
 const initialState = {
   conversations: [],
@@ -37,6 +38,7 @@ const getUnSeenMsgsCount = (conversations) => {
 const conversationsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_ALL_CONVERSATIONS_SUCCESS: {
+      console.log('%PUBLIC_URL%') 
       const { conversations } = action.payload;
       const newState = { ...state };
       newState.conversations = conversations ? conversations : [];
